@@ -13,20 +13,24 @@ export default class Config {
     pyRunCommand: string;
     preferredLang: string;
     port: number;
+    terminal: string;
 
     constructor() {
-        this.contestsDirectory = Path.join(os.homedir(), "CompetitiveProgramming/Contests");
-        this.cppTemplatePath = Path.join(os.homedir(), "template.cpp");
+        this.contestsDirectory = Path.join(os.homedir(), "Contests");
+        this.cppTemplatePath = "";
         this.cppCompileCommand = "g++ -std=gnu++17 -O2";
         this.cppDebugCommand = "g++ -std=gnu++17 -DDEBUG";
-        this.pyTemplatePath = Path.join(os.homedir(), "template.py");
+        this.pyTemplatePath = "";
         this.pyRunCommand = "python3";
         this.preferredLang = "cpp";
         this.port = 1327;
+        this.terminal = "konsole";
     }
 
     write(configFilePath: string = Config.defaultConfigFilePath) {
-        fs.writeFileSync(configFilePath, JSON.stringify(this, null, 4));
+        if (!fs.existsSync(configFilePath)) {
+            fs.writeFileSync(configFilePath, JSON.stringify(this, null, 4));
+        }
     }
 
     read(configFilePath: string = Config.defaultConfigFilePath) {

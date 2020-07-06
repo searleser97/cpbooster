@@ -7,7 +7,7 @@ export default interface ProblemData {
     interactive: boolean;
     memoryLimit: number;
     timeLimit: number;
-    test: TestData[];
+    tests: TestData[];
     testType: string;
     input: object;
     output: object;

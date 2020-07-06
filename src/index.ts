@@ -1,34 +1,69 @@
 #!/usr/bin/env node
-import express from "express";
-import * as fs from "fs";
-import ProblemData from "./ProblemData";
-import { exit } from "process";
 import Config from "./Config";
-import * as readline from "readline";
+import Receiver from "./Receiver";
+import yargs, { argv, option } from "yargs";
+import ICLIOptions from "./ICLIOptions";
+import Tester from "./Tester";
 
-let rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+yargs
+    .command("cpbooster [options]", "run cpbooster as server for competitive companion plugin")
+    .option("configPath", {
+        alias: "c",
+        type: "string",
+        description: "Path to read/write configuration file"
+    })
+    .option("test", {
+        alias: "t",
+        type: "string",
+        description:
+            "Run {program} against all available testcases or specific testcase if [--testid] option is provided"
+    })
+    .option("debug", {
+        alias: "d",
+        type: "boolean",
+        description:
+            'Use this flag if you want to run [--test] using the "Debug Command" specified in your configuration file.'
+    })
+    .option("testid", {
+        alias: "tid",
+        type: "number",
+        desscription: "Specifies which testcase to run"
+    })
+    .option("new", {
+        alias: "n",
+        type: "boolean",
+        description:
+            "Creates new configuration file with default values in /home/$USER or if [--configPath] options is provided it writes it in the specified path"
+    }).argv;
 
 let config = new Config();
-
-const app = express();
-app.use(express.json());
-
-app.post('/', (request, response) => {
-    response.writeHead(200, { "Content-Type": "text/html" });
-    response.end("OK");
-    let data: ProblemData = request.body;
-    fs.mkdirSync("/home/san/Desktop/contests/" + data.group, { recursive: true });
-});
-
-let port = 1327;
-let server = app.listen(port, () => {
-    rl.question("Press any key to stop the problem parser", (answer) => {
-        console.log(answer);
-        server.close();
-        rl.close();
-    });
-});
-console.log("running at:", port);
+let options = <ICLIOptions>argv;
+if (options.new) {
+    if (options.configPath) {
+        config.write(options.configPath);
+    } else {
+        config.write();
+    }
+} else {
+    if (options.configPath) {
+        config.read(options.configPath);
+    } else {
+        config.read();
+    }
+    if (options.test) {
+        let tester: Tester;
+        if (options.testid) {
+            tester = new Tester(config, options.test, options.testid);
+        } else {
+            tester = new Tester(config, options.test);
+        }
+        if (options.debug) {
+            tester.debug();
+        } else {
+            tester.run();
+        }
+    } else {
+        let recv = new Receiver(config);
+        recv.run();
+    }
+}
