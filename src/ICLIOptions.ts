@@ -1,7 +1,7 @@
 export default interface ICLIOptions {
     configPath?: string;
     test?: string;
-    debug?: string;
+    debug?: boolean;
     new?: boolean;
     testid?: number;
     noCompile?: boolean;

@@ -6,7 +6,7 @@ import ICLIOptions from "./ICLIOptions";
 import Tester from "./Tester";
 
 yargs
-    .command("cpbooster [options]", "run cpbooster as server for competitive companion plugin")
+    .command("[options]", "run cpbooster as server for competitive companion plugin")
     .option("configPath", {
         alias: "c",
         type: "string",
@@ -27,7 +27,7 @@ yargs
     .option("testid", {
         alias: "tid",
         type: "number",
-        desscription: "Specifies which testcase to run"
+        description: "Specifies which testcase to run"
     })
     .option("new", {
         alias: "n",
@@ -45,7 +45,7 @@ yargs
 let config = new Config();
 let options = <ICLIOptions>argv;
 
-console.log(options);
+// console.log(options);
 if (options.new) {
     if (options.configPath) {
         config.write(options.configPath);
@@ -60,19 +60,7 @@ if (options.new) {
     }
     if (options.test) {
         let tester = new Tester(config, options.test);
-        if (options.debug) {
-            if (options.testid) {
-                tester.debug(testid);
-            } else {
-                tester.debug();
-            }
-        } else {
-            if (options.testid) {
-                tester.run(testid);
-            } else {
-                tester.run();
-            }
-        }
+        tester.run(!options.noCompile, options.debug, options.testid);
     } else {
         let recv = new Receiver(config);
         recv.run();

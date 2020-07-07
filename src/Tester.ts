@@ -1,7 +1,10 @@
 import Config from "./Config";
-import { spawnSync } from "child_process";
+import { spawnSync, SpawnSyncReturns } from "child_process";
 import * as Path from "path";
 import * as fs from "fs";
+import * as Diff from "diff";
+import chalk from "chalk";
+import { exit } from "process";
 
 export default class Tester {
     config: Config;
@@ -13,6 +16,9 @@ export default class Tester {
     binaryFilePath: string;
     compileCommand: string;
     compileArgs: string[];
+    debugCommand: string;
+    debugArgs: string[];
+    debugBinaryFilePath: string;
 
     constructor(config: Config, filePath: string) {
         this.config = config;
@@ -29,61 +35,80 @@ export default class Tester {
         let segmentedCommand = this.config.cppCompileCommand.split(" ");
         this.compileCommand = segmentedCommand[0];
         this.compileArgs = [...segmentedCommand.slice(1), this.filePath];
-        if (this.directoryPath == ".") {
-            this.binaryFilePath = `.${Path.sep}${this.getNameForBinary(this.compileArgs)}`;
-        } else {
-            this.binaryFilePath = Path.join(
-                this.directoryPath,
-                this.getNameForBinary(this.compileArgs)
-            );
-        }
+        this.binaryFilePath = `.${Path.sep}${this.getNameForBinary(this.compileArgs)}`;
 
-        console.log("filepath:", this.filePath);
-        console.log("extension:", this.fileExtension);
-        console.log("filepathnoextension:", this.filePathNoExtension);
-        console.log("directorypath:", this.directoryPath);
-        console.log("fileNameNoExtension:", this.fileNameNoExtension);
-        console.log("binaryFilePath:", this.binaryFilePath);
-        console.log("compileCommand:", this.compileCommand);
-        console.log("compileArgs:", this.compileArgs);
+        segmentedCommand = this.config.cppDebugCommand.split(" ");
+        this.debugCommand = segmentedCommand[0];
+        this.debugArgs = [...segmentedCommand.slice(1), this.filePath];
+        this.debugBinaryFilePath = `.${Path.sep}${this.getNameForBinary(this.debugArgs)}`;
     }
 
-    compile() {
-        let compilation = spawnSync(this.compileCommand, this.compileArgs);
+    compile(debug?: boolean | undefined | null) {
+        let compilation: SpawnSyncReturns<string>;
+        console.log("Compiling...\n");
+        if (debug) {
+            compilation = spawnSync(this.debugCommand, this.debugArgs);
+        } else {
+            compilation = spawnSync(this.compileCommand, this.compileArgs);
+        }
+
         if (compilation.stderr) {
-            let compileStderr = Buffer.from(compilation.stderr).toString("utf8");
-            console.log(compileStderr);
-            // IF stderr has real error, print it and inmediately exit the whole program.
-        }
-        if (compilation.stdout) {
-            let compileStdout = Buffer.from(compilation.stdout).toString("utf8");
-            console.log(compileStdout);
+            let compileStderr = Buffer.from(compilation.stderr).toString("utf8").trim();
+            if (compileStderr !== "") {
+                compileStderr = compileStderr.split("error").join(chalk.redBright("error"));
+                compileStderr = compileStderr.split("warning").join(chalk.blueBright("warning"));
+                console.log(compileStderr);
+                if (compileStderr.includes("error")) exit(0);
+            }
         }
     }
 
-    run(requiresCompilation: boolean, testId?: number | undefined) {
-        if (requiresCompilation) this.compile();
+    run(
+        requiresCompilation: boolean,
+        debug?: boolean | undefined | null,
+        testId?: number | undefined | null
+    ) {
+        if (requiresCompilation) this.compile(debug);
         if (testId) {
-            this.runSingle(testId);
+            if (debug) {
+                this.runSingle(testId, this.debugBinaryFilePath, true);
+            } else {
+                this.runSingle(testId, this.binaryFilePath, false);
+            }
         } else {
-            this.runAll();
+            this.runAll(debug);
         }
     }
 
-    runAll() {
+    runAll(debug?: boolean | undefined | null) {
         var testcasesFiles = fs
             .readdirSync(this.directoryPath)
             .filter((fileName) => fileName.startsWith(`${this.fileNameNoExtension}.in`));
-        console.log(testcasesFiles);
+        if (testcasesFiles.length === 0) {
+            console.log("No testcases available");
+            return;
+        }
+        testcasesFiles.forEach((filename) => {
+            let num = parseInt(filename.replace(`${this.fileNameNoExtension}.in`, ""));
+            this.runSingle(num, this.binaryFilePath, debug);
+        });
     }
 
-    runSingle(testId: number) {
+    runSingle(testId: number, binaryFilePath: string, debug?: boolean | undefined | null) {
+        if (!fs.existsSync(binaryFilePath)) {
+            console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
+            return;
+        }
         let testCasePath = `${this.filePathNoExtension}.in${testId}`;
         let outputPath = `${this.filePathNoExtension}.out${testId}`;
         let ansPath = `${this.filePathNoExtension}.ans${testId}`;
-        let executionArgs = ["<", testCasePath, ">", outputPath];
-        let execution = spawnSync(this.binaryFilePath, executionArgs);
-        // let the terminal handle the error if binaryFilePath does not exist.
+        let executionArgs: string[];
+        if (debug) {
+            executionArgs = ["<", `"${testCasePath}"`];
+        } else {
+            executionArgs = ["<", `"${testCasePath}"`, ">", `"${outputPath}"`];
+        }
+        let execution = spawnSync(binaryFilePath, executionArgs, { shell: true });
         if (execution.stdout) {
             let executionStdout = Buffer.from(execution.stdout).toString("utf8");
             console.log(executionStdout);
@@ -93,22 +118,32 @@ export default class Tester {
             console.log(executionStderr);
         }
 
-        
+        if (debug) return;
 
-    }
+        if(!fs.existsSync(ansPath) || !fs.existsSync(outputPath)) return;
 
-    debug(testId?: number | undefined) {
-        if (testId) {
-            this.debugSingle(testId, false);
+        let ans = fs.readFileSync(ansPath).toString();
+        let output = fs.readFileSync(outputPath).toString();
+
+        if (ans.trim() === output.trim()) {
+            console.log(`Test Case ${testId}:`, chalk.bgGreen(chalk.whiteBright(" A C ")), "\n");
+            if (ans !== output)
+                console.log(chalk.yellow("Check leading and trailing blank spaces"));
+            return;
         } else {
-            this.debugAll();
+            console.log(`Test Case ${testId}:`, chalk.bgRed(chalk.whiteBright(" W A ")), "\n");
         }
-    }
 
-    debugAll() {}
-
-    debugSingle(testId: number, requiresCompilation: boolean = true) {
-        console.log(testId);
+        // const diff = Diff.diffLines(output, ans.toString());
+        // diff.forEach((part) => {
+        //     if (part.added) {
+        //         console.log(chalk.greenBright(part.value));
+        //     } else if (part.removed) {
+        //         console.log(chalk.bgRed(part.value));
+        //     } else {
+        //         console.log(part.value);
+        //     }
+        // });
     }
 
     getNameForBinary(args: string[]): string {
@@ -117,6 +152,8 @@ export default class Tester {
                 return args[i + 1];
             }
         }
-        return this.fileNameNoExtension.replace(/\s+/g, "_") + ".exe";
+        let defaultName = this.fileNameNoExtension.replace(/\s+/g, "_") + ".exe";
+        args.push("-o", defaultName);
+        return defaultName;
     }
 }

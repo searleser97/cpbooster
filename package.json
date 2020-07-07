@@ -16,14 +16,17 @@
   "bin": {
     "cpbooster": "./dist/index.js"
   },
+  "target": "node",
   "scripts": {
-    "start": "npm run build && node dist/index.js -t test.cpp",
+    "start": "npm run build && node dist/index.js -t test.cpp -tid 1",
     "start:dev": "nodemon",
     "build": "rimraf ./dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "AGPL-3.0-only",
   "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/diff": "^4.0.2",
     "@types/express": "^4.17.6",
     "@types/node": "^14.0.14",
     "@types/yargs": "^15.0.5",
@@ -33,6 +36,8 @@
     "typescript": "^3.9.6"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
+    "diff": "^4.0.2",
     "express": "^4.17.1",
     "yargs": "^15.4.0"
   }
