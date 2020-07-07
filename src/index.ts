@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import Config from "./Config";
 import Receiver from "./Receiver";
-import yargs, { argv, option } from "yargs";
+import yargs, { argv, option, boolean } from "yargs";
 import ICLIOptions from "./ICLIOptions";
 import Tester from "./Tester";
 
@@ -33,11 +33,19 @@ yargs
         alias: "n",
         type: "boolean",
         description:
-            "Creates new configuration file with default values in /home/$USER or if [--configPath] options is provided it writes it in the specified path"
+            "Creates new configuration file with default values in /home/$USER or if [--configPath] option is provided it writes it in the specified path"
+    })
+    .option("noCompile", {
+        alias: "nc",
+        type: "boolean",
+        description:
+            "Test with out compiling source (assumes there is a corresponding binary file already)"
     }).argv;
 
 let config = new Config();
 let options = <ICLIOptions>argv;
+
+console.log(options);
 if (options.new) {
     if (options.configPath) {
         config.write(options.configPath);
@@ -51,16 +59,19 @@ if (options.new) {
         config.read();
     }
     if (options.test) {
-        let tester: Tester;
-        if (options.testid) {
-            tester = new Tester(config, options.test, options.testid);
-        } else {
-            tester = new Tester(config, options.test);
-        }
+        let tester = new Tester(config, options.test);
         if (options.debug) {
-            tester.debug();
+            if (options.testid) {
+                tester.debug(testid);
+            } else {
+                tester.debug();
+            }
         } else {
-            tester.run();
+            if (options.testid) {
+                tester.run(testid);
+            } else {
+                tester.run();
+            }
         }
     } else {
         let recv = new Receiver(config);

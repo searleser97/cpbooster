@@ -17,7 +17,7 @@
     "cpbooster": "./dist/index.js"
   },
   "scripts": {
-    "start": "npm run build && node dist/index.js --help",
+    "start": "npm run build && node dist/index.js -t test.cpp",
     "start:dev": "nodemon",
     "build": "rimraf ./dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"

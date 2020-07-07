@@ -4,4 +4,5 @@ export default interface ICLIOptions {
     debug?: string;
     new?: boolean;
     testid?: number;
+    noCompile?: boolean;
 }
