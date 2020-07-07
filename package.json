@@ -18,7 +18,7 @@
   },
   "target": "node",
   "scripts": {
-    "start": "npm run build && node dist/index.js -t test.cpp -tid 1",
+    "start": "npm run build && node dist/index.js test -h",
     "start:dev": "nodemon",
     "build": "rimraf ./dist && tsc",
     "test": "echo \"no test specified\" "
