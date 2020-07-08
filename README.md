@@ -4,8 +4,8 @@
 
 ## About
 
-`cpbooster` is a cross-platform command line tool designed to give competitive programmers a **boost** while participating at competitive programming contests.
-It works well with any coding environment since it is a command line tool. _Vim_ users can create a mapping to some of its commands and **boost** their coding speed even more.
+`cpbooster` is a cross-platform **CLI** tool designed to **boost** competitive programmer's speed during contests. The console command suits any coding environment and it’s very simple to use.
+Vim users are able to add mappings to their commands to **boost** their speed even more.
 
 ## Usage
 
@@ -17,7 +17,7 @@ Commands:
   cpbooster test   Run {program} against all available testcases or specific
                    testcase if [--testid] option is set
   cpbooster new    Creates new configuration file with default values in
-                   /home/$USER or,if [--configPath] option is set, it writes
+                   /home/$USER or, if [--configPath] option is set, it writes
                    in the specified path
 
 Options:
@@ -26,7 +26,7 @@ Options:
   --configPath, -c  Path to read/write configuration file               [string]
 ```
 
-**Note**: Run `cpbooster <command> --help` to display help information about an specific command.
+**Note:** Run `cpbooster <command> --help` to display help information about an specific command.
 
 ## Requirements
 
@@ -39,13 +39,14 @@ Options:
 1. Run:
 
 ```shell
-  [sudo] npm install cpbooster -g
+  npm install cpbooster -g
 ```
+**Note:** In some cases you may need to run above command with `sudo`.
 
 2. Run:
 
 ```shell
-  [sudo] cpbooster new
+  cpbooster new
 ```
 
 3. Edit the configuration file created in your home directory according to your needs.
@@ -68,11 +69,11 @@ Options:
 
 ## Features
 
-- Automatically clone sample testcases files into an specific directory
-- Create source files from a template
-- Test your code against sample testcases quickly
-  Supported results: AC (Accepted), WA (Wrong Answer), RTE (Runtime Error)
-- Run code with your own debugging flags easily
+-   Automatically clone sample testcases files into an specific directory
+-   Create source files from a template
+-   Test your code against sample testcases quickly.
+    Supported results: AC (Accepted), WA (Wrong Answer), RTE (Runtime Error)
+-   Run code with your own debugging flags easily
 
 #### Support to open directory in terminal after `cpbooster serve`:
 
