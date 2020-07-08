@@ -9,7 +9,7 @@ import { exit } from "process";
 yargs
     .usage("Usage: $0 <command> [options]")
     .command("serve", "Run cpbooster as server for competitive companion plugin", (serve_yargs) => {
-        serve_yargs.option("port", {
+        serve_yargs.usage("Usage: $0 serve [options]").option("port", {
             alias: "p",
             type: "number",
             description:
@@ -21,10 +21,7 @@ yargs
         "Run {program} against all available testcases or specific testcase if [--testid] option is provided",
         (test_yargs) => {
             test_yargs
-                .usage(
-                    "Usage: $0 test <filepath> [options]",
-                    "Run {program} against all available testcases or specific testcase if [--testid] option is provided"
-                )
+                .usage("Usage: $0 test <filepath> [options]")
                 .option("debug", {
                     alias: "d",
                     type: "boolean",
@@ -46,10 +43,14 @@ yargs
     )
     .command(
         "new",
-        "Creates new configuration file with default values in /home/$USER or if [--configPath] option is provided it writes it in the specified path"
+        "Creates new configuration file with default values in /home/$USER or if [--configPath] option is provided it writes it in the specified path",
+        (new_yargs) => {
+            new_yargs.usage("Usage: $0 new [options]");
+        }
     )
     .help("help")
     .alias("help", "h")
+    .alias("version", "v")
     .option("configPath", {
         alias: "c",
         type: "string",
