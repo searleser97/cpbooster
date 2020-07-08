@@ -178,8 +178,18 @@ export default class Tester {
                 } else {
                     line += "".padEnd(leftLimit) + "||";
                 }
+
                 if (i < ansLines.length) {
-                    line += ansLines[i];
+                    line += ansLines[i].padEnd(leftLimit);
+                } else {
+                    line += "".padEnd(leftLimit);
+                }
+
+                if (i < outputLines.length && i < ansLines.length) {
+                    if (outputLines[i] === ansLines[i])
+                        line += chalk.bgGreen("  ");
+                    else
+                        line += chalk.bgRed("  ");
                 }
                 console.log(line);
             }
