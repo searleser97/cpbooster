@@ -73,7 +73,7 @@ Options:
 - Test your code against sample testcases quickly (AC, WA, RTE)
 - Run your code with debugging flags easily with automated functionality
 
-### Support to open directory in terminal after `cpbooster serve`
+#### Support to open directory in terminal after `cpbooster serve`
 
 -   Konsole
 -   xterm
