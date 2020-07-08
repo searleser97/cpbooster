@@ -66,6 +66,13 @@ Options:
 }
 ```
 
+## Features
+
+- Automatically clone sample testcases files to specified directory
+- Automatically create source files with the desired template in them
+- Test your code against sample testcases quickly (AC, WA, RTE)
+- Run your code with debugging flags easily with automated functionality
+
 ### Support to open directory in terminal after `cpbooster serve`
 
 -   Konsole
