@@ -4,7 +4,7 @@ import * as Path from "path";
 import ProblemData from "./ProblemData";
 import Config from "./Config";
 import { exit } from "process";
-import { exec, spawnSync } from "child_process";
+import { exec, spawnSync, spawn } from "child_process";
 
 export default class Receiver {
     app = express();
@@ -44,14 +44,21 @@ export default class Receiver {
     run() {
         let serverRef = this.app.listen(this.config.port, () => {
             console.info("\nserver running at port:", this.config.port);
-            console.info('\nserver waiting for "Competitive Companion Plugin" to send problems...');
+            console.info(
+                '\nserver waiting for "Competitive Companion Plugin" to send problems...\n'
+            );
         });
 
         let interval = setInterval(() => {
             if (!this.isActive) return;
             let elapsedTime = process.hrtime(this.lastRequestTime)[0];
             if (elapsedTime >= 1) {
+                if (serverRef) serverRef.close();
+                clearInterval(interval);
                 let contestPath = Path.join(this.config.contestsDirectory, this.contestName);
+                console.log("\n\tDONE!\n");
+                console.log(`The path to your contest folder is: "${contestPath}"`);
+                console.log("\n\tHappy Coding!\n");
                 let command = "";
                 if (this.config.terminal === "konsole")
                     command = `konsole --workdir "${contestPath}"`;
@@ -62,13 +69,9 @@ export default class Receiver {
                 else if (this.config.terminal === "xterm")
                     command = `xterm -e 'cd "${contestPath}" && bash' & disown`;
                 else {
-                    console.log("Terminal not supported");
                     exit(0);
                 }
-
-                spawnSync(command, { shell: true });
-                clearInterval(interval);
-                if (serverRef) serverRef.close();
+                spawn(command, { shell: true });
                 exit(0);
             }
         }, 100);
