@@ -60,10 +60,8 @@ Options:
 {
     "contestsDirectory": "/home/user/Contests",
     "cppTemplatePath": "/home/user/template.cpp",
-    "cppCompileCommand": "g++ -std=gnu++17 -fconcepts",
-    "cppDebugCommand": "g++ -std=gnu++17 -DDEBUG -fconcepts",
-    "pyTemplatePath": "~/template.py",
-    "pyRunCommand": "python3",
+    "cppCompileCommand": "g++ -std=gnu++17",
+    "cppDebugCommand": "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
     "port": 1327,
     "terminal": "konsole"
 }
