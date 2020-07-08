@@ -29,7 +29,7 @@ yargs
                         'Use this flag if you want to run [--test] using the "Debug Command" specified in your configuration file.'
                 })
                 .option("testid", {
-                    alias: "tid",
+                    alias: "t",
                     type: "number",
                     description: "Specifies which testcase to run"
                 })
