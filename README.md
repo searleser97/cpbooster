@@ -24,4 +24,19 @@ Options:
 ```
 ## Requirements
 
-- 
+- NodeJs
+- [Competitive Companion plugin](https://github.com/jmerle/competitive-companion)
+- Configuration File `cpbooster-config.json` (described below)
+
+## Installation
+
+1. Run:
+  ```shell
+    [sudo] npm install cpbooster -g
+  ```
+2. Run:
+  ```shell
+    [sudo] cpbooster new
+  ```
+3. Edit the configuration file created in your home directory according to your needs.
+4. You are now all set up to use `cpbooster`.
