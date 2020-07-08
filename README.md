@@ -75,7 +75,7 @@ Options:
 
 #### Support to open directory in terminal after `cpbooster serve`:
 
--   Konsole
+-   konsole
 -   xterm
 -   gnome-terminal
 -   deepin-terminal
