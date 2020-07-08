@@ -48,3 +48,28 @@ Options:
 
 3. Edit the configuration file created in your home directory according to your needs.
 4. You are now all set up to use `cpbooster`.
+
+## Configuration File Options
+
+```jsonc
+{
+  "contestsDirectory": "/home/user/Contests",
+  "cppTemplatePath": "/home/user/template.cpp",
+  "cppCompileCommand": "g++ -std=gnu++17 -fconcepts",
+  "cppDebugCommand": "g++ -std=gnu++17 -DDEBUG -fconcepts",
+  "pyTemplatePath": "~/template.py",
+  "pyRunCommand": "python3",
+  "port": 1327,
+  "terminal": "konsole"
+}
+```
+
+## Future updates
+
+- Add support for java and python
+- Add support for more terminals
+- Build Vim native plugin
+
+## License
+
+`cpbooster` is licensed under the [GNU General Public License v3.0](https://github.com/searleser97/cpbooster/blob/master/LICENSE)
