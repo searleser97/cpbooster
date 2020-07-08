@@ -1,11 +1,14 @@
-# cpbooster &middot; [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/searleser97/cpbooster/blob/master/LICENSE)
+# cpbooster &middot; [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/searleser97/cpbooster/blob/master/LICENSE) [![npm version](https://badge.fury.io/js/cpbooster.svg)](https://badge.fury.io/js/cpbooster)
+
 ### Competitive Programming Booster
+
 ## About
 
 `cpbooster` is a cross-platform command line utility designed to give competitive programmers a **boost** when participating in competitive programming contests.
-Its simplicity makes it perfect to be used in any coding environment since it is simply a console command.
+Its simplicity makes it perfect to be used in any coding environment since it is simply a console command. **Vim** users could just add a mapping to some of its commands to **boost** their speed even more.
 
 ## Usage
+
 ```
 Usage: cpbooster <command> [options]
 
@@ -22,21 +25,26 @@ Options:
   --help, -h        Show help                                          [boolean]
   --configPath, -c  Path to read/write configuration file               [string]
 ```
+
 ## Requirements
 
-- NodeJs
-- [Competitive Companion plugin](https://github.com/jmerle/competitive-companion)
-- Configuration File `cpbooster-config.json` (described below)
+-   NodeJs
+-   [Competitive Companion plugin](https://github.com/jmerle/competitive-companion)
+-   Configuration File `cpbooster-config.json` (described below)
 
 ## Installation
 
 1. Run:
-  ```shell
-    [sudo] npm install cpbooster -g
-  ```
+
+```shell
+  [sudo] npm install cpbooster -g
+```
+
 2. Run:
-  ```shell
-    [sudo] cpbooster new
-  ```
+
+```shell
+  [sudo] cpbooster new
+```
+
 3. Edit the configuration file created in your home directory according to your needs.
 4. You are now all set up to use `cpbooster`.
