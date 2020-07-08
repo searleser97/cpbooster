@@ -71,8 +71,8 @@ Options:
 
 -   Automatically clone sample testcases files into an specific directory
 -   Create source files from a template
--   Test your code against sample testcases quickly.
-    Supported results: AC (Accepted), WA (Wrong Answer), RTE (Runtime Error)
+-   Test your code against sample testcases quickly.  
+  Supported results: AC (Accepted), WA (Wrong Answer), RTE (Runtime Error)
 -   Run code with your own debugging flags easily
 
 #### Support to open directory in terminal after `cpbooster serve`:
