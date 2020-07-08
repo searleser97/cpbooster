@@ -64,6 +64,13 @@ Options:
 }
 ```
 
+## Support to open directory in terminal after `cpbooster serve`
+
+- Konsole
+- xterm
+- gnome-terminal
+- deepin-terminal
+
 ## Future updates
 
 - Add support for java and python
