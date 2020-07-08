@@ -4,8 +4,8 @@
 
 ## About
 
-`cpbooster` is a cross-platform command line utility designed to give competitive programmers a **boost** when participating in competitive programming contests.
-Its simplicity makes it perfect to be used in any coding environment since it is simply a console command. _Vim_ users could just add a mapping to some of its commands to **boost** their speed even more.
+`cpbooster` is a cross-platform **CLI** tool designed to **boost** competitive programmers in contests. The console command suits any coding environment and it’s very simple to use. 
+Vim users are able to add mappings to their commands to **boost** their speed even more.
 
 ## Usage
 
