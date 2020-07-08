@@ -26,7 +26,7 @@ Options:
   --configPath, -c  Path to read/write configuration file               [string]
 ```
 
-**Note**: Run `cpbooster <command> --help` to display help information about an specific command.
+**Note:** Run `cpbooster <command> --help` to display help information about an specific command.
 
 ## Requirements
 
@@ -39,13 +39,13 @@ Options:
 1. Run:
 
 ```shell
-  [sudo] npm install cpbooster -g
+  npm install cpbooster -g
 ```
-
+**Note:** In some cases you might require to run above command with `sudo`.
 2. Run:
 
 ```shell
-  [sudo] cpbooster new
+  cpbooster new
 ```
 
 3. Edit the configuration file created in your home directory according to your needs.
