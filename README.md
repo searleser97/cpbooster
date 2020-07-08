@@ -4,8 +4,8 @@
 
 ## About
 
-`cpbooster` is a cross-platform command line tool designed to give competitive programmers a **boost** while participating at competitive programming contests.
-It works well with any coding environment since it is a command line tool. _Vim_ users can create a mapping to some of its commands and **boost** their coding speed even more.
+`cpbooster` is a cross-platform **CLI** tool designed to **boost** competitive programmers in contests. The console command suits any coding environment and it’s very simple to use.
+Vim users are able to add mappings to their commands to **boost** their speed even more.
 
 ## Usage
 
@@ -68,11 +68,11 @@ Options:
 
 ## Features
 
-- Automatically clone sample testcases files into an specific directory
-- Create source files from a template
-- Test your code against sample testcases quickly
-  Supported results: AC (Accepted), WA (Wrong Answer), RTE (Runtime Error)
-- Run code with your own debugging flags easily
+-   Automatically clone sample testcases files into an specific directory
+-   Create source files from a template
+-   Test your code against sample testcases quickly
+    Supported results: AC (Accepted), WA (Wrong Answer), RTE (Runtime Error)
+-   Run code with your own debugging flags easily
 
 #### Support to open directory in terminal after `cpbooster serve`:
 
