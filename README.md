@@ -41,7 +41,7 @@ Options:
 ```shell
   npm install cpbooster -g
 ```
-**Note:** In some cases you might require to run above command with `sudo`.
+**Note:** In some cases you may need to run above command with `sudo`.
 2. Run:
 
 ```shell
