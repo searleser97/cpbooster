@@ -52,12 +52,13 @@ export default class Receiver {
             let elapsedTime = process.hrtime(this.lastRequestTime)[0];
             if (elapsedTime >= 1) {
                 let contestPath = Path.join(this.config.contestsDirectory, this.contestName);
-                // default option will be to use x-terminal-emulator, and then check for specific terminal names.
                 let command = "";
                 if (this.config.terminal === "konsole")
                     command = `konsole --workdir "${contestPath}"`;
                 else if (this.config.terminal === "gnome-terminal")
-                    command = `gnome-terminal --working-directory="${contestPath}`;
+                    command = `gnome-terminal --working-directory="${contestPath}"`;
+                else if (this.config.terminal === "deepin-terminal")
+                    command = `deepin-terminal --work-directory "${contestPath}"`;
                 else if (this.config.terminal === "xterm")
                     command = `xterm -e 'cd "${contestPath}" && bash' & disown`;
                 else {
