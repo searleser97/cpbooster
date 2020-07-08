@@ -4,7 +4,7 @@ import * as Path from "path";
 import ProblemData from "./ProblemData";
 import Config from "./Config";
 import { exit } from "process";
-import { exec } from "child_process";
+import { exec, spawnSync } from "child_process";
 
 export default class Receiver {
     app = express();
@@ -15,7 +15,7 @@ export default class Receiver {
     constructor(config: Config) {
         this.config = config;
         this.app.use(express.json());
-        this.app.post('/', (request, response) => {
+        this.app.post("/", (request, response) => {
             response.writeHead(200, { "Content-Type": "text/html" });
             response.end("OK");
 
@@ -28,7 +28,8 @@ export default class Receiver {
             let cppFilePath = `${FilesPathNoExtension}.cpp`;
             if (!fs.existsSync(cppFilePath)) {
                 let cppTemplate = "";
-                if (config.cppTemplatePath != "") cppTemplate = fs.readFileSync(config.cppTemplatePath).toString();
+                if (config.cppTemplatePath != "")
+                    cppTemplate = fs.readFileSync(config.cppTemplatePath).toString();
                 fs.writeFileSync(cppFilePath, cppTemplate);
             }
             problemData.tests.forEach((testcase, idx) => {
@@ -43,7 +44,7 @@ export default class Receiver {
     run() {
         let serverRef = this.app.listen(this.config.port, () => {
             console.info("\nserver running at port:", this.config.port);
-            console.info("\nserver waiting for \"Competitive Companion Plugin\" to send problems...");
+            console.info('\nserver waiting for "Competitive Companion Plugin" to send problems...');
         });
 
         let interval = setInterval(() => {
@@ -52,10 +53,19 @@ export default class Receiver {
             if (elapsedTime >= 1) {
                 let contestPath = Path.join(this.config.contestsDirectory, this.contestName);
                 // default option will be to use x-terminal-emulator, and then check for specific terminal names.
-                let command = `konsole --workdir "${contestPath}"`;
-                // let command = `gnome-terminal --working-directory="${contestPath}`;
-                console.log(command);
-                exec(command);
+                let command = "";
+                if (this.config.terminal === "konsole")
+                    command = `konsole --workdir "${contestPath}"`;
+                else if (this.config.terminal === "gnome-terminal")
+                    command = `gnome-terminal --working-directory="${contestPath}`;
+                else if (this.config.terminal === "xterm")
+                    command = `xterm -e 'cd "${contestPath}" && bash' & disown`;
+                else {
+                    console.log("Terminal not supported");
+                    exit(0);
+                }
+
+                spawnSync(command, { shell: true });
                 clearInterval(interval);
                 if (serverRef) serverRef.close();
                 exit(0);
