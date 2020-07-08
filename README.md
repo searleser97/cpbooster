@@ -17,7 +17,7 @@ Commands:
   cpbooster test   Run {program} against all available testcases or specific
                    testcase if [--testid] option is set
   cpbooster new    Creates new configuration file with default values in
-                   /home/$USER or,if [--configPath] option is set, it writes
+                   /home/$USER or, if [--configPath] option is set, it writes
                    in the specified path
 
 Options:

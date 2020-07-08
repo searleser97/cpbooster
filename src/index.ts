@@ -18,7 +18,7 @@ yargs
     })
     .command(
         "test",
-        "Run {program} against all available testcases or specific testcase if [--testid] option is provided",
+        "Run {program} against all available testcases or specific testcase if [--testid] option is set",
         (test_yargs) => {
             test_yargs
                 .usage("Usage: $0 test <filepath> [options]")
@@ -43,7 +43,7 @@ yargs
     )
     .command(
         "new",
-        "Creates new configuration file with default values in /home/$USER or if [--configPath] option is provided it writes it in the specified path",
+        "Creates new configuration file with default values in /home/$USER or, if [--configPath] option is set it writes in the specified path",
         (new_yargs) => {
             new_yargs.usage("Usage: $0 new [options]");
         }
