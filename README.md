@@ -62,7 +62,7 @@ Options:
     "cppTemplatePath": "/home/user/template.cpp",
     "cppCompileCommand": "g++ -std=gnu++17",
     "cppDebugCommand": "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
-    "port": 1327,
+    "port": 1327, // must match with competitive companion plugin port
     "terminal": "konsole"
 }
 ```
