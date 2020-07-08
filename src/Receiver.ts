@@ -37,6 +37,8 @@ export default class Receiver {
             response.end("OK");
 
             let problemData: ProblemData = request.body;
+            problemData.name = problemData.name.split("'").join("");
+            problemData.group = problemData.group.split("'").join("");
             this.contestName = problemData.group;
             console.info("received:", problemData.name);
             let contestPath = Path.join(config.contestsDirectory, problemData.group);

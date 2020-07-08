@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
     cpbooster "Competitive Programming Booster"
     Copyright (C) 2020  Sergio G. Sanchez V.
@@ -15,7 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#!/usr/bin/env node
 import Config from "./Config";
 import Receiver from "./Receiver";
 import yargs, { argv } from "yargs";
