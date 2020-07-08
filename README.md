@@ -26,6 +26,8 @@ Options:
   --configPath, -c  Path to read/write configuration file               [string]
 ```
 
+**Note**: Run `cpbooster <command> --help` to display help for a specific command.
+
 ## Requirements
 
 -   NodeJs
@@ -53,29 +55,29 @@ Options:
 
 ```jsonc
 {
-  "contestsDirectory": "/home/user/Contests",
-  "cppTemplatePath": "/home/user/template.cpp",
-  "cppCompileCommand": "g++ -std=gnu++17 -fconcepts",
-  "cppDebugCommand": "g++ -std=gnu++17 -DDEBUG -fconcepts",
-  "pyTemplatePath": "~/template.py",
-  "pyRunCommand": "python3",
-  "port": 1327,
-  "terminal": "konsole"
+    "contestsDirectory": "/home/user/Contests",
+    "cppTemplatePath": "/home/user/template.cpp",
+    "cppCompileCommand": "g++ -std=gnu++17 -fconcepts",
+    "cppDebugCommand": "g++ -std=gnu++17 -DDEBUG -fconcepts",
+    "pyTemplatePath": "~/template.py",
+    "pyRunCommand": "python3",
+    "port": 1327,
+    "terminal": "konsole"
 }
 ```
 
-## Support to open directory in terminal after `cpbooster serve`
+### Support to open directory in terminal after `cpbooster serve`
 
-- Konsole
-- xterm
-- gnome-terminal
-- deepin-terminal
+-   Konsole
+-   xterm
+-   gnome-terminal
+-   deepin-terminal
 
 ## Future updates
 
-- Add support for java and python
-- Add support for more terminals
-- Build Vim native plugin
+-   Add support for java and python
+-   Add support for more terminals
+-   Build Vim native plugin
 
 ## License
 
