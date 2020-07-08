@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import Config from "./Config";
 import Receiver from "./Receiver";
-import yargs, { argv, option, boolean } from "yargs";
+import yargs, { argv } from "yargs";
 import ICLIOptions from "./ICLIOptions";
 import Tester from "./Tester";
 import { exit } from "process";
@@ -55,7 +55,8 @@ yargs
         alias: "c",
         type: "string",
         description: "Path to read/write configuration file"
-    }).argv;
+    })
+    .argv;
 
 let config = new Config();
 let options = <ICLIOptions>argv;
@@ -84,5 +85,5 @@ if (argv._[0] === "serve") {
         config.write();
     }
 } else {
-    console.log("Invalid Command.");
+    yargs.showHelp();
 }
