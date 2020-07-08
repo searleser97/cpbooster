@@ -37,8 +37,8 @@
   },
   "dependencies": {
     "chalk": "^4.1.0",
-    "diff": "^4.0.2",
     "express": "^4.17.1",
+    "print-diff": "^1.0.0",
     "yargs": "^15.4.0"
   }
 }

@@ -2,9 +2,9 @@ import Config from "./Config";
 import { spawnSync, SpawnSyncReturns } from "child_process";
 import * as Path from "path";
 import * as fs from "fs";
-import * as Diff from "diff";
 import chalk from "chalk";
 import { exit } from "process";
+import printDiff from "print-diff";
 
 export default class Tester {
     config: Config;
@@ -58,10 +58,7 @@ export default class Tester {
                 compileStderr = compileStderr.split("error").join(chalk.redBright("error"));
                 compileStderr = compileStderr.split("warning").join(chalk.blueBright("warning"));
                 if (compileStderr.includes("error")) {
-                    console.log(
-                        chalk.bgYellow(chalk.whiteBright(" Compilation Error ")),
-                        "\n"
-                    );
+                    console.log(chalk.bgYellow(chalk.whiteBright(" Compilation Error ")), "\n");
                 }
                 console.log(compileStderr);
                 if (compileStderr.includes("error")) exit(0);
@@ -117,19 +114,21 @@ export default class Tester {
         let execution = spawnSync(binaryFilePath, executionArgs, { shell: true });
         if (execution.stdout) {
             let executionStdout = Buffer.from(execution.stdout).toString("utf8");
-            console.log(executionStdout);
+            if (executionStdout !== "") console.log(executionStdout);
         }
         if (execution.stderr) {
-            if (!debug) {
-                console.log(
-                    `Test Case ${testId}:`,
-                    chalk.bgBlue(chalk.whiteBright(" R T E ")),
-                    "\n"
-                );
-            }
             let executionStderr = Buffer.from(execution.stderr).toString("utf8");
-            console.log(executionStderr);
-            return;
+            if (executionStderr !== "") {
+                if (!debug) {
+                    console.log(
+                        `Test Case ${testId}:`,
+                        chalk.bgBlue(chalk.whiteBright(" R T E ")),
+                        "\n"
+                    );
+                }
+                console.log(executionStderr);
+                return;
+            }
         }
 
         if (debug) return;
@@ -143,21 +142,10 @@ export default class Tester {
             console.log(`Test Case ${testId}:`, chalk.bgGreen(chalk.whiteBright(" A C ")), "\n");
             if (ans !== output)
                 console.log(chalk.yellow("Check leading and trailing blank spaces"));
-            return;
         } else {
             console.log(`Test Case ${testId}:`, chalk.bgRed(chalk.whiteBright(" W A ")), "\n");
+            printDiff(output, ans);
         }
-
-        // const diff = Diff.diffLines(output, ans.toString());
-        // diff.forEach((part) => {
-        //     if (part.added) {
-        //         console.log(chalk.greenBright(part.value));
-        //     } else if (part.removed) {
-        //         console.log(chalk.bgRed(part.value));
-        //     } else {
-        //         console.log(part.value);
-        //     }
-        // });
     }
 
     getNameForBinary(args: string[]): string {
