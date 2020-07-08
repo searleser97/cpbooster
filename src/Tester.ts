@@ -57,6 +57,12 @@ export default class Tester {
             if (compileStderr !== "") {
                 compileStderr = compileStderr.split("error").join(chalk.redBright("error"));
                 compileStderr = compileStderr.split("warning").join(chalk.blueBright("warning"));
+                if (compileStderr.includes("error")) {
+                    console.log(
+                        chalk.bgYellow(chalk.whiteBright(" Compilation Error ")),
+                        "\n"
+                    );
+                }
                 console.log(compileStderr);
                 if (compileStderr.includes("error")) exit(0);
             }
@@ -114,13 +120,21 @@ export default class Tester {
             console.log(executionStdout);
         }
         if (execution.stderr) {
+            if (!debug) {
+                console.log(
+                    `Test Case ${testId}:`,
+                    chalk.bgBlue(chalk.whiteBright(" R T E ")),
+                    "\n"
+                );
+            }
             let executionStderr = Buffer.from(execution.stderr).toString("utf8");
             console.log(executionStderr);
+            return;
         }
 
         if (debug) return;
 
-        if(!fs.existsSync(ansPath) || !fs.existsSync(outputPath)) return;
+        if (!fs.existsSync(ansPath) || !fs.existsSync(outputPath)) return;
 
         let ans = fs.readFileSync(ansPath).toString();
         let output = fs.readFileSync(outputPath).toString();
