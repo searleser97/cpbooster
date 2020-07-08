@@ -4,7 +4,7 @@
 
 ## About
 
-`cpbooster` is a cross-platform **CLI** tool designed to **boost** competitive programmers in contests. The console command suits any coding environment and it’s very simple to use. 
+`cpbooster` is a cross-platform **CLI** tool designed to **boost** competitive programmers in contests. The console command suits any coding environment and it’s very simple to use.
 Vim users are able to add mappings to their commands to **boost** their speed even more.
 
 ## Usage
@@ -15,10 +15,10 @@ Usage: cpbooster <command> [options]
 Commands:
   cpbooster serve  Run cpbooster as server for competitive companion plugin
   cpbooster test   Run {program} against all available testcases or specific
-                   testcase if [--testid] option is provided
+                   testcase if [--testid] option is set
   cpbooster new    Creates new configuration file with default values in
-                   /home/$USER or if [--configPath] option is provided it writes
-                   it in the specified path
+                   /home/$USER or,if [--configPath] option is set, it writes
+                   in the specified path
 
 Options:
   --version, -v     Show version number                                [boolean]
@@ -26,11 +26,11 @@ Options:
   --configPath, -c  Path to read/write configuration file               [string]
 ```
 
-**Note**: Run `cpbooster <command> --help` to display help for a specific command.
+**Note**: Run `cpbooster <command> --help` to display help information about an specific command.
 
 ## Requirements
 
--   NodeJs
+-   Node.js
 -   [Competitive Companion plugin](https://github.com/jmerle/competitive-companion)
 -   Configuration File `cpbooster-config.json` (described below)
 
@@ -68,10 +68,11 @@ Options:
 
 ## Features
 
-- Automatically clone sample testcases files to specified directory
-- Automatically create source files with the desired template in them
-- Test your code against sample testcases quickly (AC, WA, RTE)
-- Run your code with debugging flags easily with automated functionality
+-   Automatically clone sample testcases files into an specific directory
+-   Create source files from a template
+-   Test your code against sample testcases quickly
+    Supported results: AC (Accepted), WA (Wrong Answer), RTE (Runtime Error)
+-   Run code with your own debugging flags easily
 
 #### Support to open directory in terminal after `cpbooster serve`:
 
@@ -82,7 +83,7 @@ Options:
 
 ## Future updates
 
--   Add support for java and python
+-   Add support for Java and Python
 -   Add support for more terminals
 -   Build Vim native plugin
 
