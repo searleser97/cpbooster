@@ -87,6 +87,7 @@ Options:
 -   Add support for Java and Python
 -   Add support for more terminals
 -   Build Vim native plugin
+-   Show difference for "WA" veredicts
 
 ## License
 
