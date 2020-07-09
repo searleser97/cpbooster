@@ -31,7 +31,7 @@ Options:
 
 ## Requirements
 
--   Node.js
+-   Node.js >= v12.18.2
 -   [Competitive Companion plugin](https://github.com/jmerle/competitive-companion)
 -   Configuration File `cpbooster-config.json` (described below)
 
