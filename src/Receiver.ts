@@ -22,6 +22,7 @@ import ProblemData from "./ProblemData";
 import Config from "./Config";
 import { exit } from "process";
 import { exec, spawnSync, spawn } from "child_process";
+import Util from "./Util";
 
 export default class Receiver {
     app = express();
@@ -37,8 +38,25 @@ export default class Receiver {
             response.end("OK");
 
             let problemData: ProblemData = request.body;
-            problemData.name = problemData.name.split("'").join("");
-            problemData.group = problemData.group.split("'").join("");
+            problemData.name = Util.replaceAll(problemData.name, "'", "");
+            problemData.name = Util.replaceAll(problemData.name, "(", "");
+            problemData.name = Util.replaceAll(problemData.name, ")", "");
+            problemData.name = Util.replaceAll(problemData.name, ",", "");
+            problemData.name = Util.replaceAll(problemData.name, "*", "");
+            problemData.name = Util.replaceAll(problemData.name, "/", "");
+            problemData.name = Util.replaceAll(problemData.name, "\"", "");
+            problemData.name = Util.replaceAll(problemData.name, " ", "");
+
+            problemData.group = Util.replaceAll(problemData.group, "'", "");
+            problemData.group = Util.replaceAll(problemData.group, "(", "");
+            problemData.group = Util.replaceAll(problemData.group, ")", "");
+            problemData.group = Util.replaceAll(problemData.group, ",", "");
+            problemData.group = Util.replaceAll(problemData.group, "*", "");
+            problemData.group = Util.replaceAll(problemData.group, "/", "");
+            problemData.group = Util.replaceAll(problemData.group, "\"", "");
+            problemData.group = Util.replaceAll(problemData.group, " ", "");
+
+
             this.contestName = problemData.group;
             console.info("received:", problemData.name);
             let contestPath = Path.join(config.contestsDirectory, problemData.group);
