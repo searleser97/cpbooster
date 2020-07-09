@@ -42,7 +42,8 @@ export default class Receiver {
             this.contestName = problemData.group;
             console.info("received:", problemData.name);
             let contestPath = Path.join(config.contestsDirectory, problemData.group);
-            fs.mkdirSync(contestPath, { recursive: true });
+            if (!fs.existsSync(contestPath))
+                fs.mkdirSync(contestPath, { recursive: true });
             let FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
             let cppFilePath = `${FilesPathNoExtension}.cpp`;
             if (!fs.existsSync(cppFilePath)) {
