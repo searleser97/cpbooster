@@ -86,6 +86,8 @@ Options:
 
 -   Add support for Java and Python
 -   Add full support for more terminals
+-   Add support for custom test case
+-   Add configuration assistant
 
 ## License
 

@@ -21,6 +21,7 @@ import * as Path from "path";
 import * as fs from "fs";
 import chalk from "chalk";
 import { exit } from "process";
+import Util from "./Util";
 
 export default class Tester {
     config: Config;
@@ -148,53 +149,8 @@ export default class Tester {
         }
 
         if (debug) return;
-
-        if (!fs.existsSync(ansPath) || !fs.existsSync(outputPath)) return;
-
-        let ans = fs.readFileSync(ansPath).toString();
-        let output = fs.readFileSync(outputPath).toString();
-
-        if (ans.trim() === output.trim()) {
-            console.log(`Test Case ${testId}:`, chalk.bgGreen(chalk.whiteBright(" A C ")), "\n");
-            if (ans !== output)
-                console.log(chalk.yellow("Check leading and trailing blank spaces"));
-        } else {
-            console.log(`Test Case ${testId}:`, chalk.bgRed(chalk.whiteBright(" W A ")), "\n");
-            let outputLines = output.split("\n");
-            let ansLines = ans.split("\n");
-            let maxOutputWidth = 0;
-            for (let i = 0; i < outputLines.length; i++) {
-                if (outputLines[i].length > maxOutputWidth) maxOutputWidth = outputLines[i].length;
-            }
-            let leftLimit = Math.min(Math.max(maxOutputWidth, 15), process.stdout.columns - 8);
-            console.log(
-                chalk.bgRed(chalk.whiteBright("Your output:".padEnd(leftLimit) + "|")) +
-                    chalk.bgGreen(chalk.whiteBright("|Correct Answer:\n"))
-            );
-            for (let i = 0; i < Math.max(outputLines.length, ansLines.length); i++) {
-                let line = "";
-                if (i < outputLines.length) {
-                    line += outputLines[i].padEnd(leftLimit) + "||";
-                } else {
-                    line += "".padEnd(leftLimit) + "||";
-                }
-
-                if (i < ansLines.length) {
-                    line += ansLines[i].padEnd(leftLimit);
-                } else {
-                    line += "".padEnd(leftLimit);
-                }
-
-                if (i < outputLines.length && i < ansLines.length) {
-                    if (outputLines[i] === ansLines[i])
-                        line += chalk.bgGreen("  ");
-                    else
-                        line += chalk.bgRed("  ");
-                }
-                console.log(line);
-            }
-            console.log();
-        }
+        
+        Util.printTestResults(outputPath, ansPath, testId);
     }
 
     getNameForBinary(args: string[]): string {

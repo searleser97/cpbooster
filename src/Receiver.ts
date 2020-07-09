@@ -15,13 +15,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import express, { text } from "express";
+import express from "express";
 import * as fs from "fs";
 import * as Path from "path";
 import ProblemData from "./ProblemData";
 import Config from "./Config";
 import { exit } from "process";
-import { exec, spawnSync, spawn } from "child_process";
+import { spawn } from "child_process";
 import Util from "./Util";
 
 export default class Receiver {
