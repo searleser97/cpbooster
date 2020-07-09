@@ -85,8 +85,7 @@ Options:
 ## Future updates
 
 -   Add support for Java and Python
--   Add support for more terminals
--   Build Vim native plugin
+-   Add full support for more terminals
 
 ## License
 
