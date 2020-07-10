@@ -18,7 +18,7 @@
  */
 import Config from "./Config";
 import Receiver from "./Receiver";
-import yargs, { argv, option } from "yargs";
+import yargs, { argv } from "yargs";
 import ICLIOptions from "./ICLIOptions";
 import { exit } from "process";
 import TesterFactory from "./TesterFactory/TesterFactory";

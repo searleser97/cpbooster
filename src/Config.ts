@@ -18,6 +18,7 @@
 import * as fs from "fs";
 import * as Path from "path";
 import * as os from "os";
+import { exit } from "process";
 
 export default class Config {
     static readonly defaultConfigFilePath = Path.join(os.homedir(), "cpbooster-config.json");
@@ -51,6 +52,11 @@ export default class Config {
     }
 
     read(configFilePath: string = Config.defaultConfigFilePath) {
+        if (!fs.existsSync(configFilePath)) {
+            console.log("configuration file not found in:", configFilePath);
+            console.log("You can create one in your $HOME directory by running 'cpbooster new'")
+            exit(0);
+        }
         Object.assign(this, JSON.parse(fs.readFileSync(configFilePath, "utf8")));
     }
 }
