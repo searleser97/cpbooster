@@ -162,4 +162,17 @@ export default class Util {
             }
         }
     }
+
+    static normalizeName(name: string) {
+        name = Util.replaceAll(name, "'", "");
+        name = Util.replaceAll(name, "(", "");
+        name = Util.replaceAll(name, ")", "");
+        name = Util.replaceAll(name, ",", "");
+        name = Util.replaceAll(name, "*", "");
+        name = Util.replaceAll(name, "/", "");
+        name = Util.replaceAll(name, '"', "");
+        name = Util.replaceAll(name, " ", "");
+        name = Util.replaceAll(name, "#", "");
+        return name;
+    }
 }

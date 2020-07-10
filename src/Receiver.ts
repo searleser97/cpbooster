@@ -23,6 +23,7 @@ import Config from "./Config";
 import { exit } from "process";
 import { spawn } from "child_process";
 import Util from "./Util";
+import SourceFileCreator from "./SourceFileCreator";
 
 export default class Receiver {
     app = express();
@@ -38,48 +39,15 @@ export default class Receiver {
             response.end("OK");
 
             let problemData: ProblemData = request.body;
-            problemData.name = Util.replaceAll(problemData.name, "'", "");
-            problemData.name = Util.replaceAll(problemData.name, "(", "");
-            problemData.name = Util.replaceAll(problemData.name, ")", "");
-            problemData.name = Util.replaceAll(problemData.name, ",", "");
-            problemData.name = Util.replaceAll(problemData.name, "*", "");
-            problemData.name = Util.replaceAll(problemData.name, "/", "");
-            problemData.name = Util.replaceAll(problemData.name, '"', "");
-            problemData.name = Util.replaceAll(problemData.name, " ", "");
-            problemData.name = Util.replaceAll(problemData.name, "#", "");
-
-            problemData.group = Util.replaceAll(problemData.group, "'", "");
-            problemData.group = Util.replaceAll(problemData.group, "(", "");
-            problemData.group = Util.replaceAll(problemData.group, ")", "");
-            problemData.group = Util.replaceAll(problemData.group, ",", "");
-            problemData.group = Util.replaceAll(problemData.group, "*", "");
-            problemData.group = Util.replaceAll(problemData.group, "/", "");
-            problemData.group = Util.replaceAll(problemData.group, '"', "");
-            problemData.group = Util.replaceAll(problemData.group, " ", "");
-            problemData.group = Util.replaceAll(problemData.group, "#", "");
+            problemData.name = Util.normalizeName(problemData.name);
+            problemData.group = Util.normalizeName(problemData.group);
 
             this.contestName = problemData.group;
             console.info("received:", problemData.name);
             let contestPath = Path.join(config.contestsDirectory, problemData.group);
             if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
             let FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
-            if (config.preferredLang == "cpp") {
-                let cppFilePath = `${FilesPathNoExtension}.cpp`;
-                if (!fs.existsSync(cppFilePath)) {
-                    let cppTemplate = "";
-                    if (config.cppTemplatePath)
-                        cppTemplate = fs.readFileSync(config.cppTemplatePath).toString();
-                    fs.writeFileSync(cppFilePath, cppTemplate);
-                }
-            } else if (config.preferredLang == "py") {
-                let pyFilePath = `${FilesPathNoExtension}.py`;
-                if (!fs.existsSync(pyFilePath)) {
-                    let pyTemplate = "";
-                    if (config.pyTemplatePath)
-                        pyTemplate = fs.readFileSync(config.pyTemplatePath).toString();
-                    fs.writeFileSync(pyFilePath, pyTemplate);
-                }
-            }
+            SourceFileCreator.create(`${FilesPathNoExtension}.${config.preferredLang}`, config);
             problemData.tests.forEach((testcase, idx) => {
                 fs.writeFileSync(`${FilesPathNoExtension}.in${idx + 1}`, testcase.input);
                 fs.writeFileSync(`${FilesPathNoExtension}.ans${idx + 1}`, testcase.output);
