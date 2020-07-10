@@ -2,6 +2,7 @@ import * as fs from "fs";
 import chalk from "chalk";
 import * as Path from "path";
 import { exit } from "process";
+import { spawnSync, spawn } from "child_process";
 
 export default class Util {
     static replaceAll(text: string, oldString: string, newString: string): string {
@@ -104,5 +105,61 @@ export default class Util {
             testcasesIds.push(num);
         });
         return testcasesIds;
+    }
+
+    static runTest(command: string, filePath: string, testId: number, executionArgs: string[]) {
+        let outputPath = Util.getOutputPath(filePath, testId);
+        let execution = spawnSync(command, executionArgs, { shell: true });
+        if (execution.stdout) {
+            let executionStdout = Buffer.from(execution.stdout).toString("utf8");
+            if (executionStdout !== "") console.log(executionStdout);
+        }
+        if (execution.stderr) {
+            let executionStderr = Buffer.from(execution.stderr).toString("utf8");
+            if (executionStderr !== "") {
+                console.log(
+                    `Test Case ${testId}:`,
+                    chalk.bgBlue(chalk.whiteBright(" R T E ")),
+                    "\n"
+                );
+                console.log(executionStderr);
+                return;
+            }
+        }
+        let ansPath = Util.getAnswerPath(filePath, testId);
+        Util.printTestResults(outputPath, ansPath, testId);
+    }
+
+    static runDebugWithUserInput(command: string, args: string[] = []) {
+        console.log("Running with debugging flags\n\nEnter your input manually");
+
+        let execution = spawn(command, args, { stdio: "inherit" });
+        console.log();
+        execution.stdout?.on("data", (data) => {
+            console.log(data);
+        });
+    }
+
+    static runDebug(command: string, filePath: string, testId: number, executionArgs: string[]) {
+        console.log("Running Test Case", testId, "with debugging flags\n");
+
+        let execution = spawnSync(command, executionArgs, { shell: true });
+        if (execution.stdout) {
+            let executionStdout = Buffer.from(execution.stdout).toString("utf8");
+            if (executionStdout !== "") console.log(executionStdout);
+        }
+
+        if (execution.stderr) {
+            let executionStderr = Buffer.from(execution.stderr).toString("utf8");
+            if (executionStderr !== "") {
+                executionStderr = Util.replaceAll(
+                    executionStderr,
+                    "runtime error",
+                    chalk.blueBright("runtime error")
+                );
+                console.log(executionStderr);
+                return;
+            }
+        }
     }
 }
