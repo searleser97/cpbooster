@@ -18,10 +18,10 @@
  */
 import Config from "./Config";
 import Receiver from "./Receiver";
-import yargs, { argv } from "yargs";
+import yargs, { argv, option } from "yargs";
 import ICLIOptions from "./ICLIOptions";
-import Tester from "./Tester";
 import { exit } from "process";
+import TesterFactory from "./TesterFactory/TesterFactory";
 
 yargs
     .usage("Usage: $0 <command> [options]")
@@ -93,8 +93,18 @@ if (argv._[0] === "serve") {
         console.log("Missing program file in arguments");
         exit(0);
     }
-    let tester = new Tester(config, argv._[1]);
-    tester.run(!options.noCompile, options.debug, options.testid);
+    let tester = TesterFactory.getTester(config, argv._[1]);
+    if (options.debug) {
+        if (options.testid)
+            tester.debugOne(options.testid, !options.noCompile);
+        else
+            tester.debugWithUserInput(!options.noCompile);
+    } else {
+        if (options.testid)
+            tester.testOne(options.testid, !options.noCompile);
+        else
+            tester.testAll(!options.noCompile);
+    } 
 } else if (argv._[0] === "new") {
     if (options.configPath) {
         config.write(options.configPath);

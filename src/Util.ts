@@ -1,20 +1,22 @@
-import * as fs  from "fs";
+import * as fs from "fs";
 import chalk from "chalk";
+import * as Path from "path";
+import { exit } from "process";
 
 export default class Util {
     static replaceAll(text: string, oldString: string, newString: string): string {
         return text.split(oldString).join(newString);
     }
 
-    static printTestResults(outputFilePath: string, answerFilePath: string, testId: number | string): void {
-       if (!fs.existsSync(outputFilePath)) {
-           console.log("output file not found in", outputFilePath);
-           return;
-       }
-       if (!fs.existsSync(answerFilePath)) {
-           console.log("answer file not found in", answerFilePath);
-           return;
-       }
+    static printTestResults(outputFilePath: string, answerFilePath: string, testId: number): void {
+        if (!fs.existsSync(outputFilePath)) {
+            console.log("output file not found in", outputFilePath);
+            return;
+        }
+        if (!fs.existsSync(answerFilePath)) {
+            console.log("answer file not found in", answerFilePath);
+            return;
+        }
         let ans = fs.readFileSync(answerFilePath).toString();
         let output = fs.readFileSync(outputFilePath).toString();
 
@@ -22,7 +24,8 @@ export default class Util {
             console.log(`Test Case ${testId}:`, chalk.bgGreen(chalk.whiteBright(" A C ")), "\n");
             if (ans !== output)
                 console.log(chalk.yellow("Check leading and trailing blank spaces") + "\n");
-            console.log(chalk.bgGreen(chalk.whiteBright("Your Output:") + "\n" + output));
+            console.log(chalk.bgGreen(chalk.whiteBright("Your Output:")) + "\n");
+            console.log(output);
         } else {
             console.log(`Test Case ${testId}:`, chalk.bgRed(chalk.whiteBright(" W A ")), "\n");
             let outputLines = output.split("\n");
@@ -51,14 +54,55 @@ export default class Util {
                 }
 
                 if (i < outputLines.length && i < ansLines.length) {
-                    if (outputLines[i] === ansLines[i])
-                        line += chalk.bgGreen("  ");
-                    else
-                        line += chalk.bgRed("  ");
+                    if (outputLines[i] === ansLines[i]) line += chalk.bgGreen("  ");
+                    else line += chalk.bgRed("  ");
                 }
                 console.log(line);
             }
             console.log();
         }
     }
-};
+
+    static getInputPath(filePath: string, testId: number) {
+        let filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
+        return `${filePathNoExtension}.in${testId}`;
+    }
+
+    static getOutputPath(filePath: string, testId: number) {
+        let filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
+        return `${filePathNoExtension}.out${testId}`;
+    }
+
+    static getAnswerPath(filePath: string, testId: number) {
+        let filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
+        return `${filePathNoExtension}.ans${testId}`;
+    }
+
+    static getExecutionArgsForTest(inputPath: string, outputPath: string) {
+        return ["<", `"${inputPath}"`, ">", `"${outputPath}"`];
+    }
+
+    static getExecutionArgsForDebug(inputPath: string) {
+        return ["<", `"${inputPath}"`];
+    }
+
+    static getTestCasesIdsForFile(filePath: string) {
+        let parsedPath = Path.parse(filePath);
+        let directoryPath = parsedPath.dir;
+        if (directoryPath == "") directoryPath = ".";
+        let fileNameNoExtension = parsedPath.name;
+        var testcasesFiles = fs
+            .readdirSync(directoryPath)
+            .filter((fileName) => fileName.startsWith(`${fileNameNoExtension}.in`));
+        if (testcasesFiles.length === 0) {
+            console.log("No testcases available for this file:", filePath);
+            exit(0);
+        }
+        let testcasesIds: number[] = [];
+        testcasesFiles.forEach((filename) => {
+            let num = parseInt(filename.replace(`${fileNameNoExtension}.in`, ""));
+            testcasesIds.push(num);
+        });
+        return testcasesIds;
+    }
+}
