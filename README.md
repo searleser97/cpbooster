@@ -14,13 +14,15 @@
 Usage: cpbooster <command> [options]
 
 Commands:
-  cpbooster serve  Run cpbooster as server for competitive companion plugin
-  cpbooster test   By default this command runs your <program> against all
-                   available test cases, run 'cpbooster test --help' to get
-                   information about more options
-  cpbooster new    Creates new configuration file with default values in $HOME
-                   or, if --configPath option is set it writes in the specified
-                   path
+  cpbooster serve   Run cpbooster as server for competitive companion plugin
+  cpbooster test    By default this command runs your <program> against all
+                    available test cases, run 'cpbooster test --help' to get
+                    information about more options
+  cpbooster create  Creates new source code file with the corresponding template
+                    loaded
+  cpbooster new     Creates new configuration file with default values in $HOME
+                    or, if --configPath option is set it writes in the specified
+                    path
 
 Options:
   --version, -v     Show version number                                [boolean]
