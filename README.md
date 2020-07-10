@@ -87,7 +87,6 @@ Options:
 
 -   Add support for Java
 -   Add full support for more terminals
--   Add support for custom test case
 -   Add configuration assistant
 -   Add creation of source file on the fly with template loaded
 
