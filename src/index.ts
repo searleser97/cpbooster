@@ -23,9 +23,14 @@ import ICLIOptions from "./ICLIOptions";
 import { exit } from "process";
 import TesterFactory from "./TesterFactory/TesterFactory";
 import updateNotifier from "update-notifier";
+import SourceFileCreator from "./SourceFileCreator";
 
 const pkg = require("../package.json");
-updateNotifier({ pkg: pkg, shouldNotifyInNpmScript: true, updateCheckInterval: 1000 * 60 * 60 * 2 }).notify({
+updateNotifier({
+    pkg: pkg,
+    shouldNotifyInNpmScript: true,
+    updateCheckInterval: 1000 * 60 * 60 * 2
+}).notify({
     isGlobal: true,
     defer: false
 });
@@ -64,6 +69,13 @@ yargs
                     description:
                         "Test with out compiling source (assumes there is a corresponding binary file already)"
                 });
+        }
+    )
+    .command(
+        "create",
+        "Creates new source code file with the corresponding template loaded",
+        (create_yargs) => {
+            create_yargs.usage("Usage $0 create <sourceCodePath>");
         }
     )
     .command(
@@ -112,6 +124,13 @@ if (argv._[0] === "serve") {
         if (options.testId) tester.testOne(options.testId, !options.noCompile);
         else tester.testAll(!options.noCompile);
     }
+} else if (argv._[0] === "create") {
+    if (argv._.length < 2) {
+        console.log("Missing file path in arguments");
+        exit(0);
+    }
+    SourceFileCreator.create(argv._[1], config);
+    console.log("Source file", argv._[1], "created.");
 } else if (argv._[0] === "new") {
     if (options.configPath) {
         config.write(options.configPath);

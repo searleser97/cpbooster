@@ -6,11 +6,10 @@ export default class SourceFileCreator {
     static create(filePath: string, config: Config) {
         let extension = Path.extname(filePath);
         let template = "";
-        if (extension == ".cpp") {
-            if (config.cppTemplatePath)
-                template = fs.readFileSync(config.cppTemplatePath).toString();
-        } else if (extension == ".py") {
-            if (config.pyTemplatePath) template = fs.readFileSync(config.pyTemplatePath).toString();
+        if (extension == ".cpp" && config.cppTemplatePath) {
+            template = fs.readFileSync(config.cppTemplatePath).toString();
+        } else if (extension == ".py" && config.pyTemplatePath) {
+            template = fs.readFileSync(config.pyTemplatePath).toString();
         }
         if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, template);
     }
