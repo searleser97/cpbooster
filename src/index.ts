@@ -35,20 +35,21 @@ yargs
     })
     .command(
         "test",
-        "Run {program} against all available testcases or specific testcase if [--testid] option is set",
+        "By default this command runs your <program> against all available test cases, run 'cpbooster test --help' to get information about more options",
         (test_yargs) => {
             test_yargs
-                .usage("Usage: $0 test <filepath> [options]")
+                .usage("Usage: $0 test <sourceCodePath> [options]")
                 .option("debug", {
                     alias: "d",
                     type: "boolean",
                     description:
-                        'Use this flag if you want to run [--test] using the "Debug Command" specified in your configuration file.'
+                        'Run <program> using the "Debug Command" specified in the configuration file'
                 })
-                .option("testid", {
+                .option("testId", {
                     alias: "t",
                     type: "number",
-                    description: "Specifies which testcase to run"
+                    description:
+                        'Specifies which testcase to evaluate, or if --debug flag is set it runs <program> with your "Debug Command" using --testId as input'
                 })
                 .option("noCompile", {
                     alias: "nc",
@@ -60,7 +61,7 @@ yargs
     )
     .command(
         "new",
-        "Creates new configuration file with default values in /home/$USER or, if [--configPath] option is set it writes in the specified path",
+        "Creates new configuration file with default values in $HOME or, if --configPath option is set it writes in the specified path",
         (new_yargs) => {
             new_yargs.usage("Usage: $0 new [options]");
         }
@@ -72,8 +73,7 @@ yargs
         alias: "c",
         type: "string",
         description: "Path to read/write configuration file"
-    })
-    .argv;
+    }).argv;
 
 let config = new Config();
 let options = <ICLIOptions>argv;
@@ -95,16 +95,12 @@ if (argv._[0] === "serve") {
     }
     let tester = TesterFactory.getTester(config, argv._[1]);
     if (options.debug) {
-        if (options.testid)
-            tester.debugOne(options.testid, !options.noCompile);
-        else
-            tester.debugWithUserInput(!options.noCompile);
+        if (options.testId) tester.debugOne(options.testId, !options.noCompile);
+        else tester.debugWithUserInput(!options.noCompile);
     } else {
-        if (options.testid)
-            tester.testOne(options.testid, !options.noCompile);
-        else
-            tester.testAll(!options.noCompile);
-    } 
+        if (options.testId) tester.testOne(options.testId, !options.noCompile);
+        else tester.testAll(!options.noCompile);
+    }
 } else if (argv._[0] === "new") {
     if (options.configPath) {
         config.write(options.configPath);

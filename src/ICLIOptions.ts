@@ -19,7 +19,7 @@ export default interface ICLIOptions {
     configPath?: string;
     debug?: boolean;
     new?: boolean;
-    testid?: number;
+    testId?: number;
     noCompile?: boolean;
     port?: number;
 }

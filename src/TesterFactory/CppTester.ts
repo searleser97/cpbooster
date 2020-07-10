@@ -159,9 +159,10 @@ export default class CppTester implements ITester {
             exit(0);
         }
 
-        console.log("Running with debugging flags\n");
+        console.log("Running with debugging flags\n\nEnter your input manually");
 
         let execution = spawn(binaryFilePath, { stdio: 'inherit'});
+        console.log();
         execution.stdout?.on("data", (data) => {
             console.log(data);
         });
