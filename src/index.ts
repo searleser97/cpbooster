@@ -22,6 +22,13 @@ import yargs, { argv, option } from "yargs";
 import ICLIOptions from "./ICLIOptions";
 import { exit } from "process";
 import TesterFactory from "./TesterFactory/TesterFactory";
+import updateNotifier from "update-notifier";
+
+const pkg = require("../package.json");
+updateNotifier({ pkg: pkg, shouldNotifyInNpmScript: true, updateCheckInterval: 1000 * 60 * 60 * 2 }).notify({
+    isGlobal: true,
+    defer: false
+});
 
 yargs
     .usage("Usage: $0 <command> [options]")
