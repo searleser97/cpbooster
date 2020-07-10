@@ -84,6 +84,10 @@ if (options.configPath) {
 }
 
 if (argv._[0] === "serve") {
+    if (!config.preferredLang) {
+        console.log("Missing preferred language (preferredLang) key in configuration");
+        exit(0);
+    }
     if (options.port) {
         config.port = options.port;
     }

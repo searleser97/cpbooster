@@ -44,7 +44,7 @@ export default class Receiver {
             problemData.name = Util.replaceAll(problemData.name, ",", "");
             problemData.name = Util.replaceAll(problemData.name, "*", "");
             problemData.name = Util.replaceAll(problemData.name, "/", "");
-            problemData.name = Util.replaceAll(problemData.name, "\"", "");
+            problemData.name = Util.replaceAll(problemData.name, '"', "");
             problemData.name = Util.replaceAll(problemData.name, " ", "");
             problemData.name = Util.replaceAll(problemData.name, "#", "");
 
@@ -54,23 +54,31 @@ export default class Receiver {
             problemData.group = Util.replaceAll(problemData.group, ",", "");
             problemData.group = Util.replaceAll(problemData.group, "*", "");
             problemData.group = Util.replaceAll(problemData.group, "/", "");
-            problemData.group = Util.replaceAll(problemData.group, "\"", "");
+            problemData.group = Util.replaceAll(problemData.group, '"', "");
             problemData.group = Util.replaceAll(problemData.group, " ", "");
             problemData.group = Util.replaceAll(problemData.group, "#", "");
-
 
             this.contestName = problemData.group;
             console.info("received:", problemData.name);
             let contestPath = Path.join(config.contestsDirectory, problemData.group);
-            if (!fs.existsSync(contestPath))
-                fs.mkdirSync(contestPath, { recursive: true });
+            if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
             let FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
-            let cppFilePath = `${FilesPathNoExtension}.cpp`;
-            if (!fs.existsSync(cppFilePath)) {
-                let cppTemplate = "";
-                if (config.cppTemplatePath != "")
-                    cppTemplate = fs.readFileSync(config.cppTemplatePath).toString();
-                fs.writeFileSync(cppFilePath, cppTemplate);
+            if (config.preferredLang == "cpp") {
+                let cppFilePath = `${FilesPathNoExtension}.cpp`;
+                if (!fs.existsSync(cppFilePath)) {
+                    let cppTemplate = "";
+                    if (config.cppTemplatePath)
+                        cppTemplate = fs.readFileSync(config.cppTemplatePath).toString();
+                    fs.writeFileSync(cppFilePath, cppTemplate);
+                }
+            } else if (config.preferredLang == "py") {
+                let pyFilePath = `${FilesPathNoExtension}.py`;
+                if (!fs.existsSync(pyFilePath)) {
+                    let pyTemplate = "";
+                    if (config.pyTemplatePath)
+                        pyTemplate = fs.readFileSync(config.pyTemplatePath).toString();
+                    fs.writeFileSync(pyFilePath, pyTemplate);
+                }
             }
             problemData.tests.forEach((testcase, idx) => {
                 fs.writeFileSync(`${FilesPathNoExtension}.in${idx + 1}`, testcase.input);
