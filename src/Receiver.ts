@@ -46,6 +46,7 @@ export default class Receiver {
             problemData.name = Util.replaceAll(problemData.name, "/", "");
             problemData.name = Util.replaceAll(problemData.name, "\"", "");
             problemData.name = Util.replaceAll(problemData.name, " ", "");
+            problemData.name = Util.replaceAll(problemData.name, "#", "");
 
             problemData.group = Util.replaceAll(problemData.group, "'", "");
             problemData.group = Util.replaceAll(problemData.group, "(", "");
@@ -55,6 +56,7 @@ export default class Receiver {
             problemData.group = Util.replaceAll(problemData.group, "/", "");
             problemData.group = Util.replaceAll(problemData.group, "\"", "");
             problemData.group = Util.replaceAll(problemData.group, " ", "");
+            problemData.group = Util.replaceAll(problemData.group, "#", "");
 
 
             this.contestName = problemData.group;

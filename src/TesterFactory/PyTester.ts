@@ -17,7 +17,7 @@ export default class PyTester implements ITester {
             outputPath
         );
         executionArgs.unshift(this.filePath);
-        Util.runTest(this.config.pyRunCommand, this.filePath, testId, executionArgs);
+        Util.runTest(this.config.pyRunCommand.split(" ")[0], this.filePath, testId, executionArgs);
     }
 
     testAll(compile: boolean): void {
@@ -30,10 +30,10 @@ export default class PyTester implements ITester {
     debugOne(testId: number, compile: boolean): void {
         let executionArgs = Util.getExecutionArgsForDebug(Util.getInputPath(this.filePath, testId));
         executionArgs.unshift(this.filePath);
-        Util.runDebug(this.config.pyRunCommand, this.filePath, testId, executionArgs);
+        Util.runDebug(this.config.pyRunCommand.split(" ")[0], this.filePath, testId, executionArgs);
     }
 
     debugWithUserInput(compile: boolean): void {
-        Util.runDebugWithUserInput(this.config.pyRunCommand, [this.filePath]);
+        Util.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
     }
 }
