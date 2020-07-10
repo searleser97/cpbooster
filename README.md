@@ -91,7 +91,11 @@ Options:
 -   Add support for Java
 -   Add full support for more terminals
 -   Add configuration assistant
--   Add creation of source file on the fly with template loaded
+
+## Final Notes
+
+-   I am open to feature requests.
+-   Pull Requests are also welcome.
 
 ## License
 
