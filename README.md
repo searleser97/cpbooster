@@ -15,11 +15,12 @@ Usage: cpbooster <command> [options]
 
 Commands:
   cpbooster serve  Run cpbooster as server for competitive companion plugin
-  cpbooster test   Run {program} against all available testcases or specific
-                   testcase if [--testid] option is set
-  cpbooster new    Creates new configuration file with default values in
-                   /home/$USER or, if [--configPath] option is set, it writes
-                   in the specified path
+  cpbooster test   By default this command runs your <program> against all
+                   available test cases, run 'cpbooster test --help' to get
+                   information about more options
+  cpbooster new    Creates new configuration file with default values in $HOME
+                   or, if --configPath option is set it writes in the specified
+                   path
 
 Options:
   --version, -v     Show version number                                [boolean]
