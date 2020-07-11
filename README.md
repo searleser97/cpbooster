@@ -90,6 +90,7 @@ Options:
 
 ## Future updates
 
+-   Add TLE veredict
 -   Add support for Java
 -   Add full support for more terminals
 -   Add configuration assistant
