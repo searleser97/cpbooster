@@ -108,6 +108,7 @@ export default class Util {
     }
 
     static runTest(command: string, filePath: string, testId: number, executionArgs: string[]) {
+        console.log("\nEvaluating...\n");
         let outputPath = Util.getOutputPath(filePath, testId);
         let execution = spawnSync(command, executionArgs, { shell: true });
         if (execution.stdout) {
