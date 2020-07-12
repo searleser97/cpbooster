@@ -1,0 +1,17 @@
+# Set default behaviour to automatically normalize line endings.
+* text=auto
+
+*.json text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.md text eol=lf
+*.tex text eol=lf
+.* text eol=lf
+
+LICENSE text eol=lf
+
+*.pdf binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.png binary
