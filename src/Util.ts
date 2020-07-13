@@ -110,7 +110,15 @@ export default class Util {
     static runTest(command: string, filePath: string, testId: number, executionArgs: string[]) {
         console.log("\nEvaluating...\n");
         let outputPath = Util.getOutputPath(filePath, testId);
-        let execution = spawnSync(command, executionArgs, { shell: true });
+        let execution = spawnSync(command, executionArgs, { shell: true, timeout: 3000 });
+        if(execution.error?.message.includes("ETIMEDOUT")) {
+            console.log(
+                `Test Case ${testId}:`,
+                chalk.bgHex("#8d42f5")(chalk.whiteBright(" T L E ")),
+                "\n"
+            );
+            return;
+        }
         if (execution.stdout) {
             let executionStdout = Buffer.from(execution.stdout).toString("utf8");
             if (executionStdout !== "") console.log(executionStdout);
