@@ -24,6 +24,7 @@ import { exit } from "process";
 import { spawn } from "child_process";
 import Util from "./Util";
 import SourceFileCreator from "./SourceFileCreator";
+import { number } from "yargs";
 
 export default class Receiver {
     app = express();
@@ -47,7 +48,7 @@ export default class Receiver {
             let contestPath = Path.join(config.contestsDirectory, problemData.group);
             if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
             let FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
-            SourceFileCreator.create(`${FilesPathNoExtension}.${config.preferredLang}`, config);
+            SourceFileCreator.create(`${FilesPathNoExtension}.${config.preferredLang}`, config, problemData.timeLimit);
             problemData.tests.forEach((testcase, idx) => {
                 fs.writeFileSync(`${FilesPathNoExtension}.in${idx + 1}`, testcase.input);
                 fs.writeFileSync(`${FilesPathNoExtension}.ans${idx + 1}`, testcase.output);

@@ -176,4 +176,16 @@ export default class Util {
         name = Util.replaceAll(name, "#", "");
         return name;
     }
+
+    static getCommentString(extension: string) {
+        extension = Util.replaceAll(extension, ".", "");
+        let slashes = ["java", "cpp", "c"];
+        if (extension in slashes) {
+            return "//";
+        } else if (extension == "py") {
+            return "#";
+        } else {
+            return undefined;
+        }
+    }
 }

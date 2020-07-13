@@ -129,7 +129,7 @@ if (argv._[0] === "serve") {
         console.log("Missing file path in arguments");
         exit(0);
     }
-    SourceFileCreator.create(argv._[1], config);
+    SourceFileCreator.create(argv._[1], config, 3);
     console.log("Source file", argv._[1], "created.");
 } else if (argv._[0] === "new") {
     if (options.configPath) {
