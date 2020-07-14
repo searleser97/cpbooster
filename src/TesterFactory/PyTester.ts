@@ -27,9 +27,12 @@ export default class PyTester implements ITester {
     }
 
     debugOne(testId: number, compile: boolean): void {
-        let executionArgs = Util.getExecutionArgsForDebug(Util.getInputPath(this.filePath, testId));
-        executionArgs.unshift(this.filePath);
-        Util.runDebug(this.config.pyRunCommand.split(" ")[0], this.filePath, testId, executionArgs);
+        Util.runDebug(
+            this.config.pyRunCommand.split(" ")[0],
+            [this.filePath],
+            this.filePath,
+            testId
+        );
     }
 
     debugWithUserInput(compile: boolean): void {

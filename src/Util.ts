@@ -121,14 +121,14 @@ export default class Util {
 
         if (execution.status !== 0) {
             console.log(`Test Case ${testId}:`, chalk.bgBlue(chalk.whiteBright(" R T E ")), "\n");
-            if (execution.stdout) console.log(execution.stdout.toString());
-            if (execution.stderr) console.log(execution.stderr.toString());
+            if (execution.stdout.toString()) console.log(execution.stdout.toString());
+            if (execution.stderr.toString()) console.log(execution.stderr.toString());
             return;
         }
 
         let outputPath = Util.getOutputPath(filePath, testId);
         if (execution.stdout) {
-            fs.writeFileSync(outputPath, execution.stdout.toString("utf8"));
+            fs.writeFileSync(outputPath, execution.stdout.toString());
         }
         Util.printTestResults(outputPath, Util.getAnswerPath(filePath, testId), testId);
     }
@@ -138,26 +138,26 @@ export default class Util {
         spawnSync(command, args, { stdio: "inherit" });
     }
 
-    static runDebug(command: string, filePath: string, testId: number, executionArgs: string[]) {
+    static runDebug(execCommand: string, args: string[], filePath: string, testId: number) {
         console.log("Running Test Case", testId, "with debugging flags\n");
+        let execution = spawnSync(
+            execCommand,
+            [...args, "<", `"${Util.getInputPath(filePath, testId)}"`],
+            { shell: true }
+        );
 
-        let execution = spawnSync(command, executionArgs);
-        if (execution.stdout) {
-            let executionStdout = Buffer.from(execution.stdout).toString("utf8");
-            if (executionStdout !== "") console.log(executionStdout);
+        if (execution.stdout.toString()) {
+            console.log(execution.stdout.toString());
         }
 
-        if (execution.stderr) {
-            let executionStderr = Buffer.from(execution.stderr).toString("utf8");
-            if (executionStderr !== "") {
-                executionStderr = Util.replaceAll(
-                    executionStderr,
+        if (execution.stderr.toString()) {
+            console.log(
+                Util.replaceAll(
+                    execution.stderr.toString(),
                     "runtime error",
-                    chalk.blueBright("runtime error")
-                );
-                console.log(executionStderr);
-                return;
-            }
+                    chalk.red("runtime error")
+                )
+            );
         }
     }
 

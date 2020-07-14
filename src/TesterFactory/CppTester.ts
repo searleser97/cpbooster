@@ -101,8 +101,7 @@ export default class CppTester implements ITester {
             console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
             exit(0);
         }
-        let executionArgs = Util.getExecutionArgsForDebug(Util.getInputPath(this.filePath, testId));
-        Util.runDebug(binaryFilePath, this.filePath, testId, executionArgs);
+        Util.runDebug(binaryFilePath, [], this.filePath, testId);
     }
 
     debugWithUserInput(compile: boolean): void {
