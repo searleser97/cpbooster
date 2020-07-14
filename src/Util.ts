@@ -2,7 +2,7 @@ import * as fs from "fs";
 import chalk from "chalk";
 import * as Path from "path";
 import { exit } from "process";
-import { spawnSync, spawn } from "child_process";
+import { spawnSync, spawn, exec } from "child_process";
 
 export default class Util {
     static replaceAll(text: string, oldString: string, newString: string): string {
@@ -119,16 +119,17 @@ export default class Util {
             return;
         }
 
+        if (execution.status !== 0) {
+            console.log(`Test Case ${testId}:`, chalk.bgBlue(chalk.whiteBright(" R T E ")), "\n");
+            if (execution.stdout) console.log(execution.stdout.toString());
+            if (execution.stderr) console.log(execution.stderr.toString());
+            return;
+        }
+
         let outputPath = Util.getOutputPath(filePath, testId);
         if (execution.stdout) {
             fs.writeFileSync(outputPath, execution.stdout.toString("utf8"));
         }
-
-        if (execution.status !== 0) {
-            console.log(`Test Case ${testId}:`, chalk.bgBlue(chalk.whiteBright(" R T E ")), "\n");
-            return;
-        }
-
         Util.printTestResults(outputPath, Util.getAnswerPath(filePath, testId), testId);
     }
 
@@ -140,7 +141,7 @@ export default class Util {
     static runDebug(command: string, filePath: string, testId: number, executionArgs: string[]) {
         console.log("Running Test Case", testId, "with debugging flags\n");
 
-        let execution = spawnSync(command, executionArgs, { shell: true });
+        let execution = spawnSync(command, executionArgs);
         if (execution.stdout) {
             let executionStdout = Buffer.from(execution.stdout).toString("utf8");
             if (executionStdout !== "") console.log(executionStdout);
@@ -152,7 +153,7 @@ export default class Util {
                 executionStderr = Util.replaceAll(
                     executionStderr,
                     "runtime error",
-                    chalk.red("runtime error")
+                    chalk.blueBright("runtime error")
                 );
                 console.log(executionStderr);
                 return;
