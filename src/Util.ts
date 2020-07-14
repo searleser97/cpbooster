@@ -107,7 +107,7 @@ export default class Util {
         console.log("\nEvaluating...\n");
         let execution = spawnSync(execCommand, args, {
             input: fs.readFileSync(Util.getInputPath(filePath, testId)),
-            timeout: 3000
+            timeout: 4000
         });
 
         if (execution.error?.message.includes("ETIMEDOUT")) {
