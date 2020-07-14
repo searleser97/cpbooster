@@ -11,13 +11,12 @@ export default class PyTester implements ITester {
     }
 
     testOne(testId: number, compile: boolean): void {
-        let outputPath = Util.getOutputPath(this.filePath, testId);
-        let executionArgs = Util.getExecutionArgsForTest(
-            Util.getInputPath(this.filePath, testId),
-            outputPath
+        Util.runTest(
+            this.config.pyRunCommand.split(" ")[0],
+            [this.filePath],
+            this.filePath,
+            testId
         );
-        executionArgs.unshift(this.filePath);
-        Util.runTest(this.config.pyRunCommand.split(" ")[0], this.filePath, testId, executionArgs);
     }
 
     testAll(compile: boolean): void {

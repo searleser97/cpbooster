@@ -79,10 +79,6 @@ export default class Util {
         return `${filePathNoExtension}.ans${testId}`;
     }
 
-    static getExecutionArgsForTest(inputPath: string, outputPath: string) {
-        return ["<", `"${inputPath}"`, ">", `"${outputPath}"`];
-    }
-
     static getExecutionArgsForDebug(inputPath: string) {
         return ["<", `"${inputPath}"`];
     }
@@ -107,11 +103,14 @@ export default class Util {
         return testcasesIds;
     }
 
-    static runTest(command: string, filePath: string, testId: number, executionArgs: string[]) {
+    static runTest(execCommand: string, args: string[], filePath: string, testId: number) {
         console.log("\nEvaluating...\n");
-        let outputPath = Util.getOutputPath(filePath, testId);
-        let execution = spawnSync(command, executionArgs, { shell: true, timeout: 3000 });
-        if(execution.error?.message.includes("ETIMEDOUT")) {
+        let execution = spawnSync(execCommand, args, {
+            input: fs.readFileSync(Util.getInputPath(filePath, testId)),
+            timeout: 3000
+        });
+
+        if (execution.error?.message.includes("ETIMEDOUT")) {
             console.log(
                 `Test Case ${testId}:`,
                 chalk.bgHex("#8d42f5")(chalk.whiteBright(" T L E ")),
@@ -119,34 +118,23 @@ export default class Util {
             );
             return;
         }
+
+        let outputPath = Util.getOutputPath(filePath, testId);
         if (execution.stdout) {
-            let executionStdout = Buffer.from(execution.stdout).toString("utf8");
-            if (executionStdout !== "") console.log(executionStdout);
+            fs.writeFileSync(outputPath, execution.stdout.toString("utf8"));
         }
-        if (execution.stderr) {
-            let executionStderr = Buffer.from(execution.stderr).toString("utf8");
-            if (executionStderr !== "") {
-                console.log(
-                    `Test Case ${testId}:`,
-                    chalk.bgBlue(chalk.whiteBright(" R T E ")),
-                    "\n"
-                );
-                console.log(executionStderr);
-                return;
-            }
+
+        if (execution.status !== 0) {
+            console.log(`Test Case ${testId}:`, chalk.bgBlue(chalk.whiteBright(" R T E ")), "\n");
+            return;
         }
-        let ansPath = Util.getAnswerPath(filePath, testId);
-        Util.printTestResults(outputPath, ansPath, testId);
+
+        Util.printTestResults(outputPath, Util.getAnswerPath(filePath, testId), testId);
     }
 
     static runDebugWithUserInput(command: string, args: string[] = []) {
-        console.log("Running with debugging flags\n\nEnter your input manually");
-
-        let execution = spawn(command, args, { stdio: "inherit" });
-        console.log();
-        execution.stdout?.on("data", (data) => {
-            console.log(data);
-        });
+        console.log("Running with debugging flags\n\nEnter your input manually\n");
+        spawnSync(command, args, { stdio: "inherit" });
     }
 
     static runDebug(command: string, filePath: string, testId: number, executionArgs: string[]) {
@@ -164,7 +152,7 @@ export default class Util {
                 executionStderr = Util.replaceAll(
                     executionStderr,
                     "runtime error",
-                    chalk.blueBright("runtime error")
+                    chalk.red("runtime error")
                 );
                 console.log(executionStderr);
                 return;
@@ -182,6 +170,8 @@ export default class Util {
         name = Util.replaceAll(name, '"', "");
         name = Util.replaceAll(name, " ", "");
         name = Util.replaceAll(name, "#", "");
+        name = Util.replaceAll(name, "[", "");
+        name = Util.replaceAll(name, "]", "");
         return name;
     }
 
