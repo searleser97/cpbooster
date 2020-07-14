@@ -179,7 +179,7 @@ export default class Util {
     static getCommentString(extension: string) {
         extension = Util.replaceAll(extension, ".", "");
         let slashes = ["java", "cpp", "c"];
-        if (extension in slashes) {
+        if (slashes.includes(extension)) {
             return "//";
         } else if (extension == "py") {
             return "#";

@@ -6,7 +6,7 @@ import Util from "./Util";
 export default class SourceFileCreator {
     static create(filePath: string, config: Config, timeLimitInSeconds: number) {
         let extension = Path.extname(filePath);
-        let template = `${Util.getCommentString(extension)} time-limit: ${timeLimitInSeconds}`;
+        let template = `${Util.getCommentString(extension)} time-limit: ${timeLimitInSeconds}\n`;
         if (extension == ".cpp" && config.cppTemplatePath) {
             template += fs.readFileSync(config.cppTemplatePath).toString();
         } else if (extension == ".py" && config.pyTemplatePath) {
