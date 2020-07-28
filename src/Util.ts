@@ -126,7 +126,7 @@ export default class Util {
         console.log("\nEvaluating...\n");
         let execution = spawnSync(execCommand, args, {
             input: fs.readFileSync(Util.getInputPath(filePath, testId)),
-            timeout: 4000
+            timeout: Util.extractTimeLimit(filePath)
         });
 
         if (execution.error?.message.includes("ETIMEDOUT")) {
@@ -218,5 +218,9 @@ export default class Util {
         });
         await once(rl, "close");
         return lines;
+    }
+
+    static extractTimeLimit(filePath: string): number {
+        return 3000 + 500;
     }
 }
