@@ -24,6 +24,7 @@ import { exit } from "process";
 import TesterFactory from "./TesterFactory/TesterFactory";
 import updateNotifier from "update-notifier";
 import SourceFileCreator from "./SourceFileCreator";
+import TestCaseCreator from "./TestCaseCreator";
 
 const pkg = require("../package.json");
 updateNotifier({
@@ -68,6 +69,11 @@ yargs
                     type: "boolean",
                     description:
                         "Test with out compiling source (assumes there is a corresponding binary file already)"
+                })
+                .option("add", {
+                    alias: "a",
+                    type: "boolean",
+                    description: "Adds new test case for <program>"
                 });
         }
     )
@@ -94,49 +100,58 @@ yargs
         description: "Path to read/write configuration file"
     }).argv;
 
-let config = new Config();
-let options = <ICLIOptions>argv;
-if (options.configPath) {
-    config.read(options.configPath);
-} else {
-    config.read();
+async function main() {
+    let config = new Config();
+    let options = <ICLIOptions>argv;
+    if (options.configPath) {
+        config.read(options.configPath);
+    } else {
+        config.read();
+    }
+
+    if (argv._[0] === "serve") {
+        if (!config.preferredLang) {
+            console.log("Missing preferred language (preferredLang) key in configuration");
+            exit(0);
+        }
+        if (options.port) {
+            config.port = options.port;
+        }
+        new Receiver(config).run();
+    } else if (argv._[0] === "test") {
+        if (argv._.length < 2) {
+            console.log("Missing program file in arguments");
+            exit(0);
+        }
+
+        if (options.add) {
+            await TestCaseCreator.create(argv._[1]);
+        } else {
+            let tester = TesterFactory.getTester(config, argv._[1]);
+            if (options.debug) {
+                if (options.testId) tester.debugOne(options.testId, !options.noCompile);
+                else tester.debugWithUserInput(!options.noCompile);
+            } else {
+                if (options.testId) tester.testOne(options.testId, !options.noCompile);
+                else tester.testAll(!options.noCompile);
+            }
+        }
+    } else if (argv._[0] === "create") {
+        if (argv._.length < 2) {
+            console.log("Missing file path in arguments");
+            exit(0);
+        }
+        SourceFileCreator.create(argv._[1], config, 3);
+        console.log("Source file", argv._[1], "created.");
+    } else if (argv._[0] === "new") {
+        if (options.configPath) {
+            config.write(options.configPath);
+        } else {
+            config.write();
+        }
+    } else {
+        yargs.showHelp();
+    }
 }
 
-if (argv._[0] === "serve") {
-    if (!config.preferredLang) {
-        console.log("Missing preferred language (preferredLang) key in configuration");
-        exit(0);
-    }
-    if (options.port) {
-        config.port = options.port;
-    }
-    new Receiver(config).run();
-} else if (argv._[0] === "test") {
-    if (argv._.length < 2) {
-        console.log("Missing program file in arguments");
-        exit(0);
-    }
-    let tester = TesterFactory.getTester(config, argv._[1]);
-    if (options.debug) {
-        if (options.testId) tester.debugOne(options.testId, !options.noCompile);
-        else tester.debugWithUserInput(!options.noCompile);
-    } else {
-        if (options.testId) tester.testOne(options.testId, !options.noCompile);
-        else tester.testAll(!options.noCompile);
-    }
-} else if (argv._[0] === "create") {
-    if (argv._.length < 2) {
-        console.log("Missing file path in arguments");
-        exit(0);
-    }
-    SourceFileCreator.create(argv._[1], config, 3);
-    console.log("Source file", argv._[1], "created.");
-} else if (argv._[0] === "new") {
-    if (options.configPath) {
-        config.write(options.configPath);
-    } else {
-        config.write();
-    }
-} else {
-    yargs.showHelp();
-}
+main();

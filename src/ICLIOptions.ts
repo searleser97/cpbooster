@@ -22,4 +22,5 @@ export default interface ICLIOptions {
     testId?: number;
     noCompile?: boolean;
     port?: number;
+    add?: boolean;
 }

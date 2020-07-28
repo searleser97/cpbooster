@@ -21,6 +21,8 @@
     "start": "npm run build && node dist/index.js test -h",
     "start:dev": "nodemon",
     "build": "rimraf ./dist && tsc",
+    "install:Linux": "npm run build && sudo npm uninstall cpbooster -g && sudo npm install -g",
+    "install:Windows": "npm run build && npm uninstall cpbooster -g && npm install -g",
     "test": "echo \"no test specified\" "
   },
   "license": "AGPL-3.0-only",

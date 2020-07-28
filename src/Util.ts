@@ -20,6 +20,8 @@ import chalk from "chalk";
 import * as Path from "path";
 import { exit } from "process";
 import { spawnSync, spawn, exec } from "child_process";
+import { createInterface } from "readline";
+import { once } from "events";
 
 export default class Util {
     static replaceAll(text: string, oldString: string, newString: string): string {
@@ -203,5 +205,18 @@ export default class Util {
         } else {
             return undefined;
         }
+    }
+
+    static async readToEOF(): Promise<string> {
+        const rl = createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+        let lines = "";
+        rl.on("line", (line) => {
+            lines += line + "\n";
+        });
+        await once(rl, "close");
+        return lines;
     }
 }
