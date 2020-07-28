@@ -152,7 +152,7 @@ async function main() {
         }
         SourceFileCreator.create(argv._[1], config, 3000);
         console.log("Source file", argv._[1], "created.");
-    }     } else {
+    } else { 
         yargs.showHelp();
     }
 }
