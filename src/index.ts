@@ -37,9 +37,9 @@ updateNotifier({
 });
 
 yargs
-    .usage("Usage: $0 <command> [options]")
+    .usage("\nUsage: $0 <command> [options]")
     .command("serve", "Run cpbooster as server for competitive companion plugin", (serve_yargs) => {
-        serve_yargs.usage("Usage: $0 serve [options]").option("port", {
+        serve_yargs.usage("\nUsage: $0 serve [options]").option("port", {
             alias: "p",
             type: "number",
             description:
@@ -51,7 +51,7 @@ yargs
         "By default this command runs your <program> against all available test cases, run 'cpbooster test --help' to get information about more options",
         (test_yargs) => {
             test_yargs
-                .usage("Usage: $0 test <sourceCodePath> [options]")
+                .usage("\nUsage: $0 test <program> [options]\n(where <program> is the path to your source code)")
                 .option("debug", {
                     alias: "d",
                     type: "boolean",
@@ -81,14 +81,14 @@ yargs
         "create",
         "Creates new source code file with the corresponding template loaded",
         (create_yargs) => {
-            create_yargs.usage("Usage $0 create <sourceCodePath>");
+            create_yargs.usage("\nUsage $0 create <sourceCodePath>");
         }
     )
     .command(
         "new",
         "Creates new configuration file with default values in $HOME or, if --configPath option is set it writes in the specified path",
         (new_yargs) => {
-            new_yargs.usage("Usage: $0 new [options]");
+            new_yargs.usage("\nUsage: $0 new [options]");
         }
     )
     .help("help")
