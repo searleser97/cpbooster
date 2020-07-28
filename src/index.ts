@@ -103,6 +103,15 @@ yargs
 async function main() {
     let config = new Config();
     let options = <ICLIOptions>argv;
+    if (argv._[0] === "new") {
+        if (options.configPath) {
+            config.write(options.configPath);
+        } else {
+            config.write();
+        }
+        exit(0);
+    }
+
     if (options.configPath) {
         config.read(options.configPath);
     } else {
@@ -143,13 +152,7 @@ async function main() {
         }
         SourceFileCreator.create(argv._[1], config, 3000);
         console.log("Source file", argv._[1], "created.");
-    } else if (argv._[0] === "new") {
-        if (options.configPath) {
-            config.write(options.configPath);
-        } else {
-            config.write();
-        }
-    } else {
+    }     } else {
         yargs.showHelp();
     }
 }
