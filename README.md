@@ -90,8 +90,6 @@ Options:
 
 ## Future updates
 
--   Add TLE veredict
--   Add status AC/Total when running several testcases
 -   Add support for Java
 -   Add full support for more terminals
 -   Add configuration assistant
