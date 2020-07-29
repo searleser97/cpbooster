@@ -22,6 +22,8 @@ import { exit } from "process";
 import { spawnSync, spawn, exec } from "child_process";
 import { createInterface } from "readline";
 import { once } from "events";
+import ProblemData from "./ProblemData";
+import { request } from "http";
 
 export default class Util {
     static replaceAll(text: string, oldString: string, newString: string): string {
@@ -223,6 +225,16 @@ export default class Util {
     }
 
     static extractTimeLimit(filePath: string): number {
-        return 3000 + 500;
+        let text = fs.readFileSync(filePath).toString();
+        let match = /time-limit?.:?.[0-9]+/g.exec(text);
+        let time = 3000; // Default time
+        if (match) {
+            let i = match.index;
+            let mil = "";
+            while (! (text[i] >= '0' && text[i] <= '9')) i++;
+            while (text[i] >= '0' && text[i] <= '9') mil += text[i++];
+            time = parseInt(mil);
+        }
+        return time;
     }
 }
