@@ -24,7 +24,7 @@ import { exit } from "process";
 import { spawn } from "child_process";
 import Util from "./Util";
 import SourceFileCreator from "./SourceFileCreator";
-import { number } from "yargs";
+import * as os from "os";
 
 export default class Receiver {
     app = express();
@@ -69,7 +69,8 @@ export default class Receiver {
         let interval = setInterval(() => {
             if (!this.isActive) return;
             let elapsedTime = process.hrtime(this.lastRequestTime)[0];
-            if (elapsedTime >= 1) {
+            let tolerance = os.type() === "Windows_NT" || os.release().includes("Microsoft") ? 10 : 1;
+            if (elapsedTime >= tolerance) {
                 if (serverRef) serverRef.close();
                 clearInterval(interval);
                 let contestPath = Path.join(this.config.contestsDirectory, this.contestName);

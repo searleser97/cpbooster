@@ -18,24 +18,13 @@
 
 import * as fs from "fs";
 import Util from "./Util";
-import * as os from "os";
 
 export default class TestCaseCreator {
-
-    static showFinishMessage() {
-        console.log();
-        if (os.type() === "Windows_NT") {
-            console.log("Press ctrl+Z to finish your input");
-        } else {
-            console.log("Press ctrl+D to finish your input");
-        }
-        console.log();
-    }
 
     static async create(filePath: string) {
         let maxTestCaseId = Math.max(...Util.getTestCasesIdsForFile(filePath));
         let thisTCId = maxTestCaseId + 1;
-        this.showFinishMessage();
+        console.log("\nPress ctrl+D to finish your input\n");
         console.log("Test Case Input:\n");
         let input = await Util.readToEOF();
         console.log("\nTest Case Correct Output:\n");
