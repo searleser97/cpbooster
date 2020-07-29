@@ -18,6 +18,7 @@
 import ITester from "./ITester";
 import Config from "../Config";
 import Util from "../Util";
+import { Veredict } from "../Veredict";
 
 export default class PyTester implements ITester {
     config: Config;
@@ -27,8 +28,8 @@ export default class PyTester implements ITester {
         this.filePath = filePath;
     }
 
-    testOne(testId: number, compile: boolean): void {
-        Util.runTest(
+    testOne(testId: number, compile: boolean): Veredict {
+        return Util.runTest(
             this.config.pyRunCommand.split(" ")[0],
             [this.filePath],
             this.filePath,
@@ -38,9 +39,11 @@ export default class PyTester implements ITester {
 
     testAll(compile: boolean): void {
         let testcasesIds = Util.getTestCasesIdsForFile(this.filePath);
+        let acCnt = 0;
         for (let i = 0; i < testcasesIds.length; i++) {
-            this.testOne(testcasesIds[i], false);
+            acCnt += this.testOne(testcasesIds[i], false) === Veredict.AC ? 1 : 0;
         }
+        Util.printScore(acCnt, testcasesIds.length);
     }
 
     debugOne(testId: number, compile: boolean): void {

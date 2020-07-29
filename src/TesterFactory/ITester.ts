@@ -16,11 +16,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import Config from "../Config";
+import { Veredict } from "../Veredict";
 
 export default interface ITester {
     config: Config;
     filePath: string;
-    testOne(testId: number, compile: boolean): void;
+    testOne(testId: number, compile: boolean): Veredict;
     testAll(compile: boolean): void;
     debugOne(testId: number, compile: boolean): void;
     debugWithUserInput(compile: boolean): void;

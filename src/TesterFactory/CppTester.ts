@@ -23,6 +23,7 @@ import chalk from "chalk";
 import Util from "../Util";
 import { spawnSync } from "child_process";
 import { exit } from "process";
+import { Veredict } from "../Veredict";
 
 export default class CppTester implements ITester {
     config: Config;
@@ -87,7 +88,7 @@ export default class CppTester implements ITester {
         }
     }
 
-    testOne(testId: number, compile: boolean): void {
+    testOne(testId: number, compile: boolean): Veredict {
         let binaryFileName = this.getNameForBinary(false);
         if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(false);
         let binaryFilePath = `.${Path.sep}${binaryFileName}`;
@@ -97,15 +98,17 @@ export default class CppTester implements ITester {
             console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
             exit(0);
         }
-        Util.runTest(binaryFilePath, [], this.filePath, testId);
+        return Util.runTest(binaryFilePath, [], this.filePath, testId);
     }
 
     testAll(compile: boolean): void {
         if (compile) this.compile(false);
         let testcasesIds = Util.getTestCasesIdsForFile(this.filePath);
+        let acCnt = 0;
         for (let i = 0; i < testcasesIds.length; i++) {
-            this.testOne(testcasesIds[i], false);
+            acCnt += this.testOne(testcasesIds[i], false) === Veredict.AC ? 1 : 0;
         }
+        Util.printScore(acCnt, testcasesIds.length);
     }
 
     debugOne(testId: number, compile: boolean): void {

@@ -51,7 +51,9 @@ yargs
         "By default this command runs your <program> against all available test cases, run 'cpbooster test --help' to get information about more options",
         (test_yargs) => {
             test_yargs
-                .usage("\nUsage: $0 test <program> [options]\n(where <program> is the path to your source code)")
+                .usage(
+                    "\nUsage: $0 test <program> [options]\n(where <program> is the path to your source code)"
+                )
                 .option("debug", {
                     alias: "d",
                     type: "boolean",
@@ -103,6 +105,12 @@ yargs
 async function main() {
     let config = new Config();
     let options = <ICLIOptions>argv;
+
+    if (argv._.length === 0) {
+        yargs.showHelp();
+        exit(0);
+    }
+
     if (argv._[0] === "new") {
         if (options.configPath) {
             config.write(options.configPath);
@@ -152,7 +160,7 @@ async function main() {
         }
         SourceFileCreator.create(argv._[1], config, 3000);
         console.log("Source file", argv._[1], "created.");
-    } else { 
+    } else {
         yargs.showHelp();
     }
 }

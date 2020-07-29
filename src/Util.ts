@@ -22,20 +22,21 @@ import { exit } from "process";
 import { spawnSync, spawn, exec } from "child_process";
 import { createInterface } from "readline";
 import { once } from "events";
+import { Veredict } from "./Veredict";
 
 export default class Util {
     static replaceAll(text: string, oldString: string, newString: string): string {
         return text.split(oldString).join(newString);
     }
 
-    static printTestResults(outputFilePath: string, answerFilePath: string, testId: number): void {
+    static printTestResults(outputFilePath: string, answerFilePath: string, testId: number): Veredict {
         if (!fs.existsSync(outputFilePath)) {
             console.log("output file not found in", outputFilePath);
-            return;
+            return Veredict.RTE;
         }
         if (!fs.existsSync(answerFilePath)) {
             console.log("answer file not found in", answerFilePath);
-            return;
+            return Veredict.RTE;
         }
         let ans = fs.readFileSync(answerFilePath).toString();
         let output = fs.readFileSync(outputFilePath).toString();
@@ -46,6 +47,7 @@ export default class Util {
                 console.log(chalk.yellow("Check leading and trailing blank spaces") + "\n");
             console.log(chalk.bgGreen(chalk.whiteBright("Your Output:")) + "\n");
             console.log(output);
+            return Veredict.AC;
         } else {
             console.log(`Test Case ${testId}:`, chalk.bgRed(chalk.whiteBright(" W A ")), "\n");
             let outputLines = output.split("\n");
@@ -82,6 +84,7 @@ export default class Util {
                 console.log(line);
             }
             console.log();
+            return Veredict.WA;
         }
     }
 
@@ -124,7 +127,7 @@ export default class Util {
         return testcasesIds;
     }
 
-    static runTest(execCommand: string, args: string[], filePath: string, testId: number) {
+    static runTest(execCommand: string, args: string[], filePath: string, testId: number): Veredict {
         console.log("\nEvaluating...\n");
         let execution = spawnSync(execCommand, args, {
             input: fs.readFileSync(Util.getInputPath(filePath, testId)),
@@ -137,21 +140,21 @@ export default class Util {
                 chalk.bgHex("#8d42f5")(chalk.whiteBright(" T L E ")),
                 "\n"
             );
-            return;
+            return Veredict.TLE;
         }
 
         if (execution.status !== 0) {
             console.log(`Test Case ${testId}:`, chalk.bgBlue(chalk.whiteBright(" R T E ")), "\n");
             if (execution.stdout.toString()) console.log(execution.stdout.toString());
             if (execution.stderr.toString()) console.log(execution.stderr.toString());
-            return;
+            return Veredict.RTE;
         }
 
         let outputPath = Util.getOutputPath(filePath, testId);
         if (execution.stdout) {
             fs.writeFileSync(outputPath, execution.stdout.toString());
         }
-        Util.printTestResults(outputPath, Util.getAnswerPath(filePath, testId), testId);
+        return Util.printTestResults(outputPath, Util.getAnswerPath(filePath, testId), testId);
     }
 
     static runDebugWithUserInput(command: string, args: string[] = []) {
@@ -234,5 +237,24 @@ export default class Util {
             time = parseInt(mil);
         }
         return time;
+    }
+
+    static repeat(s: string, times: number) {
+        let ans = "";
+        for (let i = 0; i < times; i++) {
+            ans += s;
+        }
+        return ans;
+    }
+
+    static printScore(ac: number, total: number): void {
+        let plainmsg = `| ${ac.toString()} / ${total} AC |`;
+        let msg = `| ${ac.toString()} / ${total} ${chalk.greenBright("AC")} |`;
+        let summary = "Summary: ";
+        console.log();
+        console.log(Util.repeat(" ", summary.length) + Util.repeat("+", plainmsg.length));
+        console.log(summary + msg);
+        console.log(Util.repeat(" ", summary.length) + Util.repeat("+", plainmsg.length));
+        console.log();
     }
 }

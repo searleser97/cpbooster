@@ -48,6 +48,7 @@ export default class Config {
     write(configFilePath: string = Config.defaultConfigFilePath) {
         if (!fs.existsSync(configFilePath)) {
             fs.writeFileSync(configFilePath, JSON.stringify(this, null, 4));
+            console.log(`Your configuration file has been written in: ${configFilePath}`);
         }
     }
 
