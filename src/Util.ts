@@ -22,8 +22,6 @@ import { exit } from "process";
 import { spawnSync, spawn, exec } from "child_process";
 import { createInterface } from "readline";
 import { once } from "events";
-import ProblemData from "./ProblemData";
-import { request } from "http";
 
 export default class Util {
     static replaceAll(text: string, oldString: string, newString: string): string {
