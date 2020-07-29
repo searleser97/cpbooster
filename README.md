@@ -93,6 +93,7 @@ Options:
 -   Add support for Java
 -   Add full support for more terminals
 -   Add configuration assistant
+-   Fully support windows CMD.
 
 ## Final Notes
 
