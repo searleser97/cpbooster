@@ -232,8 +232,8 @@ export default class Util {
         if (match) {
             let i = match.index;
             let mil = "";
-            while (! (text[i] >= '0' && text[i] <= '9')) i++;
-            while (text[i] >= '0' && text[i] <= '9') mil += text[i++];
+            while (!(text[i] >= '0' && text[i] <= '9') && i < text.length) i++;
+            while (text[i] >= '0' && text[i] <= '9' && i < text.length) mil += text[i++];
             time = parseInt(mil);
         }
         return time;
