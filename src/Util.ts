@@ -227,7 +227,7 @@ export default class Util {
 
     static extractTimeLimit(filePath: string): number {
         let text = fs.readFileSync(filePath).toString();
-        let match = /time-limit?.:?.[0-9]+/g.exec(text);
+        let match = /time-limit\s*:\s*[0-9]+/g.exec(text);
         let time = 3000; // Default time
         if (match) {
             let i = match.index;
