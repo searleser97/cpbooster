@@ -116,7 +116,7 @@ export default class CppTester extends Tester {
                 compileStderr = compileStderr.split("error").join(chalk.redBright("error"));
                 compileStderr = compileStderr.split("warning").join(chalk.blueBright("warning"));
                 if (compileStderr.includes("error")) {
-                    console.log(chalk.bgYellow(chalk.whiteBright(" Compilation Error ")), "\n");
+                    Tester.printCompilationErrorMsg();
                 }
                 console.log(compileStderr);
                 if (compileStderr.includes("error")) exit(0);

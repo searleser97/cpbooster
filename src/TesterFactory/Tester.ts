@@ -240,11 +240,16 @@ export default abstract class Tester {
     static printScore(ac: number, total: number): void {
         let plainmsg = `| ${ac.toString()} / ${total} AC |`;
         let msg = `| ${ac.toString()} / ${total} ${chalk.greenBright("AC")} |`;
+        if (ac == total) msg += " 🎉🎉🎉";
         let summary = "Summary: ";
         console.log();
         console.log(Util.repeat(" ", summary.length) + Util.repeat("+", plainmsg.length));
         console.log(summary + msg);
         console.log(Util.repeat(" ", summary.length) + Util.repeat("+", plainmsg.length));
         console.log();
+    }
+
+    static printCompilationErrorMsg(): void {
+        console.log(chalk.bgYellow(chalk.whiteBright(" Compilation Error ")), "\n");
     }
 }
