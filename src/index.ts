@@ -25,8 +25,6 @@ import TesterFactory from "./TesterFactory/TesterFactory";
 import updateNotifier from "update-notifier";
 import SourceFileCreator from "./SourceFileCreator";
 import Tester from "./TesterFactory/Tester";
-import CppTester from "./TesterFactory/CppTester";
-import PyTester from "./TesterFactory/PyTester";
 
 const pkg = require("../package.json");
 updateNotifier({
