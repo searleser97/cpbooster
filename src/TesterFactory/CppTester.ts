@@ -15,7 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import ITester from "./ITester";
 import Config from "../Config";
 import * as Path from "path";
 import * as fs from "fs";
@@ -24,14 +23,51 @@ import Util from "../Util";
 import { spawnSync } from "child_process";
 import { exit } from "process";
 import { Veredict } from "../Veredict";
+import Tester from "./Tester";
 
-export default class CppTester implements ITester {
-    config: Config;
-    filePath: string;
+export default class CppTester extends Tester {
 
     constructor(config: Config, filePath: string) {
-        this.config = config;
-        this.filePath = filePath;
+        super(config, filePath);
+    }
+
+    testOne(testId: number, compile: boolean): Veredict {
+        let binaryFileName = this.getNameForBinary(false);
+        if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(false);
+        let binaryFilePath = `.${Path.sep}${binaryFileName}`;
+        if (compile) {
+            this.compile(false);
+        } else if (!fs.existsSync(binaryFilePath)) {
+            console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
+            exit(0);
+        }
+        return this.runTest(binaryFilePath, [], testId);
+    }
+
+    debugOne(testId: number, compile: boolean): void {
+        let binaryFileName = this.getNameForBinary(true);
+        if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(true);
+        let binaryFilePath = `.${Path.sep}${binaryFileName}`;
+        if (compile) {
+            this.compile(true);
+        } else if (!fs.existsSync(binaryFilePath)) {
+            console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
+            exit(0);
+        }
+        this.runDebug(binaryFilePath, [], testId);
+    }
+
+    debugWithUserInput(compile: boolean): void {
+        let binaryFileName = this.getNameForBinary(true);
+        if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(true);
+        let binaryFilePath = `.${Path.sep}${binaryFileName}`;
+        if (compile) {
+            this.compile(true);
+        } else if (!fs.existsSync(binaryFilePath)) {
+            console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
+            exit(0);
+        }
+        this.runDebugWithUserInput(binaryFilePath);
     }
 
     getNameForBinary(debug: boolean): string | undefined {
@@ -88,52 +124,4 @@ export default class CppTester implements ITester {
         }
     }
 
-    testOne(testId: number, compile: boolean): Veredict {
-        let binaryFileName = this.getNameForBinary(false);
-        if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(false);
-        let binaryFilePath = `.${Path.sep}${binaryFileName}`;
-        if (compile) {
-            this.compile(false);
-        } else if (!fs.existsSync(binaryFilePath)) {
-            console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
-            exit(0);
-        }
-        return Util.runTest(binaryFilePath, [], this.filePath, testId);
-    }
-
-    testAll(compile: boolean): void {
-        if (compile) this.compile(false);
-        let testcasesIds = Util.getTestCasesIdsForFile(this.filePath);
-        let acCnt = 0;
-        for (let i = 0; i < testcasesIds.length; i++) {
-            acCnt += this.testOne(testcasesIds[i], false) === Veredict.AC ? 1 : 0;
-        }
-        Util.printScore(acCnt, testcasesIds.length);
-    }
-
-    debugOne(testId: number, compile: boolean): void {
-        let binaryFileName = this.getNameForBinary(true);
-        if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(true);
-        let binaryFilePath = `.${Path.sep}${binaryFileName}`;
-        if (compile) {
-            this.compile(true);
-        } else if (!fs.existsSync(binaryFilePath)) {
-            console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
-            exit(0);
-        }
-        Util.runDebug(binaryFilePath, [], this.filePath, testId);
-    }
-
-    debugWithUserInput(compile: boolean): void {
-        let binaryFileName = this.getNameForBinary(true);
-        if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(true);
-        let binaryFilePath = `.${Path.sep}${binaryFileName}`;
-        if (compile) {
-            this.compile(true);
-        } else if (!fs.existsSync(binaryFilePath)) {
-            console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
-            exit(0);
-        }
-        Util.runDebugWithUserInput(binaryFilePath);
-    }
 }

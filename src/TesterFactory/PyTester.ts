@@ -15,47 +15,33 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import ITester from "./ITester";
 import Config from "../Config";
-import Util from "../Util";
 import { Veredict } from "../Veredict";
+import Tester from "./Tester";
 
-export default class PyTester implements ITester {
-    config: Config;
-    filePath: string;
+export default class PyTester extends Tester {
+
     constructor(config: Config, filePath: string) {
-        this.config = config;
-        this.filePath = filePath;
+        super(config, filePath);
     }
 
     testOne(testId: number, compile: boolean): Veredict {
-        return Util.runTest(
+        return this.runTest(
             this.config.pyRunCommand.split(" ")[0],
             [this.filePath],
-            this.filePath,
             testId
         );
     }
 
-    testAll(compile: boolean): void {
-        let testcasesIds = Util.getTestCasesIdsForFile(this.filePath);
-        let acCnt = 0;
-        for (let i = 0; i < testcasesIds.length; i++) {
-            acCnt += this.testOne(testcasesIds[i], false) === Veredict.AC ? 1 : 0;
-        }
-        Util.printScore(acCnt, testcasesIds.length);
-    }
-
     debugOne(testId: number, compile: boolean): void {
-        Util.runDebug(
+        this.runDebug(
             this.config.pyRunCommand.split(" ")[0],
             [this.filePath],
-            this.filePath,
             testId
         );
     }
 
     debugWithUserInput(compile: boolean): void {
-        Util.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
+        this.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
     }
 }

@@ -24,7 +24,9 @@ import { exit } from "process";
 import TesterFactory from "./TesterFactory/TesterFactory";
 import updateNotifier from "update-notifier";
 import SourceFileCreator from "./SourceFileCreator";
-import TestCaseCreator from "./TestCaseCreator";
+import Tester from "./TesterFactory/Tester";
+import CppTester from "./TesterFactory/CppTester";
+import PyTester from "./TesterFactory/PyTester";
 
 const pkg = require("../package.json");
 updateNotifier({
@@ -140,9 +142,8 @@ async function main() {
             console.log("Missing program file in arguments");
             exit(0);
         }
-
         if (options.add) {
-            await TestCaseCreator.create(argv._[1]);
+            await Tester.createTestCase(argv._[1]);
         } else {
             let tester = TesterFactory.getTester(config, argv._[1]);
             if (options.debug) {

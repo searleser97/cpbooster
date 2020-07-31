@@ -19,9 +19,9 @@ import Config from "../Config";
 import CppTester from "./CppTester";
 import * as Path from "path";
 import { exit } from "process";
-import ITester from "./ITester";
 import * as fs from "fs";
 import PyTester from "./PyTester";
+import Tester from "./Tester";
 
 export default class TesterFactory {
 
@@ -29,7 +29,7 @@ export default class TesterFactory {
         return extension.toLowerCase();
     }
 
-    static getTester(config: Config, filePath: string) : ITester {
+    static getTester(config: Config, filePath: string) : Tester {
         if (!fs.existsSync(filePath)) {
             console.log("File not found:", filePath);
             exit(0);
