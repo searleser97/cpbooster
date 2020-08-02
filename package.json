@@ -14,7 +14,8 @@
   ],
   "main": "src/index.js",
   "bin": {
-    "cpbooster": "./dist/index.js"
+    "cpbooster": "./dist/index.js",
+    "cpb": "./dist/index.js"
   },
   "target": "node",
   "scripts": {
