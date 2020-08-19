@@ -45,6 +45,10 @@ export default abstract class Tester {
 
     testAll(compile: boolean): void {
         let testcasesIds = Tester.getTestCasesIds(this.filePath);
+        if (testcasesIds.length == 0) {
+            console.log("No testcases available for this file:", this.filePath);
+            exit(0);
+        }
         let acCnt = this.testOne(testcasesIds[0], compile) === Veredict.AC ? 1 : 0;
         for (let i = 1; i < testcasesIds.length; i++) {
             acCnt += this.testOne(testcasesIds[i], false) === Veredict.AC ? 1 : 0;
@@ -212,10 +216,6 @@ export default abstract class Tester {
         var testcasesFiles = fs
             .readdirSync(directoryPath)
             .filter((fileName) => fileName.startsWith(`${fileNameNoExtension}.in`));
-        if (testcasesFiles.length === 0) {
-            console.log("No testcases available for this file:", filePath);
-            exit(0);
-        }
         let testcasesIds: number[] = [];
         testcasesFiles.forEach((filename) => {
             let num = parseInt(filename.replace(`${fileNameNoExtension}.in`, ""));
@@ -225,7 +225,8 @@ export default abstract class Tester {
     }
 
     static async createTestCase(filePath: string) {
-        let maxTestCaseId = Math.max(...Tester.getTestCasesIds(filePath));
+        let testcasesIds = Tester.getTestCasesIds(filePath);
+        let maxTestCaseId = testcasesIds.length == 0 ? 0 : Math.max(...testcasesIds);
         let thisTCId = maxTestCaseId + 1;
         console.log("\nPress ctrl+D to finish your input\n");
         console.log("Test Case Input:\n");
