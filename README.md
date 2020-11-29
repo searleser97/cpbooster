@@ -31,12 +31,13 @@ Options:
 ```
 
 **Note:** Run `cpbooster <command> --help` to display help information about an specific command.
+**Note 2:** `cpb` is the short alias for `cpbooster`.
 
 ## Requirements
 
--   Node.js >= v12.18.2
--   [Competitive Companion plugin](https://github.com/jmerle/competitive-companion)
--   Configuration File `cpbooster-config.json` (described below)
+- Node.js >= v12.18.2
+- [Competitive Companion plugin](https://github.com/jmerle/competitive-companion)
+- Configuration File `cpbooster-config.json` (described below)
 
 ## Installation
 
@@ -61,50 +62,50 @@ Options:
 
 ```jsonc
 {
-    "contestsDirectory": "/home/user/Contests",
-    "cppTemplatePath": "/home/user/template.cpp",
-    "cppCompileCommand": "g++ -std=gnu++17",
-    "cppDebugCommand": "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
-    "pyTemplatePath": "/home/user/template.py",
-    "pyRunCommand": "python3",
-    "preferredLang": "cpp", // use extension name like: cpp, py, java
-    "port": 1327, // must match with competitive companion plugin port
-    "terminal": "konsole"
+  "contestsDirectory": "/home/user/Contests",
+  "cppTemplatePath": "/home/user/template.cpp",
+  "cppCompileCommand": "g++ -std=gnu++17",
+  "cppDebugCommand": "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
+  "pyTemplatePath": "/home/user/template.py",
+  "pyRunCommand": "python3",
+  "preferredLang": "cpp", // use extension name like: cpp, py, java
+  "port": 1327, // must match with competitive companion plugin port
+  "terminal": "konsole"
 }
 ```
 
 ## Features
 
--   Automatically clone sample testcases files into an specific directory
--   Create source files from a template
--   Test your code against sample testcases quickly.  
-    Supported results:
-    - AC (Accepted)
-    - WA (Wrong Answer)
-    - TLE (Time Limit Exceeded)
-    - RTE (Runtime Error)
-    - CE (Compilation Error)
--   Run code with your own debugging flags easily
+- Automatically clone sample testcases files into an specific directory
+- Create source files from a template
+- Test your code against sample testcases quickly.  
+  Supported results:
+  - AC (Accepted)
+  - WA (Wrong Answer)
+  - TLE (Time Limit Exceeded)
+  - RTE (Runtime Error)
+  - CE (Compilation Error)
+- Run code with your own debugging flags easily
 
 #### Support to open directory in terminal after `cpbooster serve`:
 
--   konsole
--   xterm
--   gnome-terminal
--   deepin-terminal
--   terminal (MacOS)
+- konsole
+- xterm
+- gnome-terminal
+- deepin-terminal
+- terminal (MacOS)
 
 ## Future updates
 
--   Add support for Java
--   Add full support for more terminals
--   Add configuration assistant
--   Fully support windows CMD.
+- Add support for Java
+- Add full support for more terminals
+- Add configuration assistant
+- Fully support windows CMD.
 
 ## Final Notes
 
--   I am open to feature requests.
--   Pull Requests are also welcome.
+- I am open to feature requests.
+- Pull Requests are also welcome.
 
 ## License
 
