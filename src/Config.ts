@@ -21,43 +21,43 @@ import * as os from "os";
 import { exit } from "process";
 
 export default class Config {
-    static readonly defaultConfigFilePath = Path.join(os.homedir(), "cpbooster-config.json");
+  static readonly defaultConfigFilePath = Path.join(os.homedir(), "cpbooster-config.json");
 
-    contestsDirectory: string;
-    cppTemplatePath: string;
-    cppCompileCommand: string;
-    cppDebugCommand: string;
-    pyTemplatePath: string;
-    pyRunCommand: string;
-    preferredLang: string;
-    port: number;
-    terminal: string;
+  contestsDirectory: string;
+  cppTemplatePath: string;
+  cppCompileCommand: string;
+  cppDebugCommand: string;
+  pyTemplatePath: string;
+  pyRunCommand: string;
+  preferredLang: string;
+  port: number;
+  terminal: string;
 
-    constructor() {
-        this.contestsDirectory = Path.join(os.homedir(), "Contests");
-        this.cppTemplatePath = "";
-        this.cppCompileCommand = "g++ -std=gnu++17 -O2";
-        this.cppDebugCommand = "g++ -std=gnu++17 -DDEBUG";
-        this.pyTemplatePath = "";
-        this.pyRunCommand = "python3";
-        this.preferredLang = "cpp";
-        this.port = 1327;
-        this.terminal = "konsole";
+  constructor() {
+    this.contestsDirectory = Path.join(os.homedir(), "Contests");
+    this.cppTemplatePath = "";
+    this.cppCompileCommand = "g++ -std=gnu++17 -O2";
+    this.cppDebugCommand = "g++ -std=gnu++17 -DDEBUG";
+    this.pyTemplatePath = "";
+    this.pyRunCommand = "python3";
+    this.preferredLang = "cpp";
+    this.port = 1327;
+    this.terminal = "konsole";
+  }
+
+  write(configFilePath: string = Config.defaultConfigFilePath) {
+    if (!fs.existsSync(configFilePath)) {
+      fs.writeFileSync(configFilePath, JSON.stringify(this, null, 4));
+      console.log(`Your configuration file has been written in: ${configFilePath}`);
     }
+  }
 
-    write(configFilePath: string = Config.defaultConfigFilePath) {
-        if (!fs.existsSync(configFilePath)) {
-            fs.writeFileSync(configFilePath, JSON.stringify(this, null, 4));
-            console.log(`Your configuration file has been written in: ${configFilePath}`);
-        }
+  read(configFilePath: string = Config.defaultConfigFilePath) {
+    if (!fs.existsSync(configFilePath)) {
+      console.log("configuration file not found in:", configFilePath);
+      console.log("You can create one in your $HOME directory by running 'cpbooster new'");
+      exit(0);
     }
-
-    read(configFilePath: string = Config.defaultConfigFilePath) {
-        if (!fs.existsSync(configFilePath)) {
-            console.log("configuration file not found in:", configFilePath);
-            console.log("You can create one in your $HOME directory by running 'cpbooster new'")
-            exit(0);
-        }
-        Object.assign(this, JSON.parse(fs.readFileSync(configFilePath, "utf8")));
-    }
+    Object.assign(this, JSON.parse(fs.readFileSync(configFilePath, "utf8")));
+  }
 }

@@ -1,5 +1,5 @@
 export function getTerminalCommand(terminalName: string, contestPath: string): string | null {
-  switch(terminalName) {
+  switch (terminalName) {
     case "konsole":
       return `konsole --workdir "${contestPath}"`;
     case "gnome-terminal":
@@ -11,6 +11,6 @@ export function getTerminalCommand(terminalName: string, contestPath: string): s
     case "terminal":
       return `open -a terminal "${contestPath}"`;
     default:
-      return null
+      return null;
   }
 }

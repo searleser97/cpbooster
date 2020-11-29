@@ -20,28 +20,19 @@ import { Veredict } from "../Veredict";
 import Tester from "./Tester";
 
 export default class PyTester extends Tester {
+  constructor(config: Config, filePath: string) {
+    super(config, filePath);
+  }
 
-    constructor(config: Config, filePath: string) {
-        super(config, filePath);
-    }
+  testOne(testId: number, compile: boolean): Veredict {
+    return this.runTest(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
+  }
 
-    testOne(testId: number, compile: boolean): Veredict {
-        return this.runTest(
-            this.config.pyRunCommand.split(" ")[0],
-            [this.filePath],
-            testId
-        );
-    }
+  debugOne(testId: number, compile: boolean): void {
+    this.runDebug(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
+  }
 
-    debugOne(testId: number, compile: boolean): void {
-        this.runDebug(
-            this.config.pyRunCommand.split(" ")[0],
-            [this.filePath],
-            testId
-        );
-    }
-
-    debugWithUserInput(compile: boolean): void {
-        this.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
-    }
+  debugWithUserInput(compile: boolean): void {
+    this.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
+  }
 }

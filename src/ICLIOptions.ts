@@ -16,11 +16,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 export default interface ICLIOptions {
-    configPath?: string;
-    debug?: boolean;
-    new?: boolean;
-    testId?: number;
-    noCompile?: boolean;
-    port?: number;
-    add?: boolean;
+  configPath?: string;
+  debug?: boolean;
+  new?: boolean;
+  testId?: number;
+  noCompile?: boolean;
+  port?: number;
+  add?: boolean;
 }

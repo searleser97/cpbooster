@@ -19,55 +19,55 @@ import { createInterface } from "readline";
 import { once } from "events";
 
 export default class Util {
-    static replaceAll(text: string, oldString: string, newString: string): string {
-        return text.split(oldString).join(newString);
-    }
+  static replaceAll(text: string, oldString: string, newString: string): string {
+    return text.split(oldString).join(newString);
+  }
 
-    static normalizeName(name: string) {
-        name = Util.replaceAll(name, "'", "");
-        name = Util.replaceAll(name, "(", "");
-        name = Util.replaceAll(name, ")", "");
-        name = Util.replaceAll(name, ",", "");
-        name = Util.replaceAll(name, "*", "");
-        name = Util.replaceAll(name, "/", "");
-        name = Util.replaceAll(name, '"', "");
-        name = Util.replaceAll(name, " ", "");
-        name = Util.replaceAll(name, "#", "");
-        name = Util.replaceAll(name, "[", "");
-        name = Util.replaceAll(name, "]", "");
-        return name;
-    }
+  static normalizeName(name: string) {
+    name = Util.replaceAll(name, "'", "");
+    name = Util.replaceAll(name, "(", "");
+    name = Util.replaceAll(name, ")", "");
+    name = Util.replaceAll(name, ",", "");
+    name = Util.replaceAll(name, "*", "");
+    name = Util.replaceAll(name, "/", "");
+    name = Util.replaceAll(name, '"', "");
+    name = Util.replaceAll(name, " ", "");
+    name = Util.replaceAll(name, "#", "");
+    name = Util.replaceAll(name, "[", "");
+    name = Util.replaceAll(name, "]", "");
+    return name;
+  }
 
-    static getCommentString(extension: string) {
-        extension = Util.replaceAll(extension, ".", "");
-        let slashes = ["java", "cpp", "c"];
-        if (slashes.includes(extension)) {
-            return "//";
-        } else if (extension == "py") {
-            return "#";
-        } else {
-            return undefined;
-        }
+  static getCommentString(extension: string) {
+    extension = Util.replaceAll(extension, ".", "");
+    let slashes = ["java", "cpp", "c"];
+    if (slashes.includes(extension)) {
+      return "//";
+    } else if (extension == "py") {
+      return "#";
+    } else {
+      return undefined;
     }
+  }
 
-    static async readToEOF(): Promise<string> {
-        const rl = createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-        let lines = "";
-        rl.on("line", (line) => {
-            lines += line + "\n";
-        });
-        await once(rl, "close");
-        return lines;
-    }
+  static async readToEOF(): Promise<string> {
+    const rl = createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+    let lines = "";
+    rl.on("line", (line) => {
+      lines += line + "\n";
+    });
+    await once(rl, "close");
+    return lines;
+  }
 
-    static repeat(s: string, times: number) {
-        let ans = "";
-        for (let i = 0; i < times; i++) {
-            ans += s;
-        }
-        return ans;
+  static repeat(s: string, times: number) {
+    let ans = "";
+    for (let i = 0; i < times; i++) {
+      ans += s;
     }
+    return ans;
+  }
 }

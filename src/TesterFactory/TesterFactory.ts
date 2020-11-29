@@ -24,24 +24,21 @@ import PyTester from "./PyTester";
 import Tester from "./Tester";
 
 export default class TesterFactory {
+  static normalizeExtension(extension: string): string {
+    return extension.toLowerCase();
+  }
 
-    static normalizeExtension(extension: string): string {
-        return extension.toLowerCase();
+  static getTester(config: Config, filePath: string): Tester {
+    if (!fs.existsSync(filePath)) {
+      console.log("File not found:", filePath);
+      exit(0);
     }
-
-    static getTester(config: Config, filePath: string) : Tester {
-        if (!fs.existsSync(filePath)) {
-            console.log("File not found:", filePath);
-            exit(0);
-        }
-        let extension = TesterFactory.normalizeExtension(Path.extname(filePath));
-        if (extension == ".cpp")
-            return new CppTester(config, filePath);
-        else if (extension == ".py")
-            return new PyTester(config, filePath);
-        else {
-            console.log("Language not supported");
-            exit(0);
-        }
+    let extension = TesterFactory.normalizeExtension(Path.extname(filePath));
+    if (extension == ".cpp") return new CppTester(config, filePath);
+    else if (extension == ".py") return new PyTester(config, filePath);
+    else {
+      console.log("Language not supported");
+      exit(0);
     }
+  }
 }

@@ -15,18 +15,18 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import TestData from './TestData';
+import TestData from "./TestData";
 
 export default interface ProblemData {
-    name: string;
-    group: string;
-    url: string;
-    interactive: boolean;
-    memoryLimit: number;
-    timeLimit: number;
-    tests: TestData[];
-    testType: string;
-    input: object;
-    output: object;
-    languages: object;
+  name: string;
+  group: string;
+  url: string;
+  interactive: boolean;
+  memoryLimit: number;
+  timeLimit: number;
+  tests: TestData[];
+  testType: string;
+  input: object;
+  output: object;
+  languages: object;
 }

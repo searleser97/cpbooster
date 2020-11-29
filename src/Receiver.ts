@@ -26,6 +26,7 @@ import Util from "./Util";
 import SourceFileCreator from "./SourceFileCreator";
 import * as os from "os";
 import { getTerminalCommand } from "./TerminalCommandBuilder";
+import chalk from "chalk";
 
 export default class Receiver {
   app = express();
@@ -83,6 +84,13 @@ export default class Receiver {
         let command = getTerminalCommand(this.config.terminal, contestPath);
         if (command) {
           spawn(command, { shell: true });
+        } else {
+          console.log(
+            chalk.yellow(
+              "The terminal specified in the configuration " +
+                "file is not fully supported yet, you will have to change your directory manually\n"
+            )
+          );
         }
         exit(0);
       }
