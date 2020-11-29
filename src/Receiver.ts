@@ -25,73 +25,67 @@ import { spawn } from "child_process";
 import Util from "./Util";
 import SourceFileCreator from "./SourceFileCreator";
 import * as os from "os";
+import { getTerminalCommand } from "./TerminalCommandBuilder";
 
 export default class Receiver {
-    app = express();
-    contestName = "NO_NAME";
-    config: Config;
-    isActive = false;
-    lastRequestTime = process.hrtime();
-    constructor(config: Config) {
-        this.config = config;
-        this.app.use(express.json());
-        this.app.post("/", (request, response) => {
-            response.writeHead(200, { "Content-Type": "text/html" });
-            response.end("OK");
+  app = express();
+  contestName = "NO_NAME";
+  config: Config;
+  isActive = false;
+  lastRequestTime = process.hrtime();
+  constructor(config: Config) {
+    this.config = config;
+    this.app.use(express.json());
+    this.app.post("/", (request, response) => {
+      response.writeHead(200, { "Content-Type": "text/html" });
+      response.end("OK");
 
-            let problemData: ProblemData = request.body;
-            problemData.name = Util.normalizeName(problemData.name);
-            problemData.group = Util.normalizeName(problemData.group);
+      let problemData: ProblemData = request.body;
+      problemData.name = Util.normalizeName(problemData.name);
+      problemData.group = Util.normalizeName(problemData.group);
 
-            this.contestName = problemData.group;
-            console.info("received:", problemData.name);
-            let contestPath = Path.join(config.contestsDirectory, problemData.group);
-            if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
-            let FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
-            SourceFileCreator.create(`${FilesPathNoExtension}.${config.preferredLang}`, config, problemData.timeLimit);
-            problemData.tests.forEach((testcase, idx) => {
-                fs.writeFileSync(`${FilesPathNoExtension}.in${idx + 1}`, testcase.input);
-                fs.writeFileSync(`${FilesPathNoExtension}.ans${idx + 1}`, testcase.output);
-            });
-            if (!this.isActive) this.isActive = true;
-            this.lastRequestTime = process.hrtime();
-        });
-    }
+      this.contestName = problemData.group;
+      console.info("received:", problemData.name);
+      let contestPath = Path.join(config.contestsDirectory, problemData.group);
+      if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
+      let FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
+      SourceFileCreator.create(
+        `${FilesPathNoExtension}.${config.preferredLang}`,
+        config,
+        problemData.timeLimit
+      );
+      problemData.tests.forEach((testcase, idx) => {
+        fs.writeFileSync(`${FilesPathNoExtension}.in${idx + 1}`, testcase.input);
+        fs.writeFileSync(`${FilesPathNoExtension}.ans${idx + 1}`, testcase.output);
+      });
+      if (!this.isActive) this.isActive = true;
+      this.lastRequestTime = process.hrtime();
+    });
+  }
 
-    run() {
-        let serverRef = this.app.listen(this.config.port, () => {
-            console.info("\nserver running at port:", this.config.port);
-            console.info(
-                '\nserver waiting for "Competitive Companion Plugin" to send problems...\n'
-            );
-        });
+  run() {
+    let serverRef = this.app.listen(this.config.port, () => {
+      console.info("\nserver running at port:", this.config.port);
+      console.info('\nserver waiting for "Competitive Companion Plugin" to send problems...\n');
+    });
 
-        let interval = setInterval(() => {
-            if (!this.isActive) return;
-            let elapsedTime = process.hrtime(this.lastRequestTime)[0];
-            let tolerance = os.type() === "Windows_NT" || os.release().includes("Microsoft") ? 10 : 1;
-            if (elapsedTime >= tolerance) {
-                if (serverRef) serverRef.close();
-                clearInterval(interval);
-                let contestPath = Path.join(this.config.contestsDirectory, this.contestName);
-                console.log("\n\tDONE!\n");
-                console.log(`The path to your contest folder is: "${contestPath}"`);
-                console.log("\n\tHappy Coding!\n");
-                let command = "";
-                if (this.config.terminal === "konsole")
-                    command = `konsole --workdir "${contestPath}"`;
-                else if (this.config.terminal === "gnome-terminal")
-                    command = `gnome-terminal --working-directory="${contestPath}"`;
-                else if (this.config.terminal === "deepin-terminal")
-                    command = `deepin-terminal --work-directory "${contestPath}"`;
-                else if (this.config.terminal === "xterm")
-                    command = `xterm -e 'cd "${contestPath}" && bash' & disown`;
-                else {
-                    exit(0);
-                }
-                spawn(command, { shell: true });
-                exit(0);
-            }
-        }, 100);
-    }
+    let interval = setInterval(() => {
+      if (!this.isActive) return;
+      let elapsedTime = process.hrtime(this.lastRequestTime)[0];
+      let tolerance = os.type() === "Windows_NT" || os.release().includes("Microsoft") ? 10 : 1;
+      if (elapsedTime >= tolerance) {
+        if (serverRef) serverRef.close();
+        clearInterval(interval);
+        let contestPath = Path.join(this.config.contestsDirectory, this.contestName);
+        console.log("\n\tDONE!\n");
+        console.log(`The path to your contest folder is: "${contestPath}"`);
+        console.log("\n\tHappy Coding!\n");
+        let command = getTerminalCommand(this.config.terminal, contestPath);
+        if (command) {
+          spawn(command, { shell: true });
+        }
+        exit(0);
+      }
+    }, 100);
+  }
 }

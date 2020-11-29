@@ -92,6 +92,7 @@ Options:
 -   xterm
 -   gnome-terminal
 -   deepin-terminal
+-   terminal (MacOS)
 
 ## Future updates
 
