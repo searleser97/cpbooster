@@ -35,6 +35,17 @@ export default class Util {
     name = Util.replaceAll(name, "#", "");
     name = Util.replaceAll(name, "[", "");
     name = Util.replaceAll(name, "]", "");
+    name = Util.replaceAll(name, "!", "");
+    name = Util.replaceAll(name, "¡", "");
+    name = Util.replaceAll(name, "?", "");
+    name = Util.replaceAll(name, "¿", "");
+    name = Util.replaceAll(name, "=", "");
+    name = Util.replaceAll(name, ">", "");
+    name = Util.replaceAll(name, "<", "");
+    name = Util.replaceAll(name, "@", "");
+    name = Util.replaceAll(name, "$", "");
+    name = Util.replaceAll(name, "%", "");
+    name = Util.replaceAll(name, "^", "");
     return name;
   }
 
