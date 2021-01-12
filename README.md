@@ -97,6 +97,7 @@ Options:
 
 ## Future updates
 
+- Create multiple files with "Create" command
 - Add support for Java
 - Add full support for more terminals
 - Add configuration assistant
