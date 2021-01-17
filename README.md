@@ -30,7 +30,8 @@ Options:
   --configPath, -c  Path to read/write configuration file               [string]
 ```
 
-**Note:** Run `cpbooster <command> --help` to display help information about an specific command.
+**Note:** Run `cpbooster <command> --help` to display help information about a specific command.
+
 **Note 2:** `cpb` is the short alias for `cpbooster`.
 
 ## Requirements

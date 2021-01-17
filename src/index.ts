@@ -79,14 +79,25 @@ yargs
   )
   .command(
     "create",
-    "Creates new source code file with the corresponding template loaded",
+    "Creates new source code file with the corresponding template loaded " +
+      "or multiple source files if a sequence is given as file name",
     (create_yargs) => {
-      create_yargs.usage("\nUsage $0 create <sourceCodePath>");
+      create_yargs.usage(
+        "\nUsage: $0 create <sourceCodePath>" +
+          "\n  examples:\n" +
+          "    $0 create sourcefile.cpp\n" +
+          "    $0 create /home/cpbooster/sourcefile.cpp\n" +
+          "\nUsage 2: $0 create <DirectoryPath>/{from(-|..)to}<extension>" +
+          "\n  examples:\n" +
+          "    $0 create {a-d}.cpp\n" +
+          "    $0 create {a..d}.cpp\n" +
+          "    $0 create /home/cpbooster/{a..d}.cpp\n"
+      );
     }
   )
   .command(
     "new",
-    "Creates new configuration file with default values in $HOME or, if --configPath option is set it writes in the specified path",
+    "Creates new configuration file with default values in $HOME or, if --configPath option is set it writes it in the specified path",
     (new_yargs) => {
       new_yargs.usage("\nUsage: $0 new [options]");
     }
