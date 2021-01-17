@@ -36,10 +36,17 @@ updateNotifier({
   defer: false
 });
 
+let descriptions = {
+  "serve": "Run cpbooster as server for competitive companion plugin",
+  "test": ,
+  "create" ,
+  "new" ,
+};
+
 yargs
   .usage("\nUsage: $0 <command> [options]")
-  .command("serve", "Run cpbooster as server for competitive companion plugin", (serve_yargs) => {
-    serve_yargs.usage("\nUsage: $0 serve [options]").option("port", {
+  .command("serve", descriptions["serve"], (serve_yargs) => {
+    serve_yargs.usage(descriptions["serve"] + "\n\nUsage: $0 serve [options]").option("port", {
       alias: "p",
       type: "number",
       description: "Port where competitive companion plugin will send parsed data from problems"
