@@ -11,23 +11,23 @@
 ## Usage
 
 ```
-Usage: cpbooster <command> [options]
+Usage: cpb <command> [options]
 
 Commands:
-  cpbooster serve   Run cpbooster as server for competitive companion plugin
-  cpbooster test    By default this command runs your <program> against all
-                    available test cases, run 'cpbooster test --help' to get
-                    information about more options
-  cpbooster create  Creates new source code file with the corresponding template
-                    loaded
-  cpbooster new     Creates new configuration file with default values in $HOME
-                    or, if --configPath option is set it writes in the specified
-                    path
+  cpb serve   Run cpbooster as server for competitive companion plugin
+  cpb test    By default this command runs your <program> against all available
+              test cases, run 'cpbooster test --help' to get information about
+              more options
+  cpb create  Creates new source code file with the corresponding template
+              loaded or multiple source files if a sequence is given as file
+              name
+  cpb new     Creates new configuration file with default values in $HOME or, if
+              --configPath option is set it writes it in the specified path
 
 Options:
   --version, -v     Show version number                                [boolean]
   --help, -h        Show help                                          [boolean]
-  --configPath, -c  Path to read/write configuration file               [string]
+  --configPath, -c  Path to read/write configuration file               [string]]
 ```
 
 **Note:** Run `cpbooster <command> --help` to display help information about a specific command.
