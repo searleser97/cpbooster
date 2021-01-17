@@ -98,8 +98,8 @@ Options:
 
 ## Future updates
 
-- Add the possibility to test current file using test cases of another file (test --as <filename>)
-- Add the possibility to debug current file using test cases of another file (test --as <filename>)
+- Add the possibility to test current file using test cases of another file (test --as \<filename>)
+- Add the possibility to debug current file using test cases of another file (test --as \<filename>)
 - Add support for Java
 - Add full support for more terminals
 - Add configuration assistant
