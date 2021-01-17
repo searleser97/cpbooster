@@ -21,14 +21,53 @@ import * as Path from "path";
 import Util from "./Util";
 
 export default class SourceFileCreator {
-  static create(filePath: string, config: Config, timeLimitInMS: number) {
+  static create(filePath: string, config: Config, timeLimitInMS?: number) {
+    if (!timeLimitInMS) timeLimitInMS = 3000;
+    let filename = Path.basename(filePath);
+    let match = /\{[a-zA-Z](\.{2,}|-)[a-zA-Z]\}\.[a-zA-Z0-9]+/g.exec(filename);
+    if (match) {
+      let idx = match[0].indexOf('}');
+      this.createMultiple(filePath, config, timeLimitInMS, match[0][1], match[0][idx - 1]);
+    } else {
+      this.createSingle(filePath, config, timeLimitInMS);
+    }
+  }
+
+  static createSingle(filePath: string, config: Config, timeLimitInMS: number) {
     let extension = Path.extname(filePath);
+    let filename = Util.normalizeName(Path.basename(filePath));
+    filePath = Path.join(Path.dirname(filePath), filename);
     let template = `${Util.getCommentString(extension)} time-limit: ${timeLimitInMS}\n`;
     if (extension == ".cpp" && config.cppTemplatePath) {
       template += fs.readFileSync(config.cppTemplatePath).toString();
     } else if (extension == ".py" && config.pyTemplatePath) {
       template += fs.readFileSync(config.pyTemplatePath).toString();
     }
-    if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, template);
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, template);
+      console.info("Source file", filename, "created.");
+    } else {
+      console.info("Source file", filename, "already existed.");
+    }
+  }
+
+  static createMultiple(filePath: string, config: Config, timeLimitInMS: number, start: string, end: string) {
+    if (start.length != 1 || end.length != 1) {
+      throw new Error("incorrect format of start or end, it should be a single character");
+    }
+    let dirname = Path.dirname(filePath);
+    let extension = Path.extname(filePath);
+    let filePaths: any[] = [];
+    let startCode = start.toLowerCase().charCodeAt(0);
+    let endCode = end.toLowerCase().charCodeAt(0);
+    if (endCode < startCode) {
+      [startCode, endCode] = [endCode, startCode];
+    }
+    for (let i = startCode; i <= endCode; i++) {
+      filePaths.push(Path.join(dirname, String.fromCharCode(i) + extension));
+    }
+    for (filePath of filePaths) {
+      SourceFileCreator.createSingle(filePath, config, timeLimitInMS);
+    }
   }
 }

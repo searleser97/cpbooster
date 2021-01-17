@@ -19,34 +19,61 @@ import { createInterface } from "readline";
 import { once } from "events";
 
 export default class Util {
+  static allowedSpecialChars = new Set(["-", "_", "+", "."]);
+
+  static isAlpha(char: string): boolean {
+    if (char.length != 1) {
+      return false;
+    } else {
+      let thisCharCode = char.charCodeAt(0);
+      if (
+        ("a".charCodeAt(0) <= thisCharCode && thisCharCode <= "z".charCodeAt(0)) ||
+        ("A".charCodeAt(0) <= thisCharCode && thisCharCode <= "Z".charCodeAt(0))
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  static isNum(char: string): boolean {
+    if (char.length != 1) {
+      return false;
+    } else {
+      let thisCharCode = char.charCodeAt(0);
+      if ("0".charCodeAt(0) <= thisCharCode && thisCharCode <= "9".charCodeAt(0)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  static isAlphaNum(char: string): boolean {
+    if (char.length != 1) {
+      return false;
+    } else {
+      if (this.isAlpha(char) || this.isNum(char)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   static replaceAll(text: string, oldString: string, newString: string): string {
     return text.split(oldString).join(newString);
   }
 
   static normalizeName(name: string) {
-    name = Util.replaceAll(name, "'", "");
-    name = Util.replaceAll(name, "(", "");
-    name = Util.replaceAll(name, ")", "");
-    name = Util.replaceAll(name, ",", "");
-    name = Util.replaceAll(name, "*", "");
-    name = Util.replaceAll(name, "/", "");
-    name = Util.replaceAll(name, '"', "");
-    name = Util.replaceAll(name, " ", "");
-    name = Util.replaceAll(name, "#", "");
-    name = Util.replaceAll(name, "[", "");
-    name = Util.replaceAll(name, "]", "");
-    name = Util.replaceAll(name, "!", "");
-    name = Util.replaceAll(name, "¡", "");
-    name = Util.replaceAll(name, "?", "");
-    name = Util.replaceAll(name, "¿", "");
-    name = Util.replaceAll(name, "=", "");
-    name = Util.replaceAll(name, ">", "");
-    name = Util.replaceAll(name, "<", "");
-    name = Util.replaceAll(name, "@", "");
-    name = Util.replaceAll(name, "$", "");
-    name = Util.replaceAll(name, "%", "");
-    name = Util.replaceAll(name, "^", "");
-    return name;
+    let normalName = "";
+    for (let c of name) {
+      if (this.isAlphaNum(c) || this.allowedSpecialChars.has(c)) {
+        normalName += c;
+      }
+    }
+    return normalName;
   }
 
   static getCommentString(extension: string) {

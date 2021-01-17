@@ -62,10 +62,10 @@ export default abstract class Tester {
     let time = 3000; // Default time
     if (match) {
       let i = match.index;
-      let mil = "";
-      while (i < text.length && !(text[i] >= "0" && text[i] <= "9")) i++;
-      while (i < text.length && text[i] >= "0" && text[i] <= "9") mil += text[i++];
-      time = parseInt(mil);
+      let milis = "";
+      while (i < text.length && !("0" <= text[i] && text[i] <= "9")) i++;
+      while (i < text.length && "0" <= text[i] && text[i] <= "9") milis += text[i++];
+      time = parseInt(milis);
     }
     return time;
   }

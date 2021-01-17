@@ -155,8 +155,7 @@ async function main() {
       console.log("Missing file path in arguments");
       exit(0);
     }
-    SourceFileCreator.create(argv._[1], config, 3000);
-    console.log("Source file", argv._[1], "created.");
+    SourceFileCreator.create(argv._[1], config);
   } else {
     yargs.showHelp();
   }

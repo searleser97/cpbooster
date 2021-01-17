@@ -27,6 +27,7 @@ import SourceFileCreator from "./SourceFileCreator";
 import * as os from "os";
 import { getTerminalCommand } from "./TerminalCommandBuilder";
 import chalk from "chalk";
+import Tester from "./TesterFactory/Tester";
 
 export default class Receiver {
   app = express();
@@ -46,19 +47,21 @@ export default class Receiver {
       problemData.group = Util.normalizeName(problemData.group);
 
       this.contestName = problemData.group;
-      console.info("received:", problemData.name);
       let contestPath = Path.join(config.contestsDirectory, problemData.group);
       if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
       let FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
+      let extension = `.${config.preferredLang}`;
+      let filePath = `${FilesPathNoExtension}${extension}`;
       SourceFileCreator.create(
-        `${FilesPathNoExtension}.${config.preferredLang}`,
+        filePath,
         config,
         problemData.timeLimit
       );
       problemData.tests.forEach((testcase, idx) => {
-        fs.writeFileSync(`${FilesPathNoExtension}.in${idx + 1}`, testcase.input);
-        fs.writeFileSync(`${FilesPathNoExtension}.ans${idx + 1}`, testcase.output);
+        fs.writeFileSync(Tester.getInputPath(filePath, idx + 1), testcase.input);
+        fs.writeFileSync(Tester.getAnswerPath(filePath, idx + 1), testcase.output);
       });
+      console.info("- Input and Answer files have been created for " + Path.basename(filePath) + "\n");
       if (!this.isActive) this.isActive = true;
       this.lastRequestTime = process.hrtime();
     });
