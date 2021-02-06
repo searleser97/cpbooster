@@ -10,6 +10,8 @@ export function getTerminalCommand(terminalName: string, contestPath: string): s
       return `xterm -e 'cd "${contestPath}" && bash' & disown`;
     case "terminal":
       return `open -a terminal "${contestPath}"`;
+    case "kitty":
+      return `kitty --directory "${contestPath}"`;
     default:
       return null;
   }
