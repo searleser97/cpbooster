@@ -95,6 +95,7 @@ Options:
 - gnome-terminal
 - deepin-terminal
 - terminal (MacOS)
+- kitty
 
 ## Future updates
 
