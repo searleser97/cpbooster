@@ -99,8 +99,9 @@ Options:
 
 ## Future updates
 
+- Add option to `cpbooster-json` to close previous terminal (if terminal emulator is supported)
 - Add the possibility to test current file using test cases of another file (test --as \<filename>)
-- Add the possibility to debug current file using test cases of another file (test --as \<filename>)
+- Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)
 - Add support for Java
 - Add full support for more terminals
 - Add configuration assistant
