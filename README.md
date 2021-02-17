@@ -72,7 +72,7 @@ Options:
   "preferredLang": "cpp", // use extension name like: cpp, py, java
   "port": 1327, // must match with competitive companion plugin port
   "terminal": "konsole",
-  "closeAfterClone": false // if true, you will end up with one terminal open instead of 2 (current and new)
+  "closeAfterClone": false // if true, you will end up with a single terminal open instead of 2 (current and new)
 }
 ```
 

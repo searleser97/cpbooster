@@ -21,7 +21,7 @@ import * as Path from "path";
 import ProblemData from "./ProblemData";
 import Config from "./Config";
 import { exit } from "process";
-import { exec, spawn, spawnSync } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import Util from "./Util";
 import SourceFileCreator from "./SourceFileCreator";
 import * as os from "os";
