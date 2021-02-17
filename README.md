@@ -27,7 +27,7 @@ Commands:
 Options:
   --version, -v     Show version number                                [boolean]
   --help, -h        Show help                                          [boolean]
-  --configPath, -c  Path to read/write configuration file               [string]]
+  --configPath, -c  Path to read/write configuration file               [string]
 ```
 
 **Note:** Run `cpbooster <command> --help` to display help information about a specific command.
@@ -72,7 +72,8 @@ Options:
   "preferredLang": "cpp", // use extension name like: cpp, py, java
   "port": 1327, // must match with competitive companion plugin port
   "terminal": "konsole",
-  "closeAfterClone": false // if true, you will end up with a single terminal open instead of 2 (current and new)
+  // the following option just applies if the terminal is fully supported
+  "closeAfterClone": false // whether or not to close current terminal
 }
 ```
 
@@ -89,7 +90,10 @@ Options:
   - CE (Compilation Error)
 - Run code with your own debugging flags easily
 
-#### Support to open directory in terminal after `cpbooster serve`:
+#### List of fully supported terminals:
+
+The following terminals support opening a new terminal in the contest directory,
+if your terminal is not listed here don't worry, this is the only feature you will not have.
 
 - konsole
 - xterm
