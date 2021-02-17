@@ -89,22 +89,17 @@ Options:
   - RTE (Runtime Error)
   - CE (Compilation Error)
 - Run code with your own debugging flags easily
-
-#### List of fully supported terminals:
-
-The following terminals support opening a new terminal in the contest directory,
-if your terminal is not listed here don't worry, this is the only feature you will not have.
-
-- konsole
-- xterm
-- gnome-terminal
-- deepin-terminal
-- terminal (MacOS)
-- kitty
+- open a new terminal in the contest directory immediately after cloning it
+  - List of supported terminals for this feature:
+    - konsole
+    - xterm
+    - gnome-terminal
+    - deepin-terminal
+    - terminal (MacOS)
+    - kitty
 
 ## Future updates
 
-- Add option to `cpbooster-json` to close previous terminal (if terminal emulator is supported)
 - Add the possibility to test current file using test cases of another file (test --as \<filename>)
 - Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)
 - Add support for Java
