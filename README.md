@@ -72,7 +72,7 @@ Options:
   "preferredLang": "cpp", // use extension name like: cpp, py, java
   "port": 1327, // must match with competitive companion plugin port
   "terminal": "konsole",
-  // the following option just applies if the terminal is fully supported
+  // the following option just applies if the terminal supports opening a new terminal after cloning a contest
   "closeAfterClone": false // whether or not to close current terminal
 }
 ```
