@@ -90,7 +90,7 @@ Options:
   - CE (Compilation Error)
 - Run code with your own debugging flags easily
 - open a new terminal in the contest directory immediately after cloning it
-  - List of supported terminals for this feature:
+  - List of **supported terminals** for this feature:
     - konsole
     - xterm
     - gnome-terminal
