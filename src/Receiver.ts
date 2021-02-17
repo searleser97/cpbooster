@@ -21,7 +21,7 @@ import * as Path from "path";
 import ProblemData from "./ProblemData";
 import Config from "./Config";
 import { exit } from "process";
-import { spawn } from "child_process";
+import { exec, spawn, spawnSync } from "child_process";
 import Util from "./Util";
 import SourceFileCreator from "./SourceFileCreator";
 import * as os from "os";
@@ -76,7 +76,8 @@ export default class Receiver {
     let interval = setInterval(() => {
       if (!this.isActive) return;
       let elapsedTime = process.hrtime(this.lastRequestTime)[0];
-      let tolerance = os.type() === "Windows_NT" || os.release().includes("Microsoft") ? 10 : 1;
+      let isWindows = os.type() === "Windows_NT" || os.release().includes("Microsoft");
+      let tolerance = isWindows ? 10 : 1;
       if (elapsedTime >= tolerance) {
         if (serverRef) serverRef.close();
         clearInterval(interval);
@@ -87,6 +88,13 @@ export default class Receiver {
         let command = getTerminalCommand(this.config.terminal, contestPath);
         if (command) {
           spawn(command, { shell: true });
+          if (this.config.closeAfterClone && !isWindows) {
+            let execution = spawnSync("ps", ["-o", "ppid=", "-p", `${process.ppid}`]);
+            let grandParentPid = parseInt(execution.stdout.toString().trim());
+            if (!Number.isNaN(grandParentPid)) {
+              process.kill(grandParentPid, "SIGKILL");
+            }
+          }
         } else {
           console.log(
             chalk.yellow(

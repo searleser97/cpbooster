@@ -32,17 +32,19 @@ export default class Config {
   preferredLang: string;
   port: number;
   terminal: string;
+  closeAfterClone: boolean;
 
   constructor() {
     this.contestsDirectory = Path.join(os.homedir(), "Contests");
     this.cppTemplatePath = "";
     this.cppCompileCommand = "g++ -std=gnu++17 -O2";
-    this.cppDebugCommand = "g++ -std=gnu++17 -DDEBUG";
+    this.cppDebugCommand = "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall";
     this.pyTemplatePath = "";
     this.pyRunCommand = "python3";
     this.preferredLang = "cpp";
     this.port = 1327;
     this.terminal = "konsole";
+    this.closeAfterClone = false;
   }
 
   write(configFilePath: string = Config.defaultConfigFilePath) {

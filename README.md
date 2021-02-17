@@ -65,13 +65,14 @@ Options:
 {
   "contestsDirectory": "/home/user/Contests",
   "cppTemplatePath": "/home/user/template.cpp",
-  "cppCompileCommand": "g++ -std=gnu++17",
+  "cppCompileCommand": "g++ -std=gnu++17 -O2",
   "cppDebugCommand": "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
   "pyTemplatePath": "/home/user/template.py",
   "pyRunCommand": "python3",
   "preferredLang": "cpp", // use extension name like: cpp, py, java
   "port": 1327, // must match with competitive companion plugin port
-  "terminal": "konsole"
+  "terminal": "konsole",
+  "closeAfterClone": false // if true, you will end up with one terminal open instead of 2 (current and new)
 }
 ```
 
@@ -103,7 +104,6 @@ Options:
 - Add the possibility to debug current file using test cases of another file (test --as \<filename>)
 - Add support for Java
 - Add full support for more terminals
-- Add configuration assistant
 - Fully support windows CMD.
 
 ## Final Notes
