@@ -41,7 +41,8 @@ let descriptions = {
   test:
     "By default this command runs your <program> against all available test cases, run 'cpbooster test --help' to get information about more options",
   create:
-    "Creates new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name",
+    "Creates new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name," +
+    " run 'cpbooster create --help' for more details",
   new:
     "Creates new configuration file with default values in $HOME or, if --configPath option is set it writes it in the specified path"
 };
@@ -89,7 +90,7 @@ yargs
     create_yargs.usage(
       "\n" +
         descriptions.create +
-        "\n\nUsage: $0 create <sourceCodePath>" +
+        "\n\nUsage 1: $0 create <sourceCodePath>" +
         "\n  examples:\n" +
         "    $0 create sourcefile.cpp\n" +
         "    $0 create /home/cpbooster/sourcefile.cpp\n" +
