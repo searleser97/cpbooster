@@ -80,33 +80,34 @@ Options:
 
 ## Features
 
-- Automatically clone sample testcases files into an specific directory
-- Create source files from a template
-  - `cpb create b.py` creates single file with corresponding template loaded based on file extension
-  - `cpb create {a..n}.cpp` creates multiple consecutive files from "a.cpp" to "n.cpp"
-  - `cpb create {a...n}.cpp` same as previous command (Basically any amount of dots greater or equal to 2 works)
-  - `cpb create {a-n}.cpp` same as previous command (Single dash also works)
-- Test your code against sample testcases quickly.
-  - `cpb test mycode.cpp` test your program against all available test cases
-  - `cpb test mycode.cpp --testId 1` test your program against the test case with the given id.
+1. Automatically clone sample testcases files into an specific directory
+   - `cpb serve` waits for competitive companion plugin to send pased data for each problem
+1. Create source files from a template
+   - `cpb create b.py` creates single file with corresponding template loaded based on file extension
+   - `cpb create {a..n}.cpp` creates multiple consecutive files from "a.cpp" to "n.cpp"
+   - `cpb create {a...n}.cpp` same as previous command (Any amount of dots greater than 1 work)
+   - `cpb create {a-n}.cpp` same as previous command (Single dash also works)
+1. Test your code against sample testcases quickly.
+   - `cpb test mycode.cpp` test your program against all available test cases
+   - `cpb test mycode.cpp --testId 1` test your program against the test case with the given id.
 
-  Supported results:
-  - AC (Accepted)
-  - WA (Wrong Answer)
-  - TLE (Time Limit Exceeded)
-  - RTE (Runtime Error)
-  - CE (Compilation Error)
-- Run code with your own debugging flags easily
-  - `cpb test mycode.cpp --debug` to use keyboard as input
-  - `cpb test mycode.cpp --debug --testId 2` to use a test case file as input
-- open a new terminal in the contest directory immediately after cloning it
-  - List of **supported terminals** for this feature:
-    - konsole
-    - xterm
-    - gnome-terminal
-    - deepin-terminal
-    - terminal (MacOS)
-    - kitty
+   Supported results:
+   - AC (Accepted)
+   - WA (Wrong Answer)
+   - TLE (Time Limit Exceeded)
+   - RTE (Runtime Error)
+   - CE (Compilation Error)
+1. Run code with your own debugging flags easily
+   - `cpb test mycode.cpp --debug` to use keyboard as input
+   - `cpb test mycode.cpp --debug --testId 2` to use a test case file as input
+1. open a new terminal in the contest directory immediately after cloning it
+   - List of **supported terminals** for this feature:
+     - konsole
+     - xterm
+     - gnome-terminal
+     - deepin-terminal
+     - terminal (MacOS)
+     - kitty
 
 ## Future updates
 
