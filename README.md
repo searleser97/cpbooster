@@ -20,7 +20,7 @@ Commands:
               more options
   cpb create  Creates new source code file with the corresponding template
               loaded or multiple source files if a sequence is given as file
-              name
+              name, run 'cpbooster create --help' for more details
   cpb new     Creates new configuration file with default values in $HOME or, if
               --configPath option is set it writes it in the specified path
 
@@ -82,7 +82,14 @@ Options:
 
 - Automatically clone sample testcases files into an specific directory
 - Create source files from a template
-- Test your code against sample testcases quickly.  
+  - `cpb create b.py` creates single file with corresponding template loaded based on file extension
+  - `cpb create {a..n}.cpp` creates multiple consecutive files from "a.cpp" to "n.cpp"
+  - `cpb create {a...n}.cpp` same as previous command (Basically any amount of dots greater or equal to 2 works)
+  - `cpb create {a-n}.cpp` same as previous command (Single dash also works)
+- Test your code against sample testcases quickly.
+  - `cpb test mycode.cpp` test your program against all available test cases
+  - `cpb test mycode.cpp --testId 1` test your program against the test case with the given id.
+
   Supported results:
   - AC (Accepted)
   - WA (Wrong Answer)
@@ -90,6 +97,8 @@ Options:
   - RTE (Runtime Error)
   - CE (Compilation Error)
 - Run code with your own debugging flags easily
+  - `cpb test mycode.cpp --debug` to use keyboard as input
+  - `cpb test mycode.cpp --debug --testId 2` to use a test case file as input
 - open a new terminal in the contest directory immediately after cloning it
   - List of **supported terminals** for this feature:
     - konsole
