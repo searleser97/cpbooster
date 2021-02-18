@@ -87,7 +87,8 @@ export default class Receiver {
         console.log("\n\tHappy Coding!\n");
         let command = getTerminalCommand(this.config.terminal, contestPath);
         if (command) {
-          spawn(command, { shell: true });
+          let newTerminalExec = spawn(command, { shell: true, detached: true, stdio: 'ignore' });
+          newTerminalExec.unref();
           if (this.config.closeAfterClone && !isWindows) {
             let execution = spawnSync("ps", ["-o", "ppid=", "-p", `${process.ppid}`]);
             let grandParentPid = parseInt(execution.stdout.toString().trim());
