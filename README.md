@@ -4,14 +4,14 @@
 
 ## About
 
-`cpbooster` is a cross-platform **CLI** tool designed to **boost** competitive programmer's speed during contests by automating various routine tasks like testing, debugging, cloning testcases, etc. The console command suits any coding environment and it’s very simple to use. _Vim_ users can install [cpbooster.vim plugin](https://github.com/searleser97/cpbooster.vim) to **boost** their speed even more.
+`cpbooster` is a cross-platform **CLI** tool designed to **boost** competitive programmer's speed during contests by automating various routine tasks like testing, debugging, cloning testcases, etc. The console command suits any coding environment and it’s very easy to use. _Vim_ users can install [cpbooster.vim plugin](https://github.com/searleser97/cpbooster.vim) to **boost** their speed even more.
 
 <img src="https://searleser97.gitlab.io/competitive-programming-notes/cpbooster/cpbooster.gif"/>
 
 ## Features
 
 1. `cpbooster` comes with a short alias command called `cpb` to avoid writing the long command each time.
-1. Automatically clone sample testcases files into an specific directory
+1. Automatically clone sample testcases files into a specific directory
    - `cpb serve` waits for competitive companion plugin to send parsed data for each problem
 1. Create source files from a template
    - `cpb create b.py` creates single file with corresponding template loaded based on file extension
