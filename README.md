@@ -41,6 +41,9 @@
      - terminal (MacOS)
      - kitty
      - vscode
+       - I recommend adding this setting to your vscode `settings.json` so that green doesn't look to bright:
+       `"workbench.colorCustomizations" : { "terminal.ansiGreen":"#5b8a3a" }`
+
 1. Vim plugin [cpbooster.vim](https://github.com/searleser97/cpbooster.vim) **boosts** your speed even more
 
 ## Installation Requirements
