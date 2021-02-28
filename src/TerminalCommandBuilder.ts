@@ -12,6 +12,8 @@ export function getTerminalCommand(terminalName: string, contestPath: string): s
       return `open -a terminal "${contestPath}"`;
     case "kitty":
       return `kitty --directory "${contestPath}"`;
+    case "vscode":
+      return `code "${contestPath}"`;
     default:
       return null;
   }
