@@ -19,7 +19,7 @@
 import Config from "./Config";
 import Receiver from "./Receiver";
 import yargs, { argv } from "yargs";
-import ICLIOptions from "./ICLIOptions";
+import ICLIOptions from "./Types/ICLIOptions";
 import { exit } from "process";
 import TesterFactory from "./TesterFactory/TesterFactory";
 import updateNotifier from "update-notifier";

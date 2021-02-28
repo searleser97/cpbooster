@@ -15,24 +15,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import Config from "../Config";
-import { Veredict } from "../Types/Veredict";
-import Tester from "./Tester";
-
-export default class PyTester extends Tester {
-  constructor(config: Config, filePath: string) {
-    super(config, filePath);
-  }
-
-  testOne(testId: number, compile: boolean): Veredict {
-    return this.runTest(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
-  }
-
-  debugOne(testId: number, compile: boolean): void {
-    this.runDebug(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
-  }
-
-  debugWithUserInput(compile: boolean): void {
-    this.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
-  }
+export enum Veredict {
+  AC,
+  WA,
+  TLE,
+  RTE,
+  CE
 }

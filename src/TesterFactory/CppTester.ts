@@ -22,7 +22,7 @@ import chalk from "chalk";
 import Util from "../Util";
 import { spawnSync } from "child_process";
 import { exit } from "process";
-import { Veredict } from "../Veredict";
+import { Veredict } from "../Types/Veredict";
 import Tester from "./Tester";
 
 export default class CppTester extends Tester {

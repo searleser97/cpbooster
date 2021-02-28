@@ -18,7 +18,7 @@
 import express from "express";
 import * as fs from "fs";
 import * as Path from "path";
-import ProblemData from "./ProblemData";
+import ProblemData from "./Types/ProblemData";
 import Config from "./Config";
 import { exit } from "process";
 import { spawn, spawnSync } from "child_process";
