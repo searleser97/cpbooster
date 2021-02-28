@@ -11,9 +11,9 @@
 ## Features
 
 1. `cpbooster` comes with a short alias command called `cpb` to avoid writing the long command each time.
-1. Automatically clone sample testcases files into a specific directory
+1. Automatically clone sample testcases files with corresponding source code files with template loaded into a desired directory
    - `cpb serve` waits for competitive companion plugin to send parsed data for each problem
-1. Create source files from a template
+1. Create source files with corresponding template loaded
    - `cpb create b.py` creates single file with corresponding template loaded based on file extension
    - `cpb create {a..n}.cpp` creates multiple consecutive files from "a.cpp" to "n.cpp"
    - `cpb create {a...n}.cpp` same as previous command (Any amount of dots greater than 1 work)
