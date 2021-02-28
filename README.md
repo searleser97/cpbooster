@@ -6,7 +6,7 @@
 
 `cpbooster` is a cross-platform **CLI** tool designed to **boost** competitive programmer's speed during contests by automating various routine tasks like testing, debugging, cloning testcases, etc. The console command suits any coding environment (i.e. _**VSCode, Jetbrains IDEs, Vim, Emacs, Sublime Text, ...**_) and it’s very easy to use. _Vim_ users can install [cpbooster.vim plugin](https://github.com/searleser97/cpbooster.vim) to **boost** their speed even more.
 
-<img src="https://searleser97.gitlab.io/competitive-programming-notes/cpbooster/cpbooster.gif"/>
+- Using Vim plugin: <img src="https://searleser97.gitlab.io/competitive-programming-notes/cpbooster/cpbooster.gif"/>
 
 ## Features
 
@@ -39,6 +39,7 @@
      - deepin-terminal
      - terminal (MacOS)
      - kitty
+     - vscode
 1. Vim plugin [cpbooster.vim](https://github.com/searleser97/cpbooster.vim) **boosts** your speed even more
 
 ## Installation Requirements
