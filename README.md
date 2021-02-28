@@ -20,7 +20,7 @@
    - `cpb create {a-n}.cpp` same as previous command (Single dash also works)
 1. Test your code against sample testcases quickly.
    - `cpb test mycode.cpp` test your program against all available test cases
-   - `cpb test mycode.cpp --testId 1` test your program against the test case with the given id.
+   - `cpb test mycode.cpp -t 1` test your program against the test case with the given id.
 
    Supported results:
    - **AC** (Accepted)
@@ -29,8 +29,8 @@
    - **RTE** (Runtime Error)
    - **CE** (Compilation Error)
 1. Run code with your own debugging flags easily
-   - `cpb test mycode.cpp --debug` to use keyboard as input
-   - `cpb test mycode.cpp --debug --testId 2` to use a test case file as input
+   - `cpb test mycode.cpp -d` to use keyboard as input
+   - `cpb test mycode.cpp -t 2 -d` to use a test case file as input
 1. open a new terminal in the contest directory immediately after cloning it
    - List of **supported terminals** for this feature:
      - konsole
