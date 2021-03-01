@@ -127,6 +127,7 @@ Options:
 - Add support for Java
 - Add full support for more terminals
 - Fully support windows CMD.
+- Add Stress tests (using brute force solution and tests generator)
 
 ## Final Notes
 
