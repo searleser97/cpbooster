@@ -99,23 +99,23 @@ export default abstract class Tester {
       for (let i = 0; i < outputLines.length; i++) {
         if (outputLines[i].length > maxOutputWidth) maxOutputWidth = outputLines[i].length;
       }
-      let leftLimit = Math.min(Math.max(maxOutputWidth, 15), process.stdout.columns - 8);
-      console.log(
-        chalk.bgRed(chalk.whiteBright("Your Output:".padEnd(leftLimit) + "|")) +
-          chalk.bgGreen(chalk.whiteBright("|Correct Answer:\n"))
-      );
+      let columnWidth = Math.min(Math.max(maxOutputWidth, 15), process.stdout.columns - 8);
+      let leftHeader = chalk.bgRed(chalk.whiteBright("Your Output:".padEnd(columnWidth)));
+      let rightHeader = chalk.bgGreen(chalk.whiteBright("Correct Answer:"));
+      console.log(leftHeader + "|" + rightHeader);
+      console.log("".padEnd(columnWidth) + "|" + "".padEnd(columnWidth));
       for (let i = 0; i < Math.max(outputLines.length, ansLines.length); i++) {
         let line = "";
         if (i < outputLines.length) {
-          line += outputLines[i].padEnd(leftLimit) + "||";
+          line += outputLines[i].padEnd(columnWidth) + "|";
         } else {
-          line += "".padEnd(leftLimit) + "||";
+          line += "".padEnd(columnWidth) + "|";
         }
 
         if (i < ansLines.length) {
-          line += ansLines[i].padEnd(leftLimit);
+          line += ansLines[i].padEnd(columnWidth);
         } else {
-          line += "".padEnd(leftLimit);
+          line += "".padEnd(columnWidth);
         }
 
         if (i < outputLines.length && i < ansLines.length && outputLines[i] === ansLines[i]) {
