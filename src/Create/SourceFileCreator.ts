@@ -16,9 +16,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import * as fs from "fs";
-import Config from "./Config";
+import Config from "../Config";
 import * as Path from "path";
-import Util from "./Util";
+import Util from "../Util";
 
 export default class SourceFileCreator {
   static create(filePath: string, config: Config, timeLimitInMS?: number) {

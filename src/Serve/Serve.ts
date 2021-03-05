@@ -15,12 +15,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-export default interface ICLIOptions {
-  configPath?: string;
-  debug?: boolean;
-  new?: boolean;
-  testId?: number;
-  noCompile?: boolean;
+
+import Config from "../Config";
+import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
+import CCServer from "./CCServer";
+
+export interface ICommandServeArgs extends ICommandGlobalArgs {
   port?: number;
-  add?: boolean;
+}
+
+export function serve(args: ICommandServeArgs) {
+  const config = new Config(args.config);
+  if (args.port) {
+    config.port = args.port;
+  }
+  new CCServer(config).run();
 }

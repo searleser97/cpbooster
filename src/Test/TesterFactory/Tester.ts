@@ -15,9 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import Config from "../Config";
-import { Veredict } from "../Types/Veredict";
-import Util from "../Util";
+import Config from "../../Config";
+import { Veredict } from "../../Types/Veredict";
+import Util from "../../Util";
 import * as fs from "fs";
 import { exit } from "process";
 import chalk from "chalk";

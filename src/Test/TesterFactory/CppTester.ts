@@ -15,14 +15,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import Config from "../Config";
+import Config from "../../Config";
 import * as Path from "path";
 import * as fs from "fs";
 import chalk from "chalk";
-import Util from "../Util";
+import Util from "../../Util";
 import { spawnSync } from "child_process";
 import { exit } from "process";
-import { Veredict } from "../Types/Veredict";
+import { Veredict } from "../../Types/Veredict";
 import Tester from "./Tester";
 
 export default class CppTester extends Tester {

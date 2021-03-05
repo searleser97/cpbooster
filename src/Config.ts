@@ -34,7 +34,7 @@ export default class Config {
   terminal: string;
   closeAfterClone: boolean;
 
-  constructor() {
+  constructor(configFilePath?: string) {
     this.contestsDirectory = Path.join(os.homedir(), "Contests");
     this.cppTemplatePath = "";
     this.cppCompileCommand = "g++ -std=gnu++17 -O2";
@@ -45,12 +45,17 @@ export default class Config {
     this.port = 1327;
     this.terminal = "konsole";
     this.closeAfterClone = false;
+    if (configFilePath) {
+      this.read();
+    }
   }
 
   write(configFilePath: string = Config.defaultConfigFilePath) {
     if (!fs.existsSync(configFilePath)) {
-      fs.writeFileSync(configFilePath, JSON.stringify(this, null, 4));
-      console.log(`Your configuration file has been written in: ${configFilePath}`);
+      fs.writeFileSync(configFilePath, JSON.stringify(this, null, 2));
+      console.log(`Your configuration file has been written in: "${configFilePath}"`);
+    } else {
+      console.log(`"${configFilePath}" already exists`);
     }
   }
 

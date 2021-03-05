@@ -15,21 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import express from "express";
 import * as fs from "fs";
 import * as Path from "path";
-import ProblemData from "./Types/ProblemData";
-import Config from "./Config";
+import ProblemData from "../Types/ProblemData";
+import Config from "../Config";
 import { exit } from "process";
 import { spawn, spawnSync } from "child_process";
-import Util from "./Util";
-import SourceFileCreator from "./SourceFileCreator";
+import Util from "../Util";
+import SourceFileCreator from "../Create/SourceFileCreator";
 import * as os from "os";
 import { getTerminalCommand } from "./TerminalCommandBuilder";
 import chalk from "chalk";
-import Tester from "./TesterFactory/Tester";
+import Tester from "../Test/TesterFactory/Tester";
 
-export default class Receiver {
+/* Competitive Companion Server */
+export default class CCServer {
   app = express();
   contestName = "NO_NAME";
   config: Config;
@@ -68,6 +70,10 @@ export default class Receiver {
   }
 
   run() {
+    if (!this.config.preferredLang) {
+      console.log("Missing preferred language (preferredLang) key in configuration");
+      exit(0);
+    }
     let serverRef = this.app.listen(this.config.port, () => {
       console.info("\nserver running at port:", this.config.port);
       console.info('\nserver waiting for "Competitive Companion Plugin" to send problems...\n');

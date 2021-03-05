@@ -15,30 +15,24 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import Config from "../Config";
-import CppTester from "./CppTester";
-import * as Path from "path";
-import { exit } from "process";
-import * as fs from "fs";
-import PyTester from "./PyTester";
+import Config from "../../Config";
+import { Veredict } from "../../Types/Veredict";
 import Tester from "./Tester";
 
-export default class TesterFactory {
-  static normalizeExtension(extension: string): string {
-    return extension.toLowerCase();
+export default class PyTester extends Tester {
+  constructor(config: Config, filePath: string) {
+    super(config, filePath);
   }
 
-  static getTester(config: Config, filePath: string): Tester {
-    if (!fs.existsSync(filePath)) {
-      console.log("File not found:", filePath);
-      exit(0);
-    }
-    let extension = TesterFactory.normalizeExtension(Path.extname(filePath));
-    if (extension == ".cpp") return new CppTester(config, filePath);
-    else if (extension == ".py") return new PyTester(config, filePath);
-    else {
-      console.log("Language not supported");
-      exit(0);
-    }
+  testOne(testId: number, compile: boolean): Veredict {
+    return this.runTest(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
+  }
+
+  debugOne(testId: number, compile: boolean): void {
+    this.runDebug(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
+  }
+
+  debugWithUserInput(compile: boolean): void {
+    this.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
   }
 }
