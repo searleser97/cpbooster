@@ -15,10 +15,11 @@
 1. Automatically clone sample testcases files with corresponding source code files with template loaded into a desired directory
    - `cpb serve` waits for competitive companion plugin to send parsed data for each problem
 1. Create source files with corresponding template loaded
-   - `cpb create b.py` creates single file with corresponding template loaded based on file extension
+   - `cpb create a.py` creates single file with corresponding template loaded based on file extension
    - `cpb create {a..n}.cpp` creates multiple consecutive files from "a.cpp" to "n.cpp"
-   - `cpb create /specific/directory/{a...n}.cpp` same as previous command (Any amount of dots greater than 1 work)
+   - `cpb create {a...n}.cpp` same as previous command (Any amount of dots greater than 1 work)
    - `cpb create {a-n}.cpp` same as previous command (Single dash also works)
+   - `cpb create /some/path/a.cpp` creates "a.cpp" in the specified path instead of current location
 1. Test your code against sample testcases quickly.
    - `cpb test mycode.cpp` test your program against all available test cases
    - `cpb test mycode.cpp -t 1` test your program against the test case with the given id.
