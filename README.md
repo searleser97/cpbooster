@@ -126,9 +126,7 @@ Options:
                  [default: "/home/san/cpbooster-config.json"]]
 ```
 
-**Note:** Run `cpbooster <command> --help` to display help information about a specific command.
-
-**Note 2:** `cpb` is the short alias for `cpbooster`.
+**Note:** `cpb` is the short alias for `cpbooster`.
 
 ## Future updates
 
