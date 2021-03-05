@@ -127,7 +127,7 @@ yargs
             "    examples:\n" +
             "      > $0 create {a..d}.cpp (any amount of dots greater than 1 work)\n" +
             "      > $0 create /home/cpbooster/{a..d}.cpp\n" +
-            "      > $0 create {a-d}.py (single hyphen also works)\n"
+            "      > $0 create {a-d}.py (single dash also works)\n"
         )
         .fail((msg: string, _, yargs) => {
           yargs.showHelp();

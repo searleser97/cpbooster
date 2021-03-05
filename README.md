@@ -103,21 +103,27 @@
 ```
 Usage: cpb <command> [options]
 
+Run `cpb <command> --help` to show help for an specific command.
+
 Commands:
-  cpb serve   Run cpbooster as server for competitive companion plugin
-  cpb test    By default this command runs your <program> against all available
-              test cases, run 'cpbooster test --help' to get information about
-              more options
-  cpb create  Creates new source code file with the corresponding template
-              loaded or multiple source files if a sequence is given as file
-              name, run 'cpbooster create --help' for more details
-  cpb new     Creates new configuration file with default values in $HOME or, if
-              --configPath option is set it writes it in the specified path
+  cpb serve              Run cpbooster as server for competitive companion
+                         plugin.
+  cpb test <filePath>    Test your code against one or all (default) available
+                         test cases. Run `cpb test --help` to see more usage
+                         options                                    [aliases: t]
+  cpb create <filePath>  Creates new source code file with the corresponding
+                         template loaded or multiple source files if a sequence
+                         is given as file name. Run `cpb create --help` to see
+                         usage options and examples                 [aliases: c]
+  cpb init               Creates a new configuration file with default values in
+                         $HOME directory or if --config is specified, it writes
+                         it in the given path.                      [aliases: i]
 
 Options:
-  --version, -v     Show version number                                [boolean]
-  --help, -h        Show help                                          [boolean]
-  --configPath, -c  Path to read/write configuration file               [string]
+  --version, -v  Show version number                                   [boolean]
+  --help, -h     Show help                                             [boolean]
+  --config       Path to JSON configuration file
+                 [default: "/home/san/cpbooster-config.json"]]
 ```
 
 **Note:** Run `cpbooster <command> --help` to display help information about a specific command.
