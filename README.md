@@ -20,6 +20,7 @@
    - `cpb create {a...n}.cpp` same as previous command (Any amount of dots greater than 1 work)
    - `cpb create {a-n}.cpp` same as previous command (Single dash also works)
    - `cpb create /some/path/a.cpp` creates "a.cpp" in the specified path instead of current location
+   - `cpb create /some/path/{a-n}.cpp` creates "a.cpp ... n.cpp" in the specified path instead of current location
 1. Test your code against sample testcases quickly.
    - `cpb test mycode.cpp` test your program against all available test cases
    - `cpb test mycode.cpp -t 1` test your program against the test case with the given id.
