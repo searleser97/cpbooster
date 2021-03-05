@@ -20,5 +20,5 @@ import Config from "../Config";
 import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
 
 export function init(args: ICommandGlobalArgs) {
-  new Config().write(args.config);
+  Config.write(args.config);
 }

@@ -46,25 +46,25 @@ export default class Config {
     this.terminal = "konsole";
     this.closeAfterClone = false;
     if (configFilePath) {
-      this.read();
+      Object.assign(this, Config.read(configFilePath));
     }
   }
 
-  write(configFilePath: string = Config.defaultConfigFilePath) {
+  static write(configFilePath: string = Config.defaultConfigFilePath): void {
     if (!fs.existsSync(configFilePath)) {
-      fs.writeFileSync(configFilePath, JSON.stringify(this, null, 2));
+      fs.writeFileSync(configFilePath, JSON.stringify(new Config(), null, 2));
       console.log(`Your configuration file has been written in: "${configFilePath}"`);
     } else {
       console.log(`"${configFilePath}" already exists`);
     }
   }
 
-  read(configFilePath: string = Config.defaultConfigFilePath) {
+  static read(configFilePath: string = Config.defaultConfigFilePath): Config {
     if (!fs.existsSync(configFilePath)) {
       console.log("configuration file not found in:", configFilePath);
       console.log("You can create one in your $HOME directory by running 'cpbooster new'");
       exit(0);
     }
-    Object.assign(this, JSON.parse(fs.readFileSync(configFilePath, "utf8")));
+    return JSON.parse(fs.readFileSync(configFilePath, "utf8"));
   }
 }
