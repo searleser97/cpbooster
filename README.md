@@ -11,7 +11,7 @@
 
 ## Features
 
-1. `cpbooster` comes with a short alias command called `cpb` to avoid writing the long command each time.
+1. `cpbooster` comes with a short alias command called `cpb` to avoid writing the long command each time
 1. Automatically clone sample testcases files with corresponding source code files with template loaded into a desired directory
    - `cpb serve` waits for competitive companion plugin to send parsed data for each problem
 1. Create source files with corresponding template loaded
@@ -21,9 +21,10 @@
    - `cpb create {a-n}.cpp` same as previous command (Single dash also works)
    - `cpb create /some/path/a.cpp` creates "a.cpp" in the specified path instead of current location
    - `cpb create /some/path/{a-n}.cpp` creates "a.cpp ... n.cpp" in the specified path instead of current location
-1. Test your code against sample testcases quickly.
+1. Test your code against sample testcases quickly
    - `cpb test mycode.cpp` test your program against all available test cases
-   - `cpb test mycode.cpp -t 1` test your program against the test case with the given id.
+   - `cpb test mycode.cpp -t 1` test your program against the test case with the given id
+   - `cpb test /some/path/mycode.cpp` test a program that is not located in your current location 
 
    Supported results:
    - **AC** (Accepted)
@@ -34,6 +35,7 @@
 1. Run code with your own debugging flags easily
    - `cpb test mycode.cpp -d` to use keyboard as input
    - `cpb test mycode.cpp -t 2 -d` to use a test case file as input
+   - `cpb test /some/path/mycode.cpp -d` debug a program that is not located in your current location
 1. open a new terminal in the contest directory immediately after cloning it
    - List of **supported terminals** for this feature:
      - konsole
