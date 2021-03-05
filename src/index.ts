@@ -40,11 +40,11 @@ updateNotifier({
 
 let descriptions = {
   serve: "Run cpbooster as server for competitive companion plugin.",
-  test: "Test your code against one or all available test cases.",
+  test: "Test your code against one or all (default) available test cases.",
   create:
     "Creates new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
   init:
-    "Creates new configuration file with default values in $HOME or, if --configPath option is set, it writes it in the specified path."
+    "Creates a new configuration file with default values in $HOME directory or if --config is specified, it writes it in the given path."
 };
 
 yargs
@@ -55,7 +55,7 @@ yargs
     "serve",
     descriptions.serve,
     (serve_yargs) => {
-      serve_yargs.usage("\n" + descriptions.serve + "\nUsage: $0 serve [options]").option("port", {
+      serve_yargs.usage("\n" + descriptions.serve + "\n\nUsage: $0 serve [options]").option("port", {
         alias: "p",
         type: "number",
         description: "Port where competitive companion plugin will send parsed data from problems"
@@ -79,7 +79,7 @@ yargs
           type: "boolean",
           description:
             'Runs program using the corresponding "Debug Command" specified in the configuration file.' +
-            "\n* If --testId flag is set, it will use the given test case as input" +
+            "\n* If --testId is specified, it will use the given test case as input" +
             "\n* Otherwise, it will read the input from keyboard" +
             "\n Note: If the language does not support debugging flags, this option will be ignored"
         })
@@ -113,21 +113,21 @@ yargs
   )
   .command(
     ["create <filePath>", "c"],
-    descriptions.create + " Run `cpb create --help` to see usage options",
+    descriptions.create + " Run `cpb create --help` to see usage options and examples",
     (create_yargs) => {
       create_yargs
         .usage(
           "\n" +
             descriptions.create +
-            "\n\nUsage 1: $0 create <sourceCodePath>" +
-            "\n  examples:\n" +
-            "    $0 create sourcefile.cpp\n" +
-            "    $0 create /home/cpbooster/sourcefile.cpp\n" +
-            "\nUsage 2: $0 create <DirectoryPath>/{from(-|..)to}<extension>" +
-            "\n  examples:\n" +
-            "    $0 create {a-d}.cpp\n" +
-            "    $0 create {a..d}.cpp\n" +
-            "    $0 create /home/cpbooster/{a..d}.cpp\n"
+            "\n\n* Usage 1: $0 create <filePath> [options]\n\n" +
+            "    examples:\n" +
+            "      > $0 create sourcefile.cpp\n" +
+            "      > $0 create /home/cpbooster/sourcefile.py" +
+            "\n\n* Usage 2: $0 create [DirectoryPath/]{from..to}<extension> [options]\n\n" +
+            "    examples:\n" +
+            "      > $0 create {a..d}.cpp (any amount of dots greater than 1 work)\n" +
+            "      > $0 create /home/cpbooster/{a..d}.cpp\n" +
+            "      > $0 create {a-d}.py (single hyphen also works)\n"
         )
         .fail((msg: string, _, yargs) => {
           yargs.showHelp();
@@ -145,7 +145,7 @@ yargs
     descriptions.init,
     (new_yargs) => {
       new_yargs
-        .usage("\n" + descriptions.init + "\n\nUsage: $0 new [options]")
+        .usage("\n" + descriptions.init + "\n\nUsage: $0 init [options]")
         .config(
           "config",
           "Path where the JSON configuration file will be created" +
