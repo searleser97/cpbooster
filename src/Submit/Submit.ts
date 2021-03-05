@@ -16,24 +16,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import Config from "../../Config";
-import { Veredict } from "../../Types/Veredict";
-import Tester from "./Tester";
+import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
 
-export default class PyTester extends Tester {
-  constructor(config: Config, filePath: string) {
-    super(config, filePath);
-  }
+export interface ICommandSubmitArgs extends ICommandGlobalArgs {
+  filePath: string;
+  url?: string
+}
 
-  testOne(testId: number, _: boolean): Veredict {
-    return this.runTest(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
-  }
-
-  debugOne(testId: number, _: boolean): void {
-    this.runDebug(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
-  }
-
-  debugWithUserInput(_: boolean): void {
-    this.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
-  }
+export function submit(args: ICommandSubmitArgs) {
+  
 }
