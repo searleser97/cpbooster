@@ -1,4 +1,3 @@
-import Config from "../Config";
 /*
     cpbooster "Competitive Programming Booster"
     Copyright (C) 2020  Sergio G. Sanchez V.
@@ -18,6 +17,7 @@ import Config from "../Config";
  */
 
 import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
+import Config from "../Config";
 
 export function init(args: ICommandGlobalArgs) {
   Config.write(args.config);
