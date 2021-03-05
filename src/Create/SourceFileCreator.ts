@@ -21,8 +21,7 @@ import * as Path from "path";
 import Util from "../Util";
 
 export default class SourceFileCreator {
-  static create(filePath: string, config: Config, timeLimitInMS?: number) {
-    if (!timeLimitInMS) timeLimitInMS = 3000;
+  static create(filePath: string, config: Config, timeLimitInMS: number = 3000) {
     let filename = Path.basename(filePath);
     let match = /\{[a-zA-Z](\.{2,}|-)[a-zA-Z]\}\.[a-zA-Z0-9]+/g.exec(filename);
     if (match) {
@@ -33,11 +32,15 @@ export default class SourceFileCreator {
     }
   }
 
-  static createSingle(filePath: string, config: Config, timeLimitInMS: number) {
+  static createSingle(filePath: string, config: Config, timeLimitInMS: number = 3000) {
     let extension = Path.extname(filePath);
     let filename = Util.normalizeName(Path.basename(filePath));
     filePath = Path.join(Path.dirname(filePath), filename);
-    let template = `${Util.getCommentString(extension)} time-limit: ${timeLimitInMS}\n`;
+    let template = "";
+    let commentString = Util.getCommentString(extension);
+    if (commentString) {
+      template += `${commentString} time-limit: ${timeLimitInMS}\n`;
+    }
     if (extension == ".cpp" && config.cppTemplatePath) {
       template += fs.readFileSync(config.cppTemplatePath).toString();
     } else if (extension == ".py" && config.pyTemplatePath) {

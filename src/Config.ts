@@ -34,7 +34,7 @@ export default class Config {
   terminal: string;
   closeAfterClone: boolean;
 
-  constructor(configFilePath?: string) {
+  constructor() {
     this.contestsDirectory = Path.join(os.homedir(), "Contests");
     this.cppTemplatePath = "";
     this.cppCompileCommand = "g++ -std=gnu++17 -O2";
@@ -45,9 +45,6 @@ export default class Config {
     this.port = 1327;
     this.terminal = "konsole";
     this.closeAfterClone = false;
-    if (configFilePath) {
-      Object.assign(this, Config.read(configFilePath));
-    }
   }
 
   static write(configFilePath: string = Config.defaultConfigFilePath): void {
@@ -62,7 +59,7 @@ export default class Config {
   static read(configFilePath: string = Config.defaultConfigFilePath): Config {
     if (!fs.existsSync(configFilePath)) {
       console.log("configuration file not found in:", configFilePath);
-      console.log("You can create one in your $HOME directory by running 'cpbooster new'");
+      console.log("You can create one in your $HOME directory by running 'cpbooster init'");
       exit(0);
     }
     return JSON.parse(fs.readFileSync(configFilePath, "utf8"));

@@ -39,47 +39,49 @@ updateNotifier({
 });
 
 let descriptions = {
-  serve: "Run cpbooster as server for competitive companion plugin",
-  test:
-    "Test your code against one or all available test cases.\nAs alternative you can also debug it using manual input or a single test case",
+  serve: "Run cpbooster as server for competitive companion plugin.",
+  test: "Test your code against one or all available test cases.",
   create:
-    "Creates new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name," +
-    " run 'cpbooster create --help' to see usage options",
+    "Creates new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
   init:
-    "Creates new configuration file with default values in $HOME or, if --configPath option is set it writes it in the specified path"
+    "Creates new configuration file with default values in $HOME or, if --configPath option is set, it writes it in the specified path."
 };
 
 yargs
   .usage(
-    "\nUsage: $0 <command> [options]\n\nRun $0 <command> --help to show help for an especific command"
+    "\nUsage: $0 <command> [options]\n\nRun `$0 <command> --help` to show help for an specific command."
   )
   .command(
     "serve",
     descriptions.serve,
     (serve_yargs) => {
-      serve_yargs
-        .usage("\n" + descriptions.serve + "\n\nUsage: $0 serve [options]")
-        .option("port", {
-          alias: "p",
-          type: "number",
-          description: "Port where competitive companion plugin will send parsed data from problems"
-        });
+      serve_yargs.usage("\n" + descriptions.serve + "\nUsage: $0 serve [options]").option("port", {
+        alias: "p",
+        type: "number",
+        description: "Port where competitive companion plugin will send parsed data from problems"
+      });
     },
     (argv) => serve((argv as unknown) as ICommandServeArgs)
   )
   .command(
     ["test <filePath>", "t"],
-    descriptions.test,
+    descriptions.test + " Run `cpb test --help` to see more usage options",
     (test_yargs) => {
       test_yargs
-        .usage("\n" + descriptions.test + "\n\nUsage: $0 test <filePath> [options]")
+        .usage(
+          "\n" +
+            descriptions.test +
+            " Refer to the options section to see all possible usages of this command." +
+            "\n\nUsage: $0 test <filePath> [options]"
+        )
         .option("debug", {
           alias: "d",
           type: "boolean",
           description:
-            'Run <program> using the "Debug Command" specified in the configuration file' +
+            'Runs program using the corresponding "Debug Command" specified in the configuration file.' +
             "\n* If --testId flag is set, it will use the given test case as input" +
-            "\n* Otherwise, it will read the input from keyboard"
+            "\n* Otherwise, it will read the input from keyboard" +
+            "\n Note: If the language does not support debugging flags, this option will be ignored"
         })
         .option("testId", {
           alias: "t",
@@ -90,7 +92,8 @@ yargs
           alias: "nc",
           type: "boolean",
           description:
-            "Test with out compiling source (assumes there is a corresponding binary file already)"
+            "Skip compilation of program (assumes there is a corresponding binary file already)." +
+            "\n Note: If the language does not require compilation, this option will be ignored"
         })
         .option("add", {
           alias: "a",
@@ -110,7 +113,7 @@ yargs
   )
   .command(
     ["create <filePath>", "c"],
-    descriptions.create,
+    descriptions.create + " Run `cpb create --help` to see usage options",
     (create_yargs) => {
       create_yargs
         .usage(
@@ -160,5 +163,4 @@ yargs
     "config",
     "Path to JSON configuration file" +
       `\n[default: "${Path.join(os.homedir(), "cpbooster-config.json")}"]`
-  )
-  .argv;
+  ).argv;

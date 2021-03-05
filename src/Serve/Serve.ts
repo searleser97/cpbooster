@@ -25,7 +25,7 @@ export interface ICommandServeArgs extends ICommandGlobalArgs {
 }
 
 export function serve(args: ICommandServeArgs) {
-  const config = new Config(args.config);
+  const config = Config.read(args.config);
   if (args.port) {
     config.port = args.port;
   }
