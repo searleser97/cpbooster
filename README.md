@@ -17,7 +17,7 @@
 1. Create source files with corresponding template loaded
    - `cpb create b.py` creates single file with corresponding template loaded based on file extension
    - `cpb create {a..n}.cpp` creates multiple consecutive files from "a.cpp" to "n.cpp"
-   - `cpb create {a...n}.cpp` same as previous command (Any amount of dots greater than 1 work)
+   - `cpb create /specific/directory/{a...n}.cpp` same as previous command (Any amount of dots greater than 1 work)
    - `cpb create {a-n}.cpp` same as previous command (Single dash also works)
 1. Test your code against sample testcases quickly.
    - `cpb test mycode.cpp` test your program against all available test cases
@@ -65,11 +65,11 @@
 2. Run:
 
 ```shell
-  cpbooster new
+  cpbooster init
 ```
   or
 ```shell
-  cpb new
+  cpb init
 ```
 
 3. Edit the configuration file created in your home directory according to your needs.
