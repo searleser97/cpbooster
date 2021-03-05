@@ -130,7 +130,7 @@ Options:
 
 ## Future updates
 
-- Add `cpb submit` command. to submit code from CLI.
+- Add `cpb submit` command. to submit code from CLI. (probably `cpb login` will also be required)
 - Add the possibility to test interactive problems
 - Add the possibility to test current file using test cases of another file (test --as \<filename>)
 - Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)
