@@ -17,9 +17,9 @@
  */
 
 import { launch, Page } from "puppeteer";
-import * as fs from 'fs';
+import * as fs from "fs";
 import * as Path from "path";
-import * as os from "os"
+import * as os from "os";
 
 export default abstract class OnlineJudge {
   readonly cookiesPath = Path.join(os.homedir(), ".cpbooster/cpbooster-cookies.json");
