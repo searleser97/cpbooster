@@ -27,6 +27,7 @@ import { ICommandServeArgs, serve } from "./Serve/Serve";
 import { ICommandTestArgs, test } from "./Test/Test";
 import { create, ICommandCreateArgs } from "./Create/Create";
 import { init } from "./Init/Init";
+import { ICommandLoginArgs, login } from "./Login/Login";
 
 const pkg = require("../package.json");
 updateNotifier({
@@ -42,9 +43,10 @@ let descriptions = {
   serve: "Run cpbooster as server for competitive companion plugin.",
   test: "Test your code against one or all (default) available test cases.",
   create:
-    "Creates new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
+    "Create a new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
   init:
-    "Creates a new configuration file with default values in $HOME directory or if --config is specified, it writes it in the given path."
+    "Create a new configuration file with default values in $HOME directory or if --config is specified, it writes it in the given path.",
+  login: "Log in to the specified Online Judge (i.e. Codeforces, AtCoder, ...)."
 };
 
 yargs
@@ -55,11 +57,13 @@ yargs
     "serve",
     descriptions.serve,
     (serve_yargs) => {
-      serve_yargs.usage("\n" + descriptions.serve + "\n\nUsage: $0 serve [options]").option("port", {
-        alias: "p",
-        type: "number",
-        description: "Port where competitive companion plugin will send parsed data from problems"
-      });
+      serve_yargs
+        .usage("\n" + descriptions.serve + "\n\nUsage: $0 serve [options]")
+        .option("port", {
+          alias: "p",
+          type: "number",
+          description: "Port where competitive companion plugin will send parsed data from problems"
+        });
     },
     (argv) => serve((argv as unknown) as ICommandServeArgs)
   )
@@ -153,6 +157,28 @@ yargs
         );
     },
     (argv) => init((argv as unknown) as ICommandGlobalArgs)
+  )
+  .command(
+    ["login <url>", "l"],
+    descriptions.login,
+    (new_yargs) => {
+      new_yargs
+        .usage(
+          "\n" +
+            descriptions.login +
+            " The name of the Online Judge can be given instead of <url>." +
+            "\n\nUsage: $0 login <url>"
+        )
+        .fail((msg: string, _, yargs) => {
+          yargs.showHelp();
+          if (msg === "Not enough non-option arguments: got 0, need at least 1") {
+            console.log("\nMissing <url> in arguments");
+          } else {
+            console.log("\n" + msg);
+          }
+        });
+    },
+    (argv) => login((argv as unknown) as ICommandLoginArgs)
   )
   .help("help")
   .alias("help", "h")

@@ -16,19 +16,21 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
+import { exit } from "process";
+import AtCoder from "./AtCoder";
+import Codeforces from "./Codeforces";
+import OnlineJudge from "./OnlineJudge";
 
-export interface ICommandSubmitArgs extends ICommandGlobalArgs {
-  filePath: string;
-  url?: string
-}
-
-export function submit(args: ICommandSubmitArgs) {
-  // 2 methods to extract url:
-  // If args contains url then use that one
-  // otherwise extract it from the contents of the file using regex
-  // if not found throw an error
-
-  // get the corresponding OnlineJudge for the Url using OnlineJudge Factory
-  // once we have the corresponding url, call "submit" method of OnlineJudge
+export default class OnlineJudgeFactory {
+  static getOnlineJudge(url: string): OnlineJudge {
+    url = url.toLowerCase();
+    if (url.includes("codeforces")) {
+      return new Codeforces();
+    } else if (url.includes("atcoder")) {
+      return new AtCoder();
+    } else {
+      console.log("Online Judge not supported");
+      exit(0);
+    }
+  }
 }

@@ -15,7 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 import Config from "../../Config";
 import { Veredict } from "../../Types/Veredict";
 import Tester from "./Tester";
@@ -25,15 +24,24 @@ export default class PyTester extends Tester {
     super(config, filePath);
   }
 
-  testOne(testId: number, _: boolean): Veredict {
+  testOne(testId: number, compile: boolean): Veredict {
+    if (!compile) {
+      console.log("python does not support compilation, using --noCompile option is unnecesary");
+    }
     return this.runTest(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
   }
 
-  debugOne(testId: number, _: boolean): void {
+  debugOne(testId: number, compile: boolean): void {
+    if (!compile) {
+      console.log("python does not support compilation, using --noCompile option is unnecesary");
+    }
     this.runDebug(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
   }
 
-  debugWithUserInput(_: boolean): void {
+  debugWithUserInput(compile: boolean): void {
+    if (!compile) {
+      console.log("python does not support compilation, using --noCompile option is unnecesary");
+    }
     this.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
   }
 }

@@ -16,19 +16,15 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
+import { Page } from "puppeteer";
+import OnlineJudge from "./OnlineJudge";
 
-export interface ICommandSubmitArgs extends ICommandGlobalArgs {
-  filePath: string;
-  url?: string
-}
+export default class AtCoder extends OnlineJudge {
 
-export function submit(args: ICommandSubmitArgs) {
-  // 2 methods to extract url:
-  // If args contains url then use that one
-  // otherwise extract it from the contents of the file using regex
-  // if not found throw an error
+  loginUrl: string = "https://atcoder.jp/login";
 
-  // get the corresponding OnlineJudge for the Url using OnlineJudge Factory
-  // once we have the corresponding url, call "submit" method of OnlineJudge
+  async isLoggedIn(page: Page): Promise<boolean> {
+    const querySelector = "a[href*=logout]";
+    return (await page.$(querySelector)) !== null;
+  }
 }
