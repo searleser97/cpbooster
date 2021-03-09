@@ -35,7 +35,7 @@ export default class AtCoder extends OnlineJudge {
     let page = pages.length > 0 ? pages[0] : await context.newPage();
 
     const blockedResources = new Set(["image", "stylesheet", "font", "script"]);
-    let isInterceptionEnabled = false;
+    let isInterceptionEnabled = true;
     await page.route("**/*", (route) => {
       if (isInterceptionEnabled && blockedResources.has(route.request().resourceType())) {
         route.abort();
