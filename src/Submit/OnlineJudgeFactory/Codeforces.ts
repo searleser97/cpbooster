@@ -20,7 +20,6 @@ import { Page } from "puppeteer";
 import OnlineJudge from "./OnlineJudge";
 
 export default class Codeforces extends OnlineJudge {
-
   loginUrl: string = "https://codeforces.com/enter";
 
   async isLoggedIn(page: Page): Promise<boolean> {
