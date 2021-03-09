@@ -16,11 +16,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Page } from "puppeteer";
+import { chromium, Page } from "playwright-chromium";
 import OnlineJudge from "./OnlineJudge";
 
 export default class AtCoder extends OnlineJudge {
-
   loginUrl: string = "https://atcoder.jp/login";
 
   async isLoggedIn(page: Page): Promise<boolean> {
@@ -28,7 +27,41 @@ export default class AtCoder extends OnlineJudge {
     return (await page.$(querySelector)) !== null;
   }
 
-  async submit(url: string, filePath: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async submit(filePath: string, url: string): Promise<boolean> {
+    let browser = await chromium.launch({ headless: true });
+    const context = await this.restoreSession(browser);
+
+    const pages = context.pages();
+    let page = pages.length > 0 ? pages[0] : await context.newPage();
+
+    const blockedResources = new Set(["image", "stylesheet", "font", "script"]);
+    let isInterceptionEnabled = false;
+    await page.route("**/*", (route) => {
+      if (isInterceptionEnabled && blockedResources.has(route.request().resourceType())) {
+        route.abort();
+      } else {
+        route.continue();
+      }
+    });
+
+    await page.goto(url);
+
+    if (!(await this.isLoggedIn(page))) {
+      await this.login();
+      await page.goto(url);
+    }
+
+    const inputFile = await page.$("input[type=file]");
+    if (inputFile) await inputFile.setInputFiles("./A.Threeswimmers.cpp");
+
+    isInterceptionEnabled = false;
+    await page.selectOption("select", { value: "4003" });
+    await page.screenshot({ path: "/home/san/Pictures/example1.png", fullPage: true });
+    await page.click("#submit");
+    // await page.waitForNavigation({ timeout: 0 });
+    // await this.saveSession(context);
+    // await page.screenshot({ path: "/home/san/Pictures/example2.png", fullPage: true });
+    await browser.close();
+    return false;
   }
 }

@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { launch, Page } from "puppeteer";
+import { chromium, Page } from "playwright-chromium";
 import OnlineJudge from "./OnlineJudge";
 import * as fs from "fs";
 
@@ -29,26 +29,19 @@ export default class Codeforces extends OnlineJudge {
   }
 
   async submit(filePath: string, url: string): Promise<boolean> {
-    const browser = await launch({
-      headless: false,
-      args: [`--user-data-dir=/home/san/.cpbooster`]
-    });
-    browser.on("targetcreated", () => this.closeAllOtherTabs(browser));
+    let browser = await chromium.launch({ headless: true });
+    const context = await this.restoreSession(browser);
 
-    const pages = await browser.pages();
-    let page = pages.length > 0 ? pages[0] : await browser.newPage();
-    await this.loadPreviousSession(page);
-    browser.on("disconnected", () => this.writeCurrentSession(page));
-    browser.on("targetcreated", () => this.closeAllOtherTabs(browser));
+    const pages = context.pages();
+    let page = pages.length > 0 ? pages[0] : await context.newPage();
 
-    await page.setRequestInterception(true);
     const blockedResources = new Set(["image", "stylesheet", "font", "script"]);
-    let isInterceptionEnabled = true;
-    page.on("request", (request) => {
-      if (isInterceptionEnabled && blockedResources.has(request.resourceType())) {
-        request.abort();
+    let isInterceptionEnabled = false;
+    await page.route("**/*", (route) => {
+      if (isInterceptionEnabled && blockedResources.has(route.request().resourceType())) {
+        route.abort();
       } else {
-        request.continue();
+        route.continue();
       }
     });
 
@@ -56,19 +49,20 @@ export default class Codeforces extends OnlineJudge {
 
     if (!(await this.isLoggedIn(page))) {
       await this.login();
-      await this.loadPreviousSession(page);
       await page.goto(url);
     }
 
     const inputFile = await page.$("input[type=file]");
-    if (inputFile) await inputFile.uploadFile("./A.Threeswimmers.cpp");
+    if (inputFile) await inputFile.setInputFiles("./A.Threeswimmers.cpp");
 
-    // await page.screenshot({ path: "/home/san/Pictures/example1.png", fullPage: true });
     isInterceptionEnabled = false;
+    await page.selectOption("select", { value: "54" });
+    await page.screenshot({ path: "/home/san/Pictures/example1.png", fullPage: true });
     await page.click('input[style="width:10em;"][type=submit]');
-    await page.waitForNavigation({ timeout: 0 });
+    // await page.waitForNavigation({ timeout: 0 });
+    // await this.saveSession(context);
     // await page.screenshot({ path: "/home/san/Pictures/example2.png", fullPage: true });
-    // await browser.close();
+    await browser.close();
     return false;
   }
 }

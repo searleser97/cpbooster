@@ -16,14 +16,20 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Browser, BrowserLaunchArgumentOptions, launch, Page } from "puppeteer";
+import {
+  Browser,
+  chromium,
+  ChromiumBrowser,
+  ChromiumBrowserContext,
+  Page
+} from "playwright-chromium";
 import * as fs from "fs";
 import * as Path from "path";
 import * as os from "os";
 import { exit } from "process";
 
 export default abstract class OnlineJudge {
-  readonly cookiesPath = Path.join(os.homedir(), ".cpbooster/cpbooster-cookies.json");
+  readonly storagePath = Path.join(os.homedir(), ".cpbooster/cpbooster-storage.json");
   readonly cpboosterHome = Path.join(os.homedir(), ".cpbooster");
 
   abstract readonly loginUrl: string;
@@ -33,49 +39,51 @@ export default abstract class OnlineJudge {
   // if not logged in, it should call `login()` and then continue with the submission
   abstract submit(url: string, filePath: string): Promise<boolean>;
 
-  async loadPreviousSession(page: Page): Promise<void> {
-    const previousSession = fs.existsSync(this.cookiesPath);
+  async restoreSession(browser: ChromiumBrowser): Promise<ChromiumBrowserContext> {
+    const previousSession = fs.existsSync(this.storagePath);
     if (previousSession) {
-      const cookiesString = fs.readFileSync(this.cookiesPath).toString();
-      const parsedCookies = JSON.parse(cookiesString);
-      for (let cookie of parsedCookies) {
-        await page.setCookie(cookie);
-      }
+      const storageString = fs.readFileSync(this.storagePath).toString();
+      const parsedStorage = JSON.parse(storageString);
+      const context = await browser.newContext({
+        storageState: parsedStorage,
+        userAgent: "chrome"
+      });
+      context.addCookies(parsedStorage);
+      return context;
+    } else {
+      return await browser.newContext({
+        userAgent: "chrome"
+      });
     }
   }
 
-  async writeCurrentSession(page: Page): Promise<void> {
-    const cookies = await page.cookies();
+  async saveSession(context: ChromiumBrowserContext): Promise<void> {
+    const localStorageAndCookies = await context.cookies();
+    console.log(localStorageAndCookies);
     if (!fs.existsSync(this.cpboosterHome)) {
       fs.mkdirSync(this.cpboosterHome, { recursive: true });
     }
-    fs.writeFile(this.cookiesPath, JSON.stringify(cookies, null, 2), (err) => {
+    fs.writeFile(this.storagePath, JSON.stringify(localStorageAndCookies, null, 2), async (err) => {
       if (err) {
-        console.log("Session information could not be written in", this.cookiesPath);
+        console.log("Session information could not be written in", this.storagePath);
       }
     });
   }
 
-  async closeAllOtherTabs(browser: Browser): Promise<void> {
-    const pages = await browser.pages();
-    if (pages.length > 1) {
-      for (let i = 1; i < pages.length; i++) {
-        pages[i].close();
-      }
+  async closeAllOtherTabs(context: ChromiumBrowserContext): Promise<void> {
+    const pages = context.pages();
+    for (let i = 1; i < pages.length; i++) {
+      pages[i].close();
     }
   }
 
   async login(): Promise<void> {
-    const browser = await launch({
-      headless: false,
-      defaultViewport: undefined
-    });
-    const pages = await browser.pages();
-    let page = pages.length > 0 ? pages[0] : await browser.newPage();
+    let browser = await chromium.launch({ headless: false });
+    const context = await this.restoreSession(browser);
+    console.log(await context.storageState());
 
-    await this.loadPreviousSession(page);
-    browser.on("disconnected", () => this.writeCurrentSession(page));
-    browser.on("targetcreated", () => this.closeAllOtherTabs(browser));
+    const pages = context.pages();
+    let page = pages.length > 0 ? pages[0] : await context.newPage();
 
     try {
       await page.goto(this.loginUrl);
@@ -91,7 +99,7 @@ export default abstract class OnlineJudge {
       console.log("Unsuccesful login!");
       exit(0);
     }
-
+    await this.saveSession(context);
     await browser.close();
   }
 }
