@@ -21,6 +21,7 @@ import {
   chromium,
   ChromiumBrowser,
   ChromiumBrowserContext,
+  LaunchOptions,
   Page
 } from "playwright-chromium";
 import * as fs from "fs";
@@ -46,13 +47,15 @@ export default abstract class OnlineJudge {
       const parsedStorage = JSON.parse(storageString);
       const context = await browser.newContext({
         storageState: parsedStorage,
-        userAgent: "chrome"
+        userAgent: "chrome",
+        viewport: null
       });
       context.addCookies(parsedStorage);
       return context;
     } else {
       return await browser.newContext({
-        userAgent: "chrome"
+        userAgent: "chrome",
+        viewport: null
       });
     }
   }
