@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { launch, Page } from "puppeteer";
+import { Browser, BrowserLaunchArgumentOptions, launch, Page } from "puppeteer";
 import * as fs from "fs";
 import * as Path from "path";
 import * as os from "os";
@@ -33,31 +33,50 @@ export default abstract class OnlineJudge {
   // if not logged in, it should call `login()` and then continue with the submission
   abstract submit(url: string, filePath: string): Promise<boolean>;
 
-  async login(): Promise<void> {
-    const browser = await launch({ headless: false, defaultViewport: undefined });
-    const pages = await browser.pages();
-    let page = pages.length > 0 ? pages[0] : await browser.newPage();
-
-    browser.on("targetcreated", async function () {
-      const pages = await browser.pages();
-      if (pages.length > 1) {
-        for (let i = 1; i < pages.length; i++) {
-          pages[i].close();
-        }
-        page = pages[0];
-      }
-    });
-
+  async loadPreviousSession(page: Page): Promise<void> {
     const previousSession = fs.existsSync(this.cookiesPath);
     if (previousSession) {
       const cookiesString = fs.readFileSync(this.cookiesPath).toString();
       const parsedCookies = JSON.parse(cookiesString);
-      if (parsedCookies.length !== 0) {
-        for (let cookie of parsedCookies) {
-          await page.setCookie(cookie);
-        }
+      for (let cookie of parsedCookies) {
+        await page.setCookie(cookie);
       }
     }
+  }
+
+  async writeCurrentSession(page: Page): Promise<void> {
+    const cookies = await page.cookies();
+    if (!fs.existsSync(this.cpboosterHome)) {
+      fs.mkdirSync(this.cpboosterHome, { recursive: true });
+    }
+    fs.writeFile(this.cookiesPath, JSON.stringify(cookies, null, 2), (err) => {
+      if (err) {
+        console.log("Session information could not be written in", this.cookiesPath);
+      }
+    });
+  }
+
+  async closeAllOtherTabs(browser: Browser): Promise<void> {
+    const pages = await browser.pages();
+    if (pages.length > 1) {
+      for (let i = 1; i < pages.length; i++) {
+        pages[i].close();
+      }
+    }
+  }
+
+  async login(): Promise<void> {
+    const browser = await launch({
+      headless: false,
+      defaultViewport: undefined
+    });
+    const pages = await browser.pages();
+    let page = pages.length > 0 ? pages[0] : await browser.newPage();
+
+    await this.loadPreviousSession(page);
+    browser.on("disconnected", () => this.writeCurrentSession(page));
+    browser.on("targetcreated", () => this.closeAllOtherTabs(browser));
+
     try {
       await page.goto(this.loginUrl);
 
@@ -72,15 +91,7 @@ export default abstract class OnlineJudge {
       console.log("Unsuccesful login!");
       exit(0);
     }
-    const cookies = await page.cookies();
-    if (!fs.existsSync(this.cpboosterHome)) {
-      fs.mkdirSync(this.cpboosterHome, { recursive: true });
-    }
-    fs.writeFile(this.cookiesPath, JSON.stringify(cookies, null, 2), (err) => {
-      if (err) {
-        console.log("Session information could not be written in", this.cookiesPath);
-      }
-    });
+
     await browser.close();
   }
 }

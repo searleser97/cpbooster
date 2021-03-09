@@ -16,8 +16,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Page } from "puppeteer";
+import { launch, Page } from "puppeteer";
 import OnlineJudge from "./OnlineJudge";
+import * as fs from "fs";
 
 export default class Codeforces extends OnlineJudge {
   loginUrl: string = "https://codeforces.com/enter";
@@ -27,7 +28,47 @@ export default class Codeforces extends OnlineJudge {
     return (await page.$(querySelector)) !== null;
   }
 
-  async submit(url: string, filePath: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async submit(filePath: string, url: string): Promise<boolean> {
+    const browser = await launch({
+      headless: false,
+      args: [`--user-data-dir=/home/san/.cpbooster`]
+    });
+    browser.on("targetcreated", () => this.closeAllOtherTabs(browser));
+
+    const pages = await browser.pages();
+    let page = pages.length > 0 ? pages[0] : await browser.newPage();
+    await this.loadPreviousSession(page);
+    browser.on("disconnected", () => this.writeCurrentSession(page));
+    browser.on("targetcreated", () => this.closeAllOtherTabs(browser));
+
+    await page.setRequestInterception(true);
+    const blockedResources = new Set(["image", "stylesheet", "font", "script"]);
+    let isInterceptionEnabled = true;
+    page.on("request", (request) => {
+      if (isInterceptionEnabled && blockedResources.has(request.resourceType())) {
+        request.abort();
+      } else {
+        request.continue();
+      }
+    });
+
+    await page.goto(url);
+
+    if (!(await this.isLoggedIn(page))) {
+      await this.login();
+      await this.loadPreviousSession(page);
+      await page.goto(url);
+    }
+
+    const inputFile = await page.$("input[type=file]");
+    if (inputFile) await inputFile.uploadFile("./A.Threeswimmers.cpp");
+
+    // await page.screenshot({ path: "/home/san/Pictures/example1.png", fullPage: true });
+    isInterceptionEnabled = false;
+    await page.click('input[style="width:10em;"][type=submit]');
+    await page.waitForNavigation({ timeout: 0 });
+    // await page.screenshot({ path: "/home/san/Pictures/example2.png", fullPage: true });
+    // await browser.close();
+    return false;
   }
 }

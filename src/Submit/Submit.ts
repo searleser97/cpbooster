@@ -17,17 +17,20 @@
  */
 
 import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
+import OnlineJudgeFactory from "./OnlineJudgeFactory/OnlineJudgeFactory";
 
 export interface ICommandSubmitArgs extends ICommandGlobalArgs {
   filePath: string;
   url?: string;
 }
 
+function extractUrlFromFile(filePath: string): string {
+  // send error message if url not found in file
+  return "https://codeforces.com/contest/1486/problem/D";
+}
+
 export function submit(args: ICommandSubmitArgs) {
-  // 2 methods to extract url:
-  // If args contains url then use that one
-  // otherwise extract it from the contents of the file using regex
-  // if not found throw an error
-  // get the corresponding OnlineJudge for the Url using OnlineJudge Factory
-  // once we have the corresponding url, call "submit" method of OnlineJudge
+  const url = args.url ?? extractUrlFromFile(args.filePath);
+  const oj = OnlineJudgeFactory.getOnlineJudge(url);
+  oj.submit(args.filePath, url);
 }

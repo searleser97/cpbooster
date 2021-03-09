@@ -28,6 +28,7 @@ import { ICommandTestArgs, test } from "./Test/Test";
 import { create, ICommandCreateArgs } from "./Create/Create";
 import { init } from "./Init/Init";
 import { ICommandLoginArgs, login } from "./Login/Login";
+import { ICommandSubmitArgs, submit } from "./Submit/Submit";
 
 const pkg = require("../package.json");
 updateNotifier({
@@ -46,7 +47,9 @@ let descriptions = {
     "Create a new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
   init:
     "Create a new configuration file with default values in $HOME directory or if --config is specified, it writes it in the given path.",
-  login: "Log in to the specified Online Judge (i.e. Codeforces, AtCoder, ...)."
+  login: "Log in to the specified Online Judge (i.e. Codeforces, AtCoder, ...).",
+  submit:
+    "Submit a source code file as a solution to a problem in an Online Judge (i.e. Codeforces, AtCoder, ...)."
 };
 
 yargs
@@ -179,6 +182,23 @@ yargs
         });
     },
     (argv) => login((argv as unknown) as ICommandLoginArgs)
+  )
+  .command(
+    ["submit <filePath>", "s"],
+    descriptions.submit,
+    (new_yargs) => {
+      new_yargs
+        .usage("\n" + descriptions.submit + "\n\nUsage: $0 submit <filePath> [url]")
+        .fail((msg: string, _, yargs) => {
+          yargs.showHelp();
+          if (msg === "Not enough non-option arguments: got 0, need at least 1") {
+            console.log("\nMissing <filePath> in arguments");
+          } else {
+            console.log("\n" + msg);
+          }
+        });
+    },
+    (argv) => submit((argv as unknown) as ICommandSubmitArgs)
   )
   .help("help")
   .alias("help", "h")
