@@ -20,6 +20,7 @@ import { launch, Page } from "puppeteer";
 import * as fs from "fs";
 import * as Path from "path";
 import * as os from "os";
+import { exit } from "process";
 
 export default abstract class OnlineJudge {
   readonly cookiesPath = Path.join(os.homedir(), ".cpbooster/cpbooster-cookies.json");
@@ -28,6 +29,9 @@ export default abstract class OnlineJudge {
   abstract readonly loginUrl: string;
 
   abstract isLoggedIn(page: Page): Promise<boolean>;
+
+  // if not logged in, it should call `login()` and then continue with the submission
+  abstract submit(url: string, filePath: string): Promise<boolean>;
 
   async login(): Promise<void> {
     const browser = await launch({ headless: false, defaultViewport: undefined });
@@ -66,6 +70,7 @@ export default abstract class OnlineJudge {
       console.log("Succesful login!");
     } catch (e) {
       console.log("Unsuccesful login!");
+      exit(0);
     }
     const cookies = await page.cookies();
     if (!fs.existsSync(this.cpboosterHome)) {

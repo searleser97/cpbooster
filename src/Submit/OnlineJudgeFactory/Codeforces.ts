@@ -27,4 +27,8 @@ export default class Codeforces extends OnlineJudge {
     const querySelector = "a[href*=logout]";
     return (await page.$(querySelector)) !== null;
   }
+
+  async submit(url: string, filePath: string): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
 }
