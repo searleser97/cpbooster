@@ -53,7 +53,6 @@ export default abstract class OnlineJudge {
           await page.setCookie(cookie);
         }
       }
-      console.log("Previous session loaded in the browser");
     }
     try {
       await page.goto(this.loginUrl);
@@ -74,9 +73,7 @@ export default abstract class OnlineJudge {
     }
     fs.writeFile(this.cookiesPath, JSON.stringify(cookies, null, 2), (err) => {
       if (err) {
-        console.log("The file could not be written.", err);
-      } else {
-        console.log("Session saved succesfully");
+        console.log("Session information could not be written in", this.cookiesPath);
       }
     });
     await browser.close();
