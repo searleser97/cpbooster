@@ -26,8 +26,8 @@ export interface ICommandSubmitArgs extends ICommandGlobalArgs {
 
 function extractUrlFromFile(filePath: string): string {
   // send error message if url not found in file
-  return "https://codeforces.com/contest/1486/problem/D";
-  // return "https://atcoder.jp/contests/abc194/tasks/abc194_a";
+  // return "https://codeforces.com/contest/1486/problem/D";
+  return "https://atcoder.jp/contests/abc194/tasks/abc194_a";
 }
 
 export function submit(args: ICommandSubmitArgs) {

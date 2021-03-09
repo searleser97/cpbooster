@@ -30,12 +30,31 @@ export default abstract class OnlineJudge {
 
   abstract readonly loginUrl: string;
 
+  /* unnecesary resources when submitting a file, (i.e. css, script, image, font, ...)
+  visit: https://playwright.dev/docs/api/class-request#requestresourcetype to get
+  the list of possible resource names. Blocking these resources reduces the time
+  required per submission significantly */
+  abstract readonly blockedResourcesOnSubmit: Set<string>;
+
   abstract isLoggedIn(page: Page): Promise<boolean>;
 
-  // if not logged in, it should call `login()` and then continue with the submission
-  abstract submit(url: string, filePath: string): Promise<boolean>;
+  abstract uploadFile(filePath: string, page: Page): Promise<boolean>;
 
-  // create `submitAssumingSessionExists` or something like that
+  getSession(): Array<{
+    name: string;
+    value: string;
+    url?: string;
+    domain?: string;
+    path?: string;
+    expires?: number;
+    httpOnly?: boolean;
+    secure?: boolean;
+    sameSite?: "Strict" | "Lax" | "None";
+  }> {
+    const sessionString = fs.readFileSync(this.sessionPath).toString();
+    const parsedSession = JSON.parse(sessionString);
+    return parsedSession;
+  }
 
   async restoreSession(browser: ChromiumBrowser): Promise<ChromiumBrowserContext> {
     const previousSession = fs.existsSync(this.sessionPath);
@@ -44,9 +63,7 @@ export default abstract class OnlineJudge {
       viewport: null
     });
     if (previousSession) {
-      const sessionString = fs.readFileSync(this.sessionPath).toString();
-      const parsedSession = JSON.parse(sessionString);
-      context.addCookies(parsedSession);
+      context.addCookies(this.getSession());
     }
     return context;
   }
@@ -95,5 +112,39 @@ export default abstract class OnlineJudge {
       console.log("Unsuccesful login!");
       exit(0); // this helps to avoid printing any further errors
     }
+  }
+
+  async submit(filePath: string, url: string) {
+    let browser = await chromium.launch({ headless: true });
+    const context = await this.restoreSession(browser);
+
+    const pages = context.pages();
+    let page = pages.length > 0 ? pages[0] : await context.newPage();
+
+    await page.route("**/*", (route) => {
+      if (this.blockedResourcesOnSubmit.has(route.request().resourceType())) {
+        route.abort();
+      } else {
+        route.continue();
+      }
+    });
+
+    await page.goto(url);
+
+    if (!(await this.isLoggedIn(page))) {
+      await this.login();
+      await context.clearCookies();
+      await context.addCookies(this.getSession());
+      await page.goto(url);
+    }
+
+    if (await this.uploadFile(filePath, page)) {
+      console.log("File submitted succesfully");
+    } else {
+      console.log("Error: File was not submitted");
+    }
+
+    await this.saveSession(context);
+    await browser.close();
   }
 }
