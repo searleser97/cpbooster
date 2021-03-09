@@ -16,22 +16,17 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {
-  Browser,
-  chromium,
-  ChromiumBrowser,
-  ChromiumBrowserContext,
-  LaunchOptions,
-  Page
-} from "playwright-chromium";
+import { chromium, ChromiumBrowser, ChromiumBrowserContext, Page } from "playwright-chromium";
 import * as fs from "fs";
 import * as Path from "path";
 import * as os from "os";
 import { exit } from "process";
 
 export default abstract class OnlineJudge {
-  readonly storagePath = Path.join(os.homedir(), ".cpbooster/cpbooster-storage.json");
   readonly cpboosterHome = Path.join(os.homedir(), ".cpbooster");
+
+  // session cookies are stored in this file
+  readonly sessionPath = Path.join(this.cpboosterHome, "cpbooster-session.json");
 
   abstract readonly loginUrl: string;
 
@@ -40,35 +35,30 @@ export default abstract class OnlineJudge {
   // if not logged in, it should call `login()` and then continue with the submission
   abstract submit(url: string, filePath: string): Promise<boolean>;
 
+  // create `submitAssumingSessionExists` or something like that
+
   async restoreSession(browser: ChromiumBrowser): Promise<ChromiumBrowserContext> {
-    const previousSession = fs.existsSync(this.storagePath);
+    const previousSession = fs.existsSync(this.sessionPath);
+    const context = await browser.newContext({
+      userAgent: "chrome",
+      viewport: null
+    });
     if (previousSession) {
-      const storageString = fs.readFileSync(this.storagePath).toString();
-      const parsedStorage = JSON.parse(storageString);
-      const context = await browser.newContext({
-        storageState: parsedStorage,
-        userAgent: "chrome",
-        viewport: null
-      });
-      context.addCookies(parsedStorage);
-      return context;
-    } else {
-      return await browser.newContext({
-        userAgent: "chrome",
-        viewport: null
-      });
+      const sessionString = fs.readFileSync(this.sessionPath).toString();
+      const parsedSession = JSON.parse(sessionString);
+      context.addCookies(parsedSession);
     }
+    return context;
   }
 
   async saveSession(context: ChromiumBrowserContext): Promise<void> {
-    const localStorageAndCookies = await context.cookies();
-    console.log(localStorageAndCookies);
+    const cookies = await context.cookies();
     if (!fs.existsSync(this.cpboosterHome)) {
       fs.mkdirSync(this.cpboosterHome, { recursive: true });
     }
-    fs.writeFile(this.storagePath, JSON.stringify(localStorageAndCookies, null, 2), async (err) => {
+    fs.writeFile(this.sessionPath, JSON.stringify(cookies, null, 2), async (err) => {
       if (err) {
-        console.log("Session information could not be written in", this.storagePath);
+        console.log("Session information could not be written in", this.sessionPath);
       }
     });
   }
@@ -83,8 +73,8 @@ export default abstract class OnlineJudge {
   async login(): Promise<void> {
     let browser = await chromium.launch({ headless: false });
     const context = await this.restoreSession(browser);
-    console.log(await context.storageState());
 
+    context.on("page", (_) => this.closeAllOtherTabs(context));
     const pages = context.pages();
     let page = pages.length > 0 ? pages[0] : await context.newPage();
 
@@ -97,12 +87,13 @@ export default abstract class OnlineJudge {
         }
         await page.waitForNavigation({ timeout: 0 });
       }
+
       console.log("Succesful login!");
+      await this.saveSession(context);
+      await browser.close();
     } catch (e) {
       console.log("Unsuccesful login!");
-      exit(0);
+      exit(0); // this helps to avoid printing any further errors
     }
-    await this.saveSession(context);
-    await browser.close();
   }
 }
