@@ -24,7 +24,7 @@ import * as Path from "path";
 export interface ICommandSubmitArgs extends ICommandGlobalArgs {
   filePath: string;
   url?: string;
-  lang?: string;
+  langAlias?: string;
 }
 
 function extractUrlFromFile(filePath: string): string {
@@ -34,13 +34,8 @@ function extractUrlFromFile(filePath: string): string {
 }
 
 export function submit(args: ICommandSubmitArgs) {
-  const config = Config.read(args.config);
   const url = args.url ?? extractUrlFromFile(args.filePath);
   const oj = OnlineJudgeFactory.getOnlineJudge(url);
-  oj.submit(
-    args.filePath,
-    url,
-    // args.lang ?? getPreferredLang(Path.extname(args.filePath), url, config)
-    args.lang ?? "cpp"
-  );
+  const config = Config.read(args.config);
+  oj.submit(args.filePath, url, config, args.langAlias);
 }

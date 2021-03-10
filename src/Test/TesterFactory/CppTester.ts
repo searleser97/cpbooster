@@ -72,9 +72,9 @@ export default class CppTester extends Tester {
   getNameForBinary(debug: boolean): string | undefined {
     let segmentedCommand: string[];
     if (debug) {
-      segmentedCommand = this.config.cpp.debugCommand.split(" ");
+      segmentedCommand = this.config.languages.cpp.debugCommand.split(" ");
     } else {
-      segmentedCommand = this.config.cpp.command.split(" ");
+      segmentedCommand = this.config.languages.cpp.command.split(" ");
     }
 
     for (let i = 0; i < segmentedCommand.length; i++) {
@@ -96,9 +96,9 @@ export default class CppTester extends Tester {
     console.log("Compiling...\n");
     let segmentedCommand: string[];
     if (debug) {
-      segmentedCommand = this.config.cpp.debugCommand.split(" ");
+      segmentedCommand = this.config.languages.cpp.debugCommand.split(" ");
     } else {
-      segmentedCommand = this.config.cpp.command.split(" ");
+      segmentedCommand = this.config.languages.cpp.command.split(" ");
     }
     let args = [...segmentedCommand.slice(1), this.filePath];
     let compileCommand = segmentedCommand[0];

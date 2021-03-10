@@ -21,11 +21,13 @@ import * as fs from "fs";
 import * as Path from "path";
 import { exit } from "process";
 import GlobalConstants from "../../GlobalConstants";
+import Config from "../../Config/Config";
 
 export default abstract class OnlineJudge {
   // session cookies are stored in this file
   readonly sessionPath = Path.join(GlobalConstants.cpboosterHome, "cpbooster-session.json");
 
+  abstract readonly onlineJudgeName: string;
   abstract readonly loginUrl: string;
 
   /* unnecesary resources when submitting a file, (i.e. css, script, image, font, ...)
@@ -36,7 +38,7 @@ export default abstract class OnlineJudge {
 
   abstract isLoggedIn(page: Page): Promise<boolean>;
 
-  abstract uploadFile(filePath: string, page: Page, lang: string): Promise<boolean>;
+  abstract uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean>;
 
   getSession(): Array<{
     name: string;
@@ -85,6 +87,14 @@ export default abstract class OnlineJudge {
     }
   }
 
+  getExtensionName(filePath: string): string {
+    return "";
+  }
+
+  getLangAlias(filePath: string, url: string, config: Config): string {
+    return "";
+  }
+
   async login(): Promise<void> {
     let browser = await chromium.launch({ headless: false });
     const context = await this.restoreSession(browser);
@@ -112,7 +122,7 @@ export default abstract class OnlineJudge {
     }
   }
 
-  async submit(filePath: string, url: string, lang: string) {
+  async submit(filePath: string, url: string, config: Config, langAlias?: string) {
     let browser = await chromium.launch({ headless: true });
     const context = await this.restoreSession(browser);
 
@@ -137,7 +147,7 @@ export default abstract class OnlineJudge {
     }
 
     try {
-      if (await this.uploadFile(filePath, page, lang)) {
+      if (await this.uploadFile(filePath, page, langAlias ?? getLangAlias(filePath, url, config))) {
         console.log("File submitted succesfully");
       } else {
         console.log("Error: File was not submitted");
@@ -148,4 +158,7 @@ export default abstract class OnlineJudge {
       console.log("Error: File was not submitted");
     }
   }
+}
+function getLangAlias(filePath: string, url: string, config: Config): string {
+  throw new Error("Function not implemented.");
 }

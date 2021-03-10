@@ -28,20 +28,22 @@ export default class PyTester extends Tester {
     if (!compile) {
       Tester.printUnnecesaryNoCompileFlagMsg("python");
     }
-    return this.runTest(this.config.py.command.split(" ")[0], [this.filePath], testId);
+    return this.runTest(this.config.languages.py.command.split(" ")[0], [this.filePath], testId);
   }
 
   debugOne(testId: number, compile: boolean): void {
     if (!compile) {
       Tester.printUnnecesaryNoCompileFlagMsg("python");
     }
-    this.runDebug(this.config.py.debugCommand.split(" ")[0], [this.filePath], testId);
+    this.runDebug(this.config.languages.py.debugCommand.split(" ")[0], [this.filePath], testId);
   }
 
   debugWithUserInput(compile: boolean): void {
     if (!compile) {
       Tester.printUnnecesaryNoCompileFlagMsg("python");
     }
-    this.runDebugWithUserInput(this.config.py.debugCommand.split(" ")[0], [this.filePath]);
+    this.runDebugWithUserInput(this.config.languages.py.debugCommand.split(" ")[0], [
+      this.filePath
+    ]);
   }
 }

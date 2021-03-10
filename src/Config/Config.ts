@@ -21,6 +21,7 @@ import * as Path from "path";
 import * as os from "os";
 import { exit } from "process";
 import { LangConfig } from "./Types/LangConfig";
+import { Languages } from "./Types/Languages";
 
 export default class Config {
   static readonly defaultConfigFilePath = Path.join(os.homedir(), "cpbooster-config.json");
@@ -32,14 +33,7 @@ export default class Config {
   showStatusPageOnSubmit: boolean;
   preferredLang: string;
 
-  cpp: LangConfig;
-  py: LangConfig;
-
-  /*
-  java: LangConfig;
-  kt: LangConfig;
-  rs: LangConfig;
-  */
+  languages: Languages;
 
   constructor() {
     this.contestsDirectory = Path.join(os.homedir(), "Contests");
@@ -48,22 +42,24 @@ export default class Config {
     this.closeAfterClone = false;
     this.showStatusPageOnSubmit = false;
     this.preferredLang = "cpp";
-    this.cpp = {
-      template: "template.cpp",
-      command: "g++ -std=gnu++17 -O2",
-      debugCommand: "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
-      aliases: {
-        codeforces: "54",
-        atcoder: "4003"
-      }
-    };
-    this.py = {
-      template: "template.py",
-      command: "python3",
-      debugCommand: "python3 -O",
-      aliases: {
-        codeforces: "31",
-        atcoder: "4006"
+    this.languages = {
+      cpp: {
+        template: "template.cpp",
+        command: "g++ -std=gnu++17 -O2",
+        debugCommand: "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
+        aliases: {
+          codeforces: "54",
+          atcoder: "4003"
+        }
+      },
+      py: {
+        template: "template.py",
+        command: "python3",
+        debugCommand: "python3 -O",
+        aliases: {
+          codeforces: "31",
+          atcoder: "4006"
+        }
       }
     };
   }

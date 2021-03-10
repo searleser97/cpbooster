@@ -20,20 +20,21 @@ import { Page } from "playwright-chromium";
 import OnlineJudge from "./OnlineJudge";
 
 export default class AtCoder extends OnlineJudge {
-  loginUrl: string = "https://atcoder.jp/login";
-  blockedResourcesOnSubmit: Set<string> = new Set(["image", "stylesheet", "font"]);
+  readonly onlineJudgeName = "atcoder";
+  readonly loginUrl = "https://atcoder.jp/login";
+  readonly blockedResourcesOnSubmit: Set<string> = new Set(["image", "stylesheet", "font"]);
 
   async isLoggedIn(page: Page): Promise<boolean> {
     const querySelector = "a[href*=logout]";
     return (await page.$(querySelector)) !== null;
   }
 
-  async uploadFile(filePath: string, page: Page, lang: string): Promise<boolean> {
+  async uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean> {
     try {
       const inputFile = await page.$("input[type=file]");
       if (inputFile) await inputFile.setInputFiles(filePath);
 
-      await page.selectOption("select", { label: lang, value: lang });
+      await page.selectOption("select", { value: langAlias });
       await page.click("#submit");
       return true;
     } catch (e) {

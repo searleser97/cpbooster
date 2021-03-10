@@ -20,19 +20,25 @@ import { Page } from "playwright-chromium";
 import OnlineJudge from "./OnlineJudge";
 
 export default class Codeforces extends OnlineJudge {
-  loginUrl: string = "https://codeforces.com/enter";
-  blockedResourcesOnSubmit: Set<string> = new Set(["image", "stylesheet", "font", "script"]);
+  readonly onlineJudgeName = "codeforces";
+  readonly loginUrl = "https://codeforces.com/enter";
+  readonly blockedResourcesOnSubmit: Set<string> = new Set([
+    "image",
+    "stylesheet",
+    "font",
+    "script"
+  ]);
 
   async isLoggedIn(page: Page): Promise<boolean> {
     const querySelector = "a[href*=logout]";
     return (await page.$(querySelector)) !== null;
   }
 
-  async uploadFile(filePath: string, page: Page): Promise<boolean> {
+  async uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean> {
     try {
       const inputFile = await page.$("input[type=file]");
       if (inputFile) await inputFile.setInputFiles(filePath);
-      await page.selectOption("select", { value: "54" });
+      await page.selectOption("select", { value: langAlias });
       await page.click('input[style="width:10em;"][type=submit]');
       return true;
     } catch (e) {

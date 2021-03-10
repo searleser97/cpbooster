@@ -41,10 +41,10 @@ export default class SourceFileCreator {
     if (commentString) {
       template += `${commentString} time-limit: ${timeLimitInMS}\n`;
     }
-    if (extension == ".cpp" && config.cpp.template) {
-      template += fs.readFileSync(config.cpp.template).toString();
-    } else if (extension == ".py" && config.py.template) {
-      template += fs.readFileSync(config.py.template).toString();
+    if (extension == ".cpp" && config.languages.cpp.template) {
+      template += fs.readFileSync(config.languages.cpp.template).toString();
+    } else if (extension == ".py" && config.languages.py.template) {
+      template += fs.readFileSync(config.languages.py.template).toString();
     }
     if (!fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, template);
