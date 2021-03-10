@@ -138,13 +138,16 @@ export default abstract class OnlineJudge {
       await page.goto(url);
     }
 
-    if (await this.uploadFile(filePath, page)) {
-      console.log("File submitted succesfully");
-    } else {
+    try {
+      if (await this.uploadFile(filePath, page)) {
+        console.log("File submitted succesfully");
+      } else {
+        console.log("Error: File was not submitted");
+      }
+      await this.saveSession(context);
+      await browser.close();
+    } catch (e) {
       console.log("Error: File was not submitted");
     }
-
-    await this.saveSession(context);
-    await browser.close();
   }
 }
