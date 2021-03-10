@@ -19,14 +19,12 @@
 import { chromium, ChromiumBrowser, ChromiumBrowserContext, Page } from "playwright-chromium";
 import * as fs from "fs";
 import * as Path from "path";
-import * as os from "os";
 import { exit } from "process";
+import GlobalConstants from "../../GlobalConstants";
 
 export default abstract class OnlineJudge {
-  readonly cpboosterHome = Path.join(os.homedir(), ".cpbooster");
-
   // session cookies are stored in this file
-  readonly sessionPath = Path.join(this.cpboosterHome, "cpbooster-session.json");
+  readonly sessionPath = Path.join(GlobalConstants.cpboosterHome, "cpbooster-session.json");
 
   abstract readonly loginUrl: string;
 
@@ -38,7 +36,7 @@ export default abstract class OnlineJudge {
 
   abstract isLoggedIn(page: Page): Promise<boolean>;
 
-  abstract uploadFile(filePath: string, page: Page): Promise<boolean>;
+  abstract uploadFile(filePath: string, page: Page, lang: string): Promise<boolean>;
 
   getSession(): Array<{
     name: string;
@@ -70,8 +68,8 @@ export default abstract class OnlineJudge {
 
   async saveSession(context: ChromiumBrowserContext): Promise<void> {
     const cookies = await context.cookies();
-    if (!fs.existsSync(this.cpboosterHome)) {
-      fs.mkdirSync(this.cpboosterHome, { recursive: true });
+    if (!fs.existsSync(GlobalConstants.cpboosterHome)) {
+      fs.mkdirSync(GlobalConstants.cpboosterHome, { recursive: true });
     }
     fs.writeFile(this.sessionPath, JSON.stringify(cookies, null, 2), async (err) => {
       if (err) {
@@ -114,7 +112,7 @@ export default abstract class OnlineJudge {
     }
   }
 
-  async submit(filePath: string, url: string) {
+  async submit(filePath: string, url: string, lang: string) {
     let browser = await chromium.launch({ headless: true });
     const context = await this.restoreSession(browser);
 
@@ -139,7 +137,7 @@ export default abstract class OnlineJudge {
     }
 
     try {
-      if (await this.uploadFile(filePath, page)) {
+      if (await this.uploadFile(filePath, page, lang)) {
         console.log("File submitted succesfully");
       } else {
         console.log("Error: File was not submitted");

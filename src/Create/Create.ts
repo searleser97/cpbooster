@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import Config from "../Config";
+import Config from "../Config/Config";
 import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
 import SourceFileCreator from "./SourceFileCreator";
 

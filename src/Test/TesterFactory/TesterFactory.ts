@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import Config from "../../Config";
+import Config from "../../Config/Config";
 import CppTester from "./CppTester";
 import * as Path from "path";
 import { exit } from "process";

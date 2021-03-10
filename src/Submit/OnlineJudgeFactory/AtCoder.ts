@@ -28,12 +28,12 @@ export default class AtCoder extends OnlineJudge {
     return (await page.$(querySelector)) !== null;
   }
 
-  async uploadFile(filePath: string, page: Page): Promise<boolean> {
+  async uploadFile(filePath: string, page: Page, lang: string): Promise<boolean> {
     try {
       const inputFile = await page.$("input[type=file]");
       if (inputFile) await inputFile.setInputFiles(filePath);
 
-      await page.selectOption("select", { value: "4003" });
+      await page.selectOption("select", { label: lang, value: lang });
       await page.click("#submit");
       return true;
     } catch (e) {

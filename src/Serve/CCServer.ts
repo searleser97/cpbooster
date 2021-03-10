@@ -20,7 +20,7 @@ import express from "express";
 import * as fs from "fs";
 import * as Path from "path";
 import ProblemData from "../Types/ProblemData";
-import Config from "../Config";
+import Config from "../Config/Config";
 import { exit } from "process";
 import { spawn, spawnSync } from "child_process";
 import Util from "../Util";
@@ -54,16 +54,14 @@ export default class CCServer {
       let FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
       let extension = `.${config.preferredLang}`;
       let filePath = `${FilesPathNoExtension}${extension}`;
-      SourceFileCreator.create(
-        filePath,
-        config,
-        problemData.timeLimit
-      );
+      SourceFileCreator.create(filePath, config, problemData.timeLimit);
       problemData.tests.forEach((testcase, idx) => {
         fs.writeFileSync(Tester.getInputPath(filePath, idx + 1), testcase.input);
         fs.writeFileSync(Tester.getAnswerPath(filePath, idx + 1), testcase.output);
       });
-      console.info("- Input and Answer files have been created for " + Path.basename(filePath) + "\n");
+      console.info(
+        "- Input and Answer files have been created for " + Path.basename(filePath) + "\n"
+      );
       if (!this.isActive) this.isActive = true;
       this.lastRequestTime = process.hrtime();
     });
@@ -93,7 +91,7 @@ export default class CCServer {
         console.log("\n\tHappy Coding!\n");
         let command = getTerminalCommand(this.config.terminal, contestPath);
         if (command) {
-          let newTerminalExec = spawn(command, { shell: true, detached: true, stdio: 'ignore' });
+          let newTerminalExec = spawn(command, { shell: true, detached: true, stdio: "ignore" });
           newTerminalExec.unref();
           if (this.config.closeAfterClone && !isWindows) {
             let execution = spawnSync("ps", ["-o", "ppid=", "-p", `${process.ppid}`]);

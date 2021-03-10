@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import Config from "../../Config";
+import Config from "../../Config/Config";
 import * as Path from "path";
 import * as fs from "fs";
 import chalk from "chalk";
@@ -72,9 +72,9 @@ export default class CppTester extends Tester {
   getNameForBinary(debug: boolean): string | undefined {
     let segmentedCommand: string[];
     if (debug) {
-      segmentedCommand = this.config.cppDebugCommand.split(" ");
+      segmentedCommand = this.config.cpp.debugCommand.split(" ");
     } else {
-      segmentedCommand = this.config.cppCompileCommand.split(" ");
+      segmentedCommand = this.config.cpp.command.split(" ");
     }
 
     for (let i = 0; i < segmentedCommand.length; i++) {
@@ -96,9 +96,9 @@ export default class CppTester extends Tester {
     console.log("Compiling...\n");
     let segmentedCommand: string[];
     if (debug) {
-      segmentedCommand = this.config.cppDebugCommand.split(" ");
+      segmentedCommand = this.config.cpp.debugCommand.split(" ");
     } else {
-      segmentedCommand = this.config.cppCompileCommand.split(" ");
+      segmentedCommand = this.config.cpp.command.split(" ");
     }
     let args = [...segmentedCommand.slice(1), this.filePath];
     let compileCommand = segmentedCommand[0];

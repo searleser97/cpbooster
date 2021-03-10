@@ -15,36 +15,57 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import * as fs from "fs";
 import * as Path from "path";
 import * as os from "os";
 import { exit } from "process";
+import { LangConfig } from "./Types/LangConfig";
 
 export default class Config {
   static readonly defaultConfigFilePath = Path.join(os.homedir(), "cpbooster-config.json");
 
   contestsDirectory: string;
-  cppTemplatePath: string;
-  cppCompileCommand: string;
-  cppDebugCommand: string;
-  pyTemplatePath: string;
-  pyRunCommand: string;
-  preferredLang: string;
   port: number;
   terminal: string;
   closeAfterClone: boolean;
+  showStatusPageOnSubmit: boolean;
+  preferredLang: string;
+
+  cpp: LangConfig;
+  py: LangConfig;
+
+  /*
+  java: LangConfig;
+  kt: LangConfig;
+  rs: LangConfig;
+  */
 
   constructor() {
     this.contestsDirectory = Path.join(os.homedir(), "Contests");
-    this.cppTemplatePath = "";
-    this.cppCompileCommand = "g++ -std=gnu++17 -O2";
-    this.cppDebugCommand = "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall";
-    this.pyTemplatePath = "";
-    this.pyRunCommand = "python3";
-    this.preferredLang = "cpp";
     this.port = 1327;
     this.terminal = "konsole";
     this.closeAfterClone = false;
+    this.showStatusPageOnSubmit = false;
+    this.preferredLang = "cpp";
+    this.cpp = {
+      template: "template.cpp",
+      command: "g++ -std=gnu++17 -O2",
+      debugCommand: "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
+      aliases: {
+        codeforces: "54",
+        atcoder: "4003"
+      }
+    };
+    this.py = {
+      template: "template.py",
+      command: "python3",
+      debugCommand: "python3 -O",
+      aliases: {
+        codeforces: "31",
+        atcoder: "4006"
+      }
+    };
   }
 
   static write(configFilePath: string = Config.defaultConfigFilePath): void {
@@ -62,6 +83,7 @@ export default class Config {
       console.log("You can create one in your $HOME directory by running 'cpbooster init'");
       exit(0);
     }
+    // for now we are assuming that all the properties are defined in the config file
     return JSON.parse(fs.readFileSync(configFilePath, "utf8"));
   }
 }

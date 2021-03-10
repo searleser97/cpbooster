@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import Config from "../../Config";
+import Config from "../../Config/Config";
 import { Veredict } from "../../Types/Veredict";
 import Tester from "./Tester";
 
@@ -26,22 +26,22 @@ export default class PyTester extends Tester {
 
   testOne(testId: number, compile: boolean): Veredict {
     if (!compile) {
-      console.log("python does not support compilation, using --noCompile option is unnecesary");
+      Tester.printUnnecesaryNoCompileFlagMsg("python");
     }
-    return this.runTest(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
+    return this.runTest(this.config.py.command.split(" ")[0], [this.filePath], testId);
   }
 
   debugOne(testId: number, compile: boolean): void {
     if (!compile) {
-      console.log("python does not support compilation, using --noCompile option is unnecesary");
+      Tester.printUnnecesaryNoCompileFlagMsg("python");
     }
-    this.runDebug(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
+    this.runDebug(this.config.py.debugCommand.split(" ")[0], [this.filePath], testId);
   }
 
   debugWithUserInput(compile: boolean): void {
     if (!compile) {
-      console.log("python does not support compilation, using --noCompile option is unnecesary");
+      Tester.printUnnecesaryNoCompileFlagMsg("python");
     }
-    this.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
+    this.runDebugWithUserInput(this.config.py.debugCommand.split(" ")[0], [this.filePath]);
   }
 }

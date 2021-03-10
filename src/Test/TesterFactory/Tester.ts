@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import Config from "../../Config";
+import Config from "../../Config/Config";
 import { Veredict } from "../../Types/Veredict";
 import Util from "../../Util";
 import * as fs from "fs";
@@ -245,5 +245,9 @@ export default abstract class Tester {
 
   static printCompilationErrorMsg(): void {
     console.log(chalk.bgYellow(chalk.whiteBright(" Compilation Error ")), "\n");
+  }
+
+  static printUnnecesaryNoCompileFlagMsg(lang: string) {
+    console.log(`${lang} does not support compilation, using --noCompile option is unnecesary`);
   }
 }
