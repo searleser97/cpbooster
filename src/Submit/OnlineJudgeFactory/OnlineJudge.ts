@@ -22,6 +22,8 @@ import * as Path from "path";
 import { exit } from "process";
 import GlobalConstants from "../../GlobalConstants";
 import Config from "../../Config/Config";
+import { config } from "yargs";
+import { LangAliases } from "../../Config/Types/LangAliases";
 
 export default abstract class OnlineJudge {
   // session cookies are stored in this file
@@ -88,11 +90,27 @@ export default abstract class OnlineJudge {
   }
 
   getExtensionName(filePath: string): string {
-    return "";
+    return Path.extname(filePath).substr(1).toLowerCase();
   }
 
-  getLangAlias(filePath: string, url: string, config: Config): string {
-    return "";
+  getLangAliasesObject(lang: string, config: Config): LangAliases | undefined {
+    switch (lang) {
+      case "cpp":
+        return config.languages.cpp.aliases;
+      case "py":
+        return config.languages.py.aliases;
+    }
+  }
+
+  getLangAlias(filePath: string, config: Config): string | undefined {
+    const lang = this.getExtensionName(filePath);
+    const langAliases = this.getLangAliasesObject(lang, config);
+    switch (this.onlineJudgeName) {
+      case "codeforces":
+        return langAliases?.codeforces;
+      case "atcoder":
+        return langAliases?.atcoder;
+    }
   }
 
   async login(): Promise<void> {
@@ -147,6 +165,22 @@ export default abstract class OnlineJudge {
     }
 
     try {
+      let result: boolean;
+      if (langAlias) {
+        result = await this.uploadFile(filePath, page, langAlias);
+      } else {
+        const langAliasFromConfig = getLangAlias(filePath, url, config);
+        if (langAliasFromConfig) {
+          result = await this.uploadFile(filePath, page, langAliasFromConfig);
+        } else {
+          console.log(
+            `${this.onlineJudgeName} alias for "${this.getExtensionName(
+              filePath
+            )}" was not found in config file.`
+          );
+          exit(0);
+        }
+      }
       if (await this.uploadFile(filePath, page, langAlias ?? getLangAlias(filePath, url, config))) {
         console.log("File submitted succesfully");
       } else {
