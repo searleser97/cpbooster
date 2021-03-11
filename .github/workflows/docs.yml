@@ -1,52 +1,29 @@
-
 name: docs
 
 on:
-  pull_request:
-    branches: [docs]
   push:
-    branches: [docs]
+    branches:
+      - docs
 
 jobs:
-  checks:
-    if: github.event_name != 'push'
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
         with:
-          node-version: '12.x'
-      - name: Test Build
+          persist-credentials: false
+
+      - name: Install and Build
         run: |
-          if [ -e yarn.lock ]; then
-          yarn install --frozen-lockfile
-          elif [ -e package-lock.json ]; then
-          npm ci
-          else
-          npm i
-          fi
-          npm run build
-  gh-release:
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+          yarn
+          yarn  build
+        working-directory: website/
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          node-version: '12.x'
-      - name: Release to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-          GIT_USER: searleser97
-        run: |
-          git config --global user.email "gabrielsanv97@gmail.com"
-          git config --global user.name "searleser97"
-          if [ -e yarn.lock ]; then
-          yarn install --frozen-lockfile
-          elif [ -e package-lock.json ]; then
-          npm ci
-          else
-          npm i
-          fi
-          cd website
-          npm run deploy
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: website/build
+          CLEAN: true

@@ -3,7 +3,7 @@ module.exports = {
   title: 'cpbooster',
   tagline: 'The tagline of my ',
   url: 'https://searleser97.io',
-  baseUrl: '/cpbooster',
+  baseUrl: '/cpbooster/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
