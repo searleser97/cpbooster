@@ -194,6 +194,7 @@ export default abstract class OnlineJudge {
       await browser.close();
     } catch (e) {
       console.log("Error: File was not submitted");
+      exit(0);
     }
   }
 }

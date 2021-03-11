@@ -53,6 +53,7 @@ export function submit(args: ICommandSubmitArgs) {
     );
     exit(0);
   }
+  console.log("submitting...");
   const oj = OnlineJudgeFactory.getOnlineJudge(url);
   const config = Config.read(args.config);
   oj.submit(args.filePath, url, config, args.langAlias);
