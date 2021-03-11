@@ -17,10 +17,10 @@
  */
 
 import { Page } from "playwright-chromium";
-import OnlineJudge from "./OnlineJudge";
+import OnlineJudge, { OnlineJudgeName } from "./OnlineJudge";
 
 export default class Codeforces extends OnlineJudge {
-  readonly onlineJudgeName = "codeforces";
+  readonly onlineJudgeName = OnlineJudgeName.codeforces;
   readonly loginUrl = "https://codeforces.com/enter";
   readonly blockedResourcesOnSubmit: Set<string> = new Set([
     "image",

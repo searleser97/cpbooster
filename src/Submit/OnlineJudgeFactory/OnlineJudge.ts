@@ -22,8 +22,12 @@ import * as Path from "path";
 import { exit } from "process";
 import GlobalConstants from "../../GlobalConstants";
 import Config from "../../Config/Config";
-import { config } from "yargs";
 import { LangAliases } from "../../Config/Types/LangAliases";
+
+export enum OnlineJudgeName {
+  codeforces = "codeforces",
+  atcoder = "atcoder"
+}
 
 export default abstract class OnlineJudge {
   // session cookies are stored in this file
@@ -106,9 +110,9 @@ export default abstract class OnlineJudge {
     const lang = this.getExtensionName(filePath);
     const langAliases = this.getLangAliasesObject(lang, config);
     switch (this.onlineJudgeName) {
-      case "codeforces":
+      case OnlineJudgeName.codeforces:
         return langAliases?.codeforces;
-      case "atcoder":
+      case OnlineJudgeName.atcoder:
         return langAliases?.atcoder;
     }
   }
@@ -169,7 +173,7 @@ export default abstract class OnlineJudge {
       if (langAlias) {
         result = await this.uploadFile(filePath, page, langAlias);
       } else {
-        const langAliasFromConfig = getLangAlias(filePath, url, config);
+        const langAliasFromConfig = this.getLangAlias(filePath, config);
         if (langAliasFromConfig) {
           result = await this.uploadFile(filePath, page, langAliasFromConfig);
         } else {
@@ -181,7 +185,7 @@ export default abstract class OnlineJudge {
           exit(0);
         }
       }
-      if (await this.uploadFile(filePath, page, langAlias ?? getLangAlias(filePath, url, config))) {
+      if (result) {
         console.log("File submitted succesfully");
       } else {
         console.log("Error: File was not submitted");
@@ -192,7 +196,4 @@ export default abstract class OnlineJudge {
       console.log("Error: File was not submitted");
     }
   }
-}
-function getLangAlias(filePath: string, url: string, config: Config): string {
-  throw new Error("Function not implemented.");
 }

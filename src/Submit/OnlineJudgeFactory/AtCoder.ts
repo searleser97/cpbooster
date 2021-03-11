@@ -17,10 +17,10 @@
  */
 
 import { Page } from "playwright-chromium";
-import OnlineJudge from "./OnlineJudge";
+import OnlineJudge, { OnlineJudgeName } from "./OnlineJudge";
 
 export default class AtCoder extends OnlineJudge {
-  readonly onlineJudgeName = "atcoder";
+  readonly onlineJudgeName = OnlineJudgeName.atcoder;
   readonly loginUrl = "https://atcoder.jp/login";
   readonly blockedResourcesOnSubmit: Set<string> = new Set(["image", "stylesheet", "font"]);
 
