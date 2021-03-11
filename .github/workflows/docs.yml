@@ -48,4 +48,5 @@ jobs:
           else
           npm i
           fi
+          cd website
           npm run deploy
