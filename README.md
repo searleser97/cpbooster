@@ -36,6 +36,8 @@
    - `cpb test mycode.cpp -d` to use keyboard as input
    - `cpb test mycode.cpp -t 2 -d` to use a test case file as input
    - `cpb test /some/path/mycode.cpp -d` debug a program that is not located in your current location
+1. Submit your code from the terminal really quickly.
+   - `cpb submit mycode.cpp` submits your file to the corresponding judge.
 1. open a new terminal in the contest directory immediately after cloning it
    - List of **supported terminals** for this feature:
      - konsole
