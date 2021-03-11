@@ -1,7 +1,7 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'cpbooster',
-  tagline: 'The tagline of my site',
+  tagline: 'The tagline of my ',
   url: 'https://searleser97.io',
   baseUrl: '/cpbooster',
   onBrokenLinks: 'throw',
