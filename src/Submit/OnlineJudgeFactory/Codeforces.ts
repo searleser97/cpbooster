@@ -40,8 +40,16 @@ export default class Codeforces extends OnlineJudge {
       if (inputFile) await inputFile.setInputFiles(filePath);
       await page.selectOption("select", { value: langAlias });
       await page.click('input[style="width:10em;"][type=submit]');
-      return true;
+      await page.waitForLoadState("domcontentloaded");
+      const querySelector = 'span[class="error for__sourceFile"]';
+      if ((await page.$(querySelector)) !== null) {
+        console.log("\nYou have submitted exactly the same code before\n");
+        return false;
+      } else {
+        return true;
+      }
     } catch (e) {
+      console.log(e);
       return false;
     }
   }
