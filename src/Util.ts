@@ -15,8 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { createInterface } from "readline";
-import { once } from "events";
 
 export default class Util {
   static allowedSpecialChars = new Set(["-", "_", "+", "."]);

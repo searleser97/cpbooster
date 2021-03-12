@@ -35,3 +35,29 @@
   height: 200px;
   width: 200px;
 }
+
+.getStartedButton {
+  border: 2px solid var(--ifm-color-primary);
+  display: inline-block;
+  line-height: 1.2em;
+  text-decoration: none !important;
+  text-transform: uppercase;
+  transition: background 0.3s, color 0.3s;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 14px 40px;
+}
+
+.boldInGreen b {
+  color: var(--ifm-color-primary);
+}
+
+.title {
+  font-size: 75px;
+}
+
+.subtitle {
+  font-size: 40px;
+}
