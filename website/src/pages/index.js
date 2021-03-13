@@ -63,7 +63,7 @@ const features = [
   },
   {
     title: "Vim Plugin",
-    imageUrl: "img/undraw_docusaurus_react.svg",
+    imageUrl: "https://miro.medium.com/max/1022/0*6ve47nqg93ZzZxws.png",
     description: (
       <>
         Vim users can install{" "}
