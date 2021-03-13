@@ -8,43 +8,67 @@ import styles from "./styles.module.css";
 
 const features = [
   {
-    title: "Easy to Use",
+    title: "Clone Test Cases Automatically",
     imageUrl: "img/undraw_docusaurus_mountain.svg",
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and used to get your
-        website up and running quickly.
+        Automatically clone sample testcases files with corresponding source code files with
+        template loaded into a desired directory
       </>
     )
   },
 
   {
-    title: "Focus on What Matters",
+    title: "Create Files With Template",
     imageUrl: "img/undraw_docusaurus_tree.svg",
+    description: <>Create source files with the corresponding template loaded</>
+  },
+  {
+    title: "Test",
+    imageUrl: "img/undraw_docusaurus_react.svg",
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go ahead and move your
-        docs into the <code>docs</code> directory.
+        Test your code against sample testcases quickly and with a pretty output.
+        <br />
+        Supported Veredicts: <b>AC, WA, TLE, RTE, CE</b>
       </>
     )
   },
   {
-    title: "Powered by React",
+    title: "Debug",
     imageUrl: "img/undraw_docusaurus_react.svg",
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can be extended while
-        reusing the same header and footer.
+        Run code with your own debugging flags easily. Input can be from the keyboard or from a test
+        case file.
       </>
     )
   },
   {
-    title: "Powered by React",
+    title: "Add Test Cases",
     imageUrl: "img/undraw_docusaurus_react.svg",
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can be extended while
-        reusing the same header and footer.
+        Add a test case for the specified source code file. It will prompt you for the input and the
+        expected output
+      </>
+    )
+  },
+  {
+    title: "Submit",
+    imageUrl: "img/undraw_docusaurus_react.svg",
+    description: (
+      <>Submit your code to online judges pretty fast by just running a single command.</>
+    )
+  },
+  {
+    title: "Vim Plugin",
+    imageUrl: "img/undraw_docusaurus_react.svg",
+    description: (
+      <>
+        Vim users can install{" "}
+        <Link to="https://github.com/searleser97/cpbooster.vim">cpbooster.vim</Link> plugin to boost
+        their speed even more.
       </>
     )
   }
@@ -89,7 +113,7 @@ export default function Home() {
         {features && features.length > 0 && (
           <section className={styles.features}>
             <div className="container">
-              <div className="row">
+              <div className={clsx(styles.featuresRow, "row")}>
                 {features.map((props, idx) => (
                   <Feature key={idx} {...props} />
                 ))}

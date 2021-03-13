@@ -6,7 +6,7 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
+  padding: 5rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -29,6 +29,11 @@
   align-items: center;
   padding: 2rem 0;
   width: 100%;
+}
+
+.featuresRow {
+  align-items: center;
+  justify-content: center;
 }
 
 .featureImage {
