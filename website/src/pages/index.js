@@ -95,7 +95,7 @@ export default function Home() {
   return (
     <Layout description={`${siteConfig.title}`}>
       <header className={clsx("hero hero--primary", styles.heroBanner)}>
-        <div className="container">
+        <div className={clsx("container", styles.container)}>
           <h1 className={clsx(styles.boldInGreen, styles.title, "hero__title")}>
             <b>cpb</b>ooster
           </h1>
@@ -106,6 +106,11 @@ export default function Home() {
             <Link className={clsx(styles.getStartedButton)} to={useBaseUrl("docs/")}>
               Get Started
             </Link>
+          </div>
+          <br />
+          <br />
+          <div className={styles.demo_gif}>
+            <img src="https://searleser97.gitlab.io/competitive-programming-notes/cpbooster/cpbooster.gif" />
           </div>
         </div>
       </header>

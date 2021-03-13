@@ -66,3 +66,18 @@
 .subtitle {
   font-size: 40px;
 }
+
+.demo_gif {
+  display: flex;
+  width: 80%;
+  height: auto;
+  /*width: 100px;*/
+  /*height: 100px;*/
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
