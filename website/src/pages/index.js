@@ -93,7 +93,7 @@ export default function Home() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
   return (
-    <Layout title={`${siteConfig.title}`} description="Competitive Programming Booster">
+    <Layout description={`${siteConfig.title}`}>
       <header className={clsx("hero hero--primary", styles.heroBanner)}>
         <div className="container">
           <h1 className={clsx(styles.boldInGreen, styles.title, "hero__title")}>
