@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 const features = [
   {
     title: "Clone Test Cases Automatically",
-    imageUrl: "img/undraw_docusaurus_mountain.svg",
+    imageUrl: "img/demos/demo1.gif",
     description: (
       <>
         Automatically clone sample testcases files with corresponding source code files with

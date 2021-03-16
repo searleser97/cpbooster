@@ -21,18 +21,35 @@ import * as Path from "path";
 import Util from "../Util";
 
 export default class SourceFileCreator {
-  static create(filePath: string, config: Config, timeLimitInMS: number = 3000) {
+  static create(
+    filePath: string,
+    config: Config,
+    timeLimitInMS: number = 3000,
+    problemUrl?: string
+  ) {
     let filename = Path.basename(filePath);
     let match = /\{[a-zA-Z](\.{2,}|-)[a-zA-Z]\}\.[a-zA-Z0-9]+/g.exec(filename);
     if (match) {
       let idx = match[0].indexOf("}");
-      this.createMultiple(filePath, config, timeLimitInMS, match[0][1], match[0][idx - 1]);
+      this.createMultiple(
+        filePath,
+        config,
+        match[0][1],
+        match[0][idx - 1],
+        timeLimitInMS,
+        problemUrl
+      );
     } else {
-      this.createSingle(filePath, config, timeLimitInMS);
+      this.createSingle(filePath, config, timeLimitInMS, problemUrl);
     }
   }
 
-  static createSingle(filePath: string, config: Config, timeLimitInMS: number = 3000) {
+  static createSingle(
+    filePath: string,
+    config: Config,
+    timeLimitInMS: number = 3000,
+    problemUrl?: string
+  ) {
     let extension = Path.extname(filePath);
     let filename = Util.normalizeName(Path.basename(filePath));
     filePath = Path.join(Path.dirname(filePath), filename);
@@ -40,6 +57,9 @@ export default class SourceFileCreator {
     let commentString = Util.getCommentString(extension);
     if (commentString) {
       template += `${commentString} time-limit: ${timeLimitInMS}\n`;
+      if (problemUrl) {
+        template += `problem-url: ${problemUrl}\n`;
+      }
     }
     if (extension == ".cpp" && config.languages.cpp.template) {
       template += fs.readFileSync(config.languages.cpp.template).toString();
@@ -57,9 +77,10 @@ export default class SourceFileCreator {
   static createMultiple(
     filePath: string,
     config: Config,
-    timeLimitInMS: number,
     start: string,
-    end: string
+    end: string,
+    timeLimitInMS: number = 3000,
+    problemUrl?: string
   ) {
     if (start.length != 1 || end.length != 1) {
       throw new Error("incorrect format of start or end, it should be a single character");
@@ -76,7 +97,7 @@ export default class SourceFileCreator {
       filePaths.push(Path.join(dirname, String.fromCharCode(i) + extension));
     }
     for (filePath of filePaths) {
-      SourceFileCreator.createSingle(filePath, config, timeLimitInMS);
+      SourceFileCreator.createSingle(filePath, config, timeLimitInMS, problemUrl);
     }
   }
 }

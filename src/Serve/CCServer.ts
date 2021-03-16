@@ -54,7 +54,7 @@ export default class CCServer {
       let FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
       let extension = `.${config.preferredLang}`;
       let filePath = `${FilesPathNoExtension}${extension}`;
-      SourceFileCreator.create(filePath, config, problemData.timeLimit);
+      SourceFileCreator.create(filePath, config, problemData.timeLimit, problemData.url);
       problemData.tests.forEach((testcase, idx) => {
         fs.writeFileSync(Tester.getInputPath(filePath, idx + 1), testcase.input);
         fs.writeFileSync(Tester.getAnswerPath(filePath, idx + 1), testcase.output);

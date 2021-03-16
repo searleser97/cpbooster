@@ -37,8 +37,10 @@
 }
 
 .featureImage {
-  height: 200px;
-  width: 200px;
+  width: 100%;
+  height: auto;
+  /*height: 200px;*/
+  /*width: 200px;*/
 }
 
 .getStartedButton {
