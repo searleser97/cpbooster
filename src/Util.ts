@@ -16,6 +16,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { createInterface } from "readline";
+import { once } from "events";
+
 export default class Util {
   static allowedSpecialChars = new Set(["-", "_", "+", "."]);
 
@@ -92,7 +95,7 @@ export default class Util {
       output: process.stdout
     });
     let lines = "";
-    rl.on("line", (line) => {
+    rl.on("line", (line: string) => {
       lines += line + "\n";
     });
     await once(rl, "close");
