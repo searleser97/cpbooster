@@ -103,7 +103,7 @@ export default function Home() {
             <b>C</b>ompetitive <b>P</b>rogramming <b>B</b>ooster
           </p>
           <div className={styles.buttons}>
-            <Link className={clsx(styles.getStartedButton)} to={useBaseUrl("docs/")}>
+            <Link className={clsx(styles.getStartedButton)} to={useBaseUrl("docs/About")}>
               Get Started
             </Link>
           </div>

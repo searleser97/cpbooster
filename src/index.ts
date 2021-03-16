@@ -46,7 +46,7 @@ let descriptions = {
   create:
     "Create a new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
   init:
-    "Create a new configuration file with default values in $HOME directory or if --config is specified, it writes it in the given path.",
+    "Create a new configuration file with default values in $HOME directory or if --configPath is specified, it writes it in the given path.",
   login: "Log in to the specified Online Judge (i.e. Codeforces, AtCoder, ...).",
   submit:
     "Submit a source code file as a solution to a problem in an Online Judge (i.e. Codeforces, AtCoder, ...)."
@@ -153,11 +153,12 @@ yargs
     (new_yargs) => {
       new_yargs
         .usage("\n" + descriptions.init + "\n\nUsage: $0 init [options]")
-        .config(
-          "config",
-          "Path where the JSON configuration file will be created" +
+        .option("configPath", {
+          type: "string",
+          description:
+            "Path where the JSON configuration file will be created" +
             `\n[default: "${Path.join(os.homedir(), "cpbooster-config.json")}"]`
-        );
+        });
     },
     (argv) => init((argv as unknown) as ICommandGlobalArgs)
   )
@@ -205,8 +206,9 @@ yargs
   .alias("version", "v")
   .demandCommand()
   .strict()
-  .config(
-    "config",
-    "Path to JSON configuration file" +
+  .option("configPath", {
+    type: "string",
+    description:
+      "Path to JSON configuration file" +
       `\n[default: "${Path.join(os.homedir(), "cpbooster-config.json")}"]`
-  ).argv;
+  }).argv;

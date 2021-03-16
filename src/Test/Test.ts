@@ -30,7 +30,7 @@ export interface ICommandTestArgs extends ICommandGlobalArgs {
 }
 
 export function test(args: ICommandTestArgs) {
-  const config = Config.read(args.config);
+  const config = Config.read(args.configPath);
   if (args.add) {
     Tester.createTestCase(args.filePath);
   } else {

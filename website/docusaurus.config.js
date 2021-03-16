@@ -17,14 +17,13 @@ module.exports = {
       title: "cpbooster",
       items: [
         {
-          to: "docs/",
-          activeBasePath: "docs",
-          label: "Docs",
-          position: "left"
+          type: "doc",
+          position: "left",
+          docId: "About",
+          label: "Docs"
         },
-        { to: "blog", label: "Blog", position: "left" },
         {
-          href: "https://github.com/facebook/docusaurus",
+          href: "https://github.com/searleser97/cpbooster",
           label: "GitHub",
           position: "right"
         }

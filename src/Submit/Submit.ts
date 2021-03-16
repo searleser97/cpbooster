@@ -55,6 +55,6 @@ export function submit(args: ICommandSubmitArgs) {
   }
   console.log("submitting...");
   const oj = OnlineJudgeFactory.getOnlineJudge(url);
-  const config = Config.read(args.config);
+  const config = Config.read(args.configPath);
   oj.submit(args.filePath, url, config, args.langAlias);
 }
