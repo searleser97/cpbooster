@@ -15,6 +15,6 @@ export function getTerminalCommand(terminalName: string, contestPath: string): s
     case "vscode":
       return `code "${contestPath}"`;
     default:
-      return null;
+      return `${terminalName} "${contestPath}"`;
   }
 }

@@ -8,7 +8,7 @@ You can install `cpbooster` with a **single** comand, either using `npm` or `yar
 ## Requirements
 
 - Node.js >= v12.18.2
-- [Competitive Companion plugin](https://github.com/jmerle/competitive-companion)
+- [Competitive Companion Extension (Chrome or Firefox)](https://github.com/jmerle/competitive-companion)
 
 ## Install using `npm`
 
@@ -25,8 +25,6 @@ yarn install cpbooster -g
 ```
 
 ## Create Configuration File
-
-Execute the following command to create a configuration file with default values in your **$HOME** directory (`cpbooster-config.json`).
 
 ```shell
 cpbooster init

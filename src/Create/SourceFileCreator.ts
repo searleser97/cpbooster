@@ -58,7 +58,7 @@ export default class SourceFileCreator {
     if (commentString) {
       template += `${commentString} time-limit: ${timeLimitInMS}\n`;
       if (problemUrl) {
-        template += `problem-url: ${problemUrl}\n`;
+        template += `${commentString} problem-url: ${problemUrl}\n`;
       }
     }
     if (extension == ".cpp" && config.languages.cpp.template) {
