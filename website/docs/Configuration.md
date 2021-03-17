@@ -53,8 +53,6 @@ If you wish to create your configuration file somewhere else you can specify the
 
 ### `contestsDirectory: string`
 
-`default: "home/user/Contests"`
-
 The path to the directory where contests folders will be created when you run `cpb clone`.
 
 The directory of a user that has cloned 3 contests would look like this:
@@ -70,16 +68,12 @@ $ tree -L 1
 
 ### `port: number`
 
-`default: 1327`
-
 Specifies the **port** where [competitive companion extension](https://github.com/jmerle/competitive-companion) will send problem's data.
 **1327** is the default port for `cpbooster` in competitive companion so, if you don't change
 the port, it will just work as expected. If you must change it, then be sure that you also
 change it in competitive companion extension settings.
 
 ### `editor: string`
-
-`default: "konsole"`
 
 Name of the **editor** that will be opened after running `cpb clone`.
 The **editor** value should match with the terminal command you use to launch it. See [Editor Requirements](#editor-requirements)
@@ -153,4 +147,29 @@ Currently the only supported languages are **C++** and **Python**, If you wish t
 for other languages visit the section "[How to add a language](/docs/add-language-support)".
 :::
 
-### `languages: Object`
+### `languages.<lang>.template: string`
+
+Path to your competitive programming template for the corresponding `<lang>`.
+
+Examples of competitive programming templates:
+
+- [CompetitiveProgrammingTemplate.cpp](https://gitlab.com/searleser97/competitive-programming-reference/-/blob/master/Reference/Coding%20Resources/C++/Competitive%20Programming%20Template.cpp)
+- [CompetitiveProgrammingTemplate.py](https://gitlab.com/searleser97/competitive-programming-reference/-/blob/master/Reference/Coding%20Resources/Python/Competitive%20Programming%20Template.py)
+
+### `languages.<lang>.command: string`
+
+Command used to **compile** (C++, Java, ...) or **run** (Python, Ruby) your program.
+
+For example: If you use codeforces it is convenient that you use the same command they use for each language
+
+#### `cpp`
+
+```json
+{
+  "languages": {
+    "cpp": {
+      "command": "g++ -std=gnu++17 -O2"
+    }
+  }
+}
+```
