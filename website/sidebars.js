@@ -17,6 +17,12 @@ module.exports = {
       label: "Usage",
       items: ["Clone", "Create", "Test", "Debug", "Submit"],
       collapsed: false
+    },
+    {
+      type: "category",
+      label: "Contributing",
+      items: ["add-editor-support", "add-language-support"],
+      collapsed: false
     }
   ]
 };
