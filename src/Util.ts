@@ -102,11 +102,23 @@ export default class Util {
     return lines;
   }
 
-  static repeat(s: string, times: number) {
+  static repeat(str: string, times: number): string {
     let ans = "";
     for (let i = 0; i < times; i++) {
-      ans += s;
+      ans += str;
     }
     return ans;
+  }
+
+  static padCenter(str: string, width: number): string {
+    if (str.length >= width) {
+      return str;
+    } else {
+      let remaningSpace = width - str.length;
+      let spaceOnLeftSide = Math.floor(remaningSpace / 2);
+      let spaceOnRightSide = remaningSpace - spaceOnLeftSide;
+      let answer = this.repeat(" ", spaceOnLeftSide) + str + this.repeat(" ", spaceOnRightSide);
+      return answer;
+    }
   }
 }
