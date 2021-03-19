@@ -140,7 +140,9 @@ Whether to open a browser window in the submission status page or not, after run
 
 ### `preferredLang: string`
 
-The extension name in lowercase of your preferred language. ( i.e. `"cpp"`, `"py"`, `"java"`, ... )
+The extension name in lowercase of your preferred language. ( i.e. `"cpp"`, `"py"`, `"java"`, ... ),
+`cpb clone` uses this value to create corresponding source files with the template of your
+preferred language.
 
 :::note
 Currently the only supported languages are **C++** and **Python**, If you wish to contribute and add support
@@ -169,6 +171,9 @@ For example: If you use codeforces it is convenient that you use the same comman
   "languages": {
     "cpp": {
       "command": "g++ -std=gnu++17 -O2"
+    },
+    "py": {
+      "command": "python3"
     }
   }
 }
