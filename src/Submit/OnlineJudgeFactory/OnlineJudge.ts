@@ -117,6 +117,19 @@ export default abstract class OnlineJudge {
     }
   }
 
+  async openBrowserInUrl(url: string) {
+    try {
+      let browser = await chromium.launch({ headless: false });
+      const context = await this.restoreSession(browser);
+      context.on("page", (_) => this.closeAllOtherTabs(context));
+      const pages = context.pages();
+      let page = pages.length > 0 ? pages[0] : await context.newPage();
+      await page.goto(url);
+    } catch (_) {
+      console.log("Browser closed");
+    }
+  }
+
   async login(): Promise<void> {
     let browser = await chromium.launch({ headless: false });
     const context = await this.restoreSession(browser);
