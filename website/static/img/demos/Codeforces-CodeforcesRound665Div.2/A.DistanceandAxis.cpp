@@ -56,7 +56,8 @@ void debug(const auto &e, const auto &... r) {
 void _main(int tc) {
   int n, k;
   cin >> n >> k;
-  int ans = max(k, n) - min(k, n);
+  //int ans = max(k, n) - min(k, n);
+  int ans = k - n;
   cout << (k < n ? ans % 2 : ans) << '\n';
 }
 // 5

@@ -1,5 +1,5 @@
 // time-limit: 2000
-problem-url: https://atcoder.jp/contests/arc114/tasks/arc114_c
+// problem-url: https://codeforces.com/contest/1401/problem/C
 // 23
 #include <bits/stdc++.h>
 using namespace std;
