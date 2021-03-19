@@ -23,7 +23,7 @@ import yargs from "yargs";
 import * as os from "os";
 import * as Path from "path";
 import ICommandGlobalArgs from "./Types/ICommandGlobalArgs";
-import { ICommandServeArgs, serve } from "./Serve/Serve";
+import { ICommandCloneArgs, clone } from "./Clone/Clone";
 import { ICommandTestArgs, test } from "./Test/Test";
 import { create, ICommandCreateArgs } from "./Create/Create";
 import { init } from "./Init/Init";
@@ -41,7 +41,7 @@ updateNotifier({
 });
 
 let descriptions = {
-  serve: "Run cpbooster as server for competitive companion plugin.",
+  clone: "Run cpbooster as server for competitive companion plugin.",
   test: "Test your code against one or all (default) available test cases.",
   create:
     "Create a new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
@@ -57,18 +57,18 @@ yargs
     "\nUsage: $0 <command> [options]\n\nRun `$0 <command> --help` to show help for an specific command."
   )
   .command(
-    "serve",
-    descriptions.serve,
+    "clone",
+    descriptions.clone,
     (serve_yargs) => {
       serve_yargs
-        .usage("\n" + descriptions.serve + "\n\nUsage: $0 serve [options]")
+        .usage("\n" + descriptions.clone + "\n\nUsage: $0 clone [options]")
         .option("port", {
           alias: "p",
           type: "number",
           description: "Port where competitive companion plugin will send parsed data from problems"
         });
     },
-    (argv) => serve((argv as unknown) as ICommandServeArgs)
+    (argv) => clone((argv as unknown) as ICommandCloneArgs)
   )
   .command(
     ["test <filePath>", "t"],

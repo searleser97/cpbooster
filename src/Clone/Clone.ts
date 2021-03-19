@@ -20,11 +20,11 @@ import Config from "../Config/Config";
 import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
 import CCServer from "./CCServer";
 
-export interface ICommandServeArgs extends ICommandGlobalArgs {
+export interface ICommandCloneArgs extends ICommandGlobalArgs {
   port?: number;
 }
 
-export function serve(args: ICommandServeArgs) {
+export function clone(args: ICommandCloneArgs) {
   const config = Config.read(args.configPath);
   if (args.port) {
     config.port = args.port;
