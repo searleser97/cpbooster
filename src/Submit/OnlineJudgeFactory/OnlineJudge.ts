@@ -124,8 +124,10 @@ export default abstract class OnlineJudge {
       context.on("page", (_) => this.closeAllOtherTabs(context));
       const pages = context.pages();
       let page = pages.length > 0 ? pages[0] : await context.newPage();
+      page.on("close", (_) => exit(0));
       await page.goto(url);
     } catch (_) {
+      // This line apparently never gets executed
       console.log("Browser closed");
     }
   }
@@ -205,6 +207,9 @@ export default abstract class OnlineJudge {
       }
       await this.saveSession(context);
       await browser.close();
+      if (result && config.showStatusPageOnSubmit) {
+        await this.openBrowserInUrl(page.url());
+      }
     } catch (e) {
       console.log("Error: File was not submitted");
       exit(0);
