@@ -59,9 +59,9 @@ export default class CCServer {
         fs.writeFileSync(Tester.getInputPath(filePath, idx + 1), testcase.input);
         fs.writeFileSync(Tester.getAnswerPath(filePath, idx + 1), testcase.output);
       });
-      console.info(
-        "- Input and Answer files have been created for " + Path.basename(filePath) + "\n"
-      );
+      let tcLen = problemData.tests.length;
+      console.log(`-> ${problemData.tests.length} Testcase${tcLen == 1 ? "" : "s"}`);
+      console.log("-------------");
       if (!this.isActive) this.isActive = true;
       this.lastRequestTime = process.hrtime();
     });
@@ -86,7 +86,7 @@ export default class CCServer {
         if (serverRef) serverRef.close();
         clearInterval(interval);
         let contestPath = Path.join(this.config.contestsDirectory, this.contestName);
-        console.log("\n\tDONE!\n");
+        console.log("\n\t    DONE!\n");
         console.log(`The path to your contest folder is: "${contestPath}"`);
         console.log("\n\tHappy Coding!\n");
         let command = getTerminalCommand(this.config.terminal, contestPath);

@@ -42,14 +42,15 @@
   color: #ffffff;
 }
 
-/*.heroInner {*/
-/*margin: 0 auto;*/
-/*max-width: 1100px;*/
-/*padding: 0 20px;*/
-/*}*/
+.admonition-tip {
+  color: white;
+}
 
-/*.heroProjectTagline {*/
-/*color: #fff;*/
-/*font-size: 60px;*/
-/*margin: 0;*/
-/*}*/
+.admonition-tip .admonition-icon svg {
+  fill: white;
+  stroke: white;
+}
+
+.admonition-tip a {
+  color: white;
+}

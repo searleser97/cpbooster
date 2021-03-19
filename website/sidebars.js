@@ -3,25 +3,31 @@ module.exports = {
     {
       type: "category",
       label: "Introduction",
-      items: ["About", "Features"],
+      items: ["about", "features"],
       collapsed: false
     },
     {
       type: "category",
       label: "Getting Started",
-      items: ["Installation", "Configuration"],
+      items: ["installation", "configuration"],
       collapsed: false
     },
     {
       type: "category",
       label: "Usage",
-      items: ["Clone", "Create", "Test", "Debug", "Submit"],
+      items: ["clone", "create", "test", "debug", "submit"],
       collapsed: false
     },
     {
       type: "category",
       label: "Contributing",
       items: ["add-editor-support", "add-language-support"],
+      collapsed: false
+    },
+    {
+      type: "category",
+      label: "Extras",
+      items: ["language-aliases"],
       collapsed: false
     }
   ]

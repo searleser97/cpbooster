@@ -19,7 +19,7 @@ module.exports = {
         {
           type: "doc",
           position: "left",
-          docId: "About",
+          docId: "about",
           label: "Docs"
         },
         {

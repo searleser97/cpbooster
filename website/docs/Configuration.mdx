@@ -1,5 +1,5 @@
 ---
-id: Configuration
+id: configuration
 title: Configuration
 ---
 
@@ -127,7 +127,7 @@ for other terminal emulators.
 
 ### `closeAfterClone: boolean`
 
-Whether to close the terminal where you executed `cpb clone` or not.
+Whether to close the terminal after the execution of `cpb clone` or not.
 
 :::caution
 When using this option as `true` verify that your [**editor**](#editor-string) satisfies the [Editor Requirements](#editor-requirements), otherwise,
@@ -153,14 +153,16 @@ for other languages visit the section "[How to add a language](/docs/add-languag
 
 Path to your competitive programming template for the corresponding `<lang>`.
 
-Examples of competitive programming templates:
+Here are some examples of competitive programming templates (if you wish, you can download them and use them):
 
 - [CompetitiveProgrammingTemplate.cpp](https://gitlab.com/searleser97/competitive-programming-reference/-/blob/master/Reference/Coding%20Resources/C++/Competitive%20Programming%20Template.cpp)
+  - This template allows you to print anything like in python with a `debug` function that just works when `debugCommand` is used. See [Debug](/docs/debug) section.
 - [CompetitiveProgrammingTemplate.py](https://gitlab.com/searleser97/competitive-programming-reference/-/blob/master/Reference/Coding%20Resources/Python/Competitive%20Programming%20Template.py)
+  - This template includes Fast IO operations for python
 
 ### `languages.<lang>.command: string`
 
-Command used to **compile** (C++, Java, ...) or **run** (Python, Ruby) your program.
+The command that will be used to compile (C++, Java, ...) or run (Python, Ruby) your program for testing purposes.
 
 For example: If you use codeforces it is convenient that you use the same command they use for each language
 
@@ -179,7 +181,10 @@ For example: If you use codeforces it is convenient that you use the same comman
 
 ### `languages.<lang>.debugCommand: string`
 
-The command that will be used for debugging purposes
+The command that will be used to compile or run your program for debugging purposes.
+Usually `debugCommand` has more flags than `command`.
+
+Some debug command examples for `cpp` and `py`:
 
 ```json
 {
@@ -191,6 +196,29 @@ The command that will be used for debugging purposes
     "py": {
       "command": "python3",
       "debugCommand": "python3 -O"
+    }
+  }
+}
+```
+
+:::tip
+Visit the [**Debug**](/docs/debug) section to see more examples and to learn how to take full advantage of this feature.
+:::
+
+### `languages.<lang>.aliases: Object<OnlineJudgeName, string>`
+
+Language "aliases" for each OnlineJudge. See [Language Aliases](/docs/language-aliases) for a list of aliases per Online Judge.
+
+For example: the alias for `C++` in Codeforces and AtCoder is `"54"` and `"4006"` respectively
+
+```json
+{
+  "languages": {
+    "cpp": {
+      "aliases": {
+        "codeforces": "54",
+        "atcoder": "4006"
+      }
     }
   }
 }
