@@ -208,7 +208,17 @@ export default abstract class OnlineJudge {
       await this.saveSession(context);
       await browser.close();
       if (result && config.showStatusPageOnSubmit) {
-        await this.openBrowserInUrl(page.url());
+        try {
+          // waiting for half a second also fixes the error:
+          // -> route.continue: Target page, context or browser has been closedError
+          // when you submit for the very first time after installing cpbooster
+          //await new Promise((resolve) => setTimeout(resolve, 500));
+          await this.openBrowserInUrl(page.url());
+        } catch (_) {
+          // fixes the error: route.continue: Target page, context or browser has been closedError
+          // when you submit for the very first time after installing cpbooster
+          await this.openBrowserInUrl(page.url());
+        }
       }
     } catch (e) {
       console.log("Error: File was not submitted");
