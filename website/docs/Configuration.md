@@ -164,8 +164,6 @@ Command used to **compile** (C++, Java, ...) or **run** (Python, Ruby) your prog
 
 For example: If you use codeforces it is convenient that you use the same command they use for each language
 
-#### `cpp`
-
 ```json
 {
   "languages": {
@@ -174,6 +172,25 @@ For example: If you use codeforces it is convenient that you use the same comman
     },
     "py": {
       "command": "python3"
+    }
+  }
+}
+```
+
+### `languages.<lang>.debugCommand: string`
+
+The command that will be used for debugging purposes
+
+```json
+{
+  "languages": {
+    "cpp": {
+      "command": "g++ -std=gnu++17 -O2",
+      "debugCommand": "g++ -std=gnu++17 -O3 -DDEBUG -Wshadow -Wall"
+    },
+    "py": {
+      "command": "python3",
+      "debugCommand": "python3 -O"
     }
   }
 }
