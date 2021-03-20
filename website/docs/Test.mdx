@@ -7,20 +7,33 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 import { colors } from './colors'
 
-`cpbooster` provides the following command for you to easily test any program.
+`cpbooster` provides the following command for you to easily test your program against
+all available test cases.
 
 ```txt
-cpb test <filePath> [options]
+cpb test <filePath>
 ```
 
-This command will test your program against all available test cases (default behavior)
-or just one test case if `--testId` flag is specified. It supports the following veredicts.
+or the alias for `test` which is just `t`.
 
-- <span style={{background: colors.green, color: "white"}} >&nbsp;<b>AC</b>&nbsp;</span> (Accepted Solution)
-- <span style={{background: colors.red, color: "white"}}>&nbsp;<b>WA</b>&nbsp;</span> (Wrong Answer)
-- <span style={{background: colors.yellow, color: "white"}}>&nbsp;<b>CE</b>&nbsp;</span> (Compilation Error)
-- <span style={{background: colors.purple, color: "white"}}>&nbsp;<b>TLE</b>&nbsp;</span> (Time Limit Exceeded)
-- <span style={{background: colors.blue, color: "white"}}>&nbsp;<b>RTE</b>&nbsp;</span> (Runtime Error)
+```txt
+cpb t <filePath>
+```
+
+
+or you can specify the test case, using the `--testId` flag or its alias `-t`.
+
+```txt
+cpb t <filePath> -t <number>
+```
+
+## Supported Veredicts
+
+- <span style={{background: colors.green, color: "white"}} >&nbsp;<b>AC</b>&nbsp;</span> <a href="#accepted-solution">(Accepted Solution)</a>
+- <span style={{background: colors.red, color: "white"}}>&nbsp;<b>WA</b>&nbsp;</span> <a href="#wrong-answer">(Wrong Answer)</a>
+- <span style={{background: colors.yellow, color: "white"}}>&nbsp;<b>CE</b>&nbsp;</span> <a href="#compilation-error">(Compilation Error)</a>
+- <span style={{background: colors.purple, color: "white"}}>&nbsp;<b>TLE</b>&nbsp;</span> <a href="#time-limit-exceeded">(Time Limit Exceeded)</a>
+- <span style={{background: colors.blue, color: "white"}}>&nbsp;<b>RTE</b>&nbsp;</span> <a href="#runtime-error">(Runtime Error)</a>
 
 ## How does it work?
 
