@@ -15,7 +15,7 @@ module.exports = {
     {
       type: "category",
       label: "Usage",
-      items: ["clone", "create", "test", "debug", "submit"],
+      items: ["clone", "create", "test", "debug", "add-test-case", "submit"],
       collapsed: false
     },
     {

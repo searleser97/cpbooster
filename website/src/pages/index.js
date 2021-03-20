@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 const features = [
   {
     title: "Clone Test Cases Automatically",
-    imageUrl: "img/demos/demo1.gif",
+    imageUrl: "img/demos/clone.gif",
     description: (
       <>
         Automatically clone sample testcases files with corresponding source code files with
@@ -17,15 +17,9 @@ const features = [
       </>
     )
   },
-
-  {
-    title: "Create Files With Template",
-    imageUrl: "img/undraw_docusaurus_tree.svg",
-    description: <>Create source files with the corresponding template loaded</>
-  },
   {
     title: "Test",
-    imageUrl: "img/undraw_docusaurus_react.svg",
+    imageUrl: "img/demos/test.gif",
     description: (
       <>
         Test your code against sample testcases quickly and with a pretty output.
@@ -33,6 +27,11 @@ const features = [
         Supported Veredicts: <b>AC, WA, TLE, RTE, CE</b>
       </>
     )
+  },
+  {
+    title: "Create Files With Template",
+    imageUrl: "img/undraw_docusaurus_tree.svg",
+    description: <>Create source files with the corresponding template loaded</>
   },
   {
     title: "Debug",
@@ -64,6 +63,17 @@ const features = [
   {
     title: "Vim Plugin",
     imageUrl: "https://miro.medium.com/max/1022/0*6ve47nqg93ZzZxws.png",
+    description: (
+      <>
+        Vim users can install{" "}
+        <Link to="https://github.com/searleser97/cpbooster.vim">cpbooster.vim</Link> plugin to boost
+        their speed even more.
+      </>
+    )
+  },
+  {
+    title: "Neovim Plugin",
+    imageUrl: "img/nvim-icon.png",
     description: (
       <>
         Vim users can install{" "}

@@ -2,3 +2,80 @@
 id: clone
 title: Clone Contest
 ---
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+`cpbooster` can clone a contest to your computer with the following command:
+
+```shell
+cpb clone
+```
+
+
+This command does 5 things:
+
+1. Waits for [competitive companion extension](https://github.com/jmerle/competitive-companion) to send the data from the contest.
+1. Creates a folder inside your [contests directory](/docs/configuration#contestsdirectory-string) with the same name as the contest that you are cloning.
+1. Creates source files for all the problems in the contest. Using the name of the corresponding problem as file name.
+1. Loads the template that corresponds to your [preferred language](/docs/configuration#preferredlang-string) to each source file.
+1. Downloads test cases as `.in` and `.ans` files. Using the name of the corresponging problem as file name as well.
+
+
+
+## Demo
+<div class="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/clone.gif')} />
+</div>
+
+## File Structure
+
+Running `ls` in the contest directory will show you something like the following.
+
+```shell
+Codeforces-CodeforcesRound665Div.2$ ls
+A.DistanceandAxis.ans1  C.MereArray.ans1               E.DivideSquare.cpp
+A.DistanceandAxis.cpp   C.MereArray.cpp                E.DivideSquare.in1
+A.DistanceandAxis.in1   C.MereArray.in1                F.ReverseandSwap.ans1
+A.DistanceandAxis.out1  D.MaximumDistributedTree.ans1  F.ReverseandSwap.ans2
+B.TernarySequence.ans1  D.MaximumDistributedTree.cpp   F.ReverseandSwap.cpp
+B.TernarySequence.cpp   D.MaximumDistributedTree.in1   F.ReverseandSwap.in1
+B.TernarySequence.in1   E.DivideSquare.ans1
+```
+
+The first thing to notice is that every file that corresponds to the "X" problem has the same name as "X",
+except for the extension. This is how `cpbooster` identifies which testcases correspond to a certain source file. 
+This means that you could create a new test case attached to "X" just by creating the corresponding `X.in2` and `X.ans2`
+files, however, `cpbooster` has a way to automate this task. See [Add Test Case](/docs/add-test-case).
+
+The second thing to notice is that there are **no subfolders**!, the file structure is **flat**!, which is just amazing for several
+reasons. See [Why Flat File Structure?](#why-flat-file-structure) to know more.
+
+## Why Flat File Structure?
+
+There are several reasons why a flat file structure is preferred when it comes to competitive programming constest.
+
+But definitely main one, is because we want **speed!**, being fast in a contest is crucial.
+
+For example, having to change directory like this
+
+```shell
+$ cd ..
+$ cd ProblemB
+```
+each time you switch to another problem is just so annoying and slow.
+
+Having a flat file structure enables you to make every single file operation easier and faster,
+opening them, creating them, if you are a [vim](https://www.vim.org/about.php) or [neovim](https://neovim.io/) user you could just do
+
+```shell
+$ vim *.cpp
+```
+to open all your source files.
+
+or let's say you want to see or modify the contents of some test case, you could just do `e: ProblemName.in1`
+to open the file, without changing directory or using long relative paths.
+
+Also, do not forget that folders **do** use space, even when they are empty, Why would you like to use more space just for a
+competitive programming contest **???**
+
+#### So, leave folders and organization for more complex projects! Here you definitely DON'T NEED that, it makes you slow.
+
