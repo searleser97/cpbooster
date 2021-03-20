@@ -4,26 +4,71 @@ title: Test
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import styles from './styles.module.css';
+import { colors } from './colors'
 
-`cpbooster` facilitates the following command for you to test with ease any
-program.
+`cpbooster` provides the following command for you to easily test any program.
 
 ```txt
 cpb test <filePath> [options]
 ```
 
-This command by default tests your program against all available testcases.
+This command will test your program against all available test cases (default behavior)
+or just one test case if `--testId` flag is specified. It supports the following veredicts.
+
+- <span style={{background: colors.green, color: "white"}} >&nbsp;<b>AC</b>&nbsp;</span> (Accepted Solution)
+- <span style={{background: colors.red, color: "white"}}>&nbsp;<b>WA</b>&nbsp;</span> (Wrong Answer)
+- <span style={{background: colors.yellow, color: "white"}}>&nbsp;<b>CE</b>&nbsp;</span> (Compilation Error)
+- <span style={{background: colors.purple, color: "white"}}>&nbsp;<b>TLE</b>&nbsp;</span> (Time Limit Exceeded)
+- <span style={{background: colors.blue, color: "white"}}>&nbsp;<b>RTE</b>&nbsp;</span> (Runtime Error)
 
 ## How does it work?
 
-It finds all the `<fileName>.inX` files and uses them as input
-for your program, it then compares your program's output with the corresponding
-`<fileName>.ansX`, after this, the veredict can be any of:
+If your code needs compilation, this will be the first thing that `cpbooster` will
+try to do, if the compilation fails it will print something similar to this:
 
-## Showcase: Wrong Answer
+IMAGE HERE
+
+If the compilation is successful or your code didn't need any compilation it will continue in
+this way, it is going to find all the `<fileName>.inX` files and use them as input
+for your program, it will then compare your program's output with the corresponding
+`<fileName>.ansX` files, 
+
+
+:::important
+Notice that `<fileName>` should also be the name of the corresponding source file (`cpp`, `py`, ...),
+since `cpbooster` uses `<fileName>` to make associations between source files and test cases. See [File Structure](/docs/clone#file-structure)
+:::
+
+## Showcase
+
+#### Wrong Answer
 
 <div class="text--center">
   <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
 </div>
 
-## 
+#### Accepted Solution
+
+<div class="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+</div>
+
+#### Compilation Error
+
+<div class="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+</div>
+
+#### Time Limit Exceeded
+
+<div class="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+</div>
+
+#### Runtime Error
+
+<div class="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+</div>
+

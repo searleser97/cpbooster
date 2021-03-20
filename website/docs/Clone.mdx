@@ -51,11 +51,11 @@ reasons. See [Why Flat File Structure?](#why-flat-file-structure) to know more.
 
 ## Why Flat File Structure?
 
-There are several reasons why a flat file structure is preferred when it comes to competitive programming constest.
+There are several reasons why a flat file structure is preferred when it comes to competitive programming constests.
 
-But definitely main one, is because we want **speed!**, being fast in a contest is crucial.
+But definitely the main reason, is because we want **speed!**, being fast in a contest is crucial.
 
-For example, having to change directory like this
+For example, having to change the directory like this
 
 ```shell
 $ cd ..
@@ -72,7 +72,12 @@ $ vim *.cpp
 to open all your source files.
 
 or let's say you want to see or modify the contents of some test case, you could just do `e: ProblemName.in1`
-to open the file, without changing directory or using long relative paths.
+to open the file, without changing the directory or using long relative paths.
+
+or imagine the situation where for some reason you just want to run your code with any of the available test cases manually
+(without using `cpbooster`), due to the fact that you will have a flat file structure you will be able to do it
+without changing the directory or using long relative paths. Just `./Program.exe < Program.in1` or `python Program.py < Program.in1`, etc.
+as usual.
 
 Also, do not forget that folders **do** use space, even when they are empty, Why would you like to use more space just for a
 competitive programming contest **???**
