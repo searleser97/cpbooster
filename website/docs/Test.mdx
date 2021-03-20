@@ -2,3 +2,28 @@
 id: test
 title: Test
 ---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+`cpbooster` facilitates the following command for you to test with ease any
+program.
+
+```txt
+cpb test <filePath> [options]
+```
+
+This command by default tests your program against all available testcases.
+
+## How does it work?
+
+It finds all the `<fileName>.inX` files and uses them as input
+for your program, it then compares your program's output with the corresponding
+`<fileName>.ansX`, after this, the veredict can be any of:
+
+## Showcase: Wrong Answer
+
+<div class="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+</div>
+
+## 

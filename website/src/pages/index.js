@@ -8,14 +8,15 @@ import styles from "./styles.module.css";
 
 const features = [
   {
-    title: "Clone Test Cases Automatically",
+    title: "Clone Contests",
     imageUrl: "img/demos/clone.gif",
     description: (
       <>
-        Automatically clone sample testcases files with corresponding source code files with
-        template loaded into a desired directory
+        Automatically clone sample testcases and create source files preloaded with your favorite
+        template,
       </>
-    )
+    ),
+    to: "docs/clone"
   },
   {
     title: "Test",
@@ -26,12 +27,14 @@ const features = [
         <br />
         Supported Veredicts: <b>AC, WA, TLE, RTE, CE</b>
       </>
-    )
+    ),
+    to: "docs/test"
   },
   {
     title: "Create Files With Template",
     imageUrl: "img/undraw_docusaurus_tree.svg",
-    description: <>Create source files with the corresponding template loaded</>
+    description: <>Create source files with the corresponding template loaded</>,
+    to: "docs/create"
   },
   {
     title: "Debug",
@@ -41,7 +44,8 @@ const features = [
         Run code with your own debugging flags easily. Input can be from the keyboard or from a test
         case file.
       </>
-    )
+    ),
+    to: "docs/debug"
   },
   {
     title: "Add Test Cases",
@@ -51,14 +55,16 @@ const features = [
         Add a test case for the specified source code file. It will prompt you for the input and the
         expected output
       </>
-    )
+    ),
+    to: "docs/add-test-case"
   },
   {
     title: "Submit",
     imageUrl: "img/undraw_docusaurus_react.svg",
     description: (
       <>Submit your code to online judges pretty fast by just running a single command.</>
-    )
+    ),
+    to: "docs/submit"
   },
   {
     title: "Vim Plugin",
@@ -69,7 +75,8 @@ const features = [
         <Link to="https://github.com/searleser97/cpbooster.vim">cpbooster.vim</Link> plugin to boost
         their speed even more.
       </>
-    )
+    ),
+    to: "https://github.com/searleser97/cpbooster.vim"
   },
   {
     title: "Neovim Plugin",
@@ -80,17 +87,21 @@ const features = [
         <Link to="https://github.com/searleser97/cpbooster.vim">cpbooster.vim</Link> plugin to boost
         their speed even more.
       </>
-    )
+    ),
+    to: "https://github.com/searleser97/cpbooster.vim"
   }
 ];
 
-function Feature({ imageUrl, title, description }) {
+function Feature({ imageUrl, title, description, to }) {
   const imgUrl = useBaseUrl(imageUrl);
+  const toUrl = useBaseUrl(to);
   return (
     <div className={clsx("col col--4", styles.feature)}>
       {imgUrl && (
         <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
+          <a href={toUrl}>
+            <img className={styles.featureImage} src={imgUrl} alt={title} />
+          </a>
         </div>
       )}
       <h3>{title}</h3>
