@@ -38,12 +38,13 @@ A.DistanceandAxis.in1   C.MereArray.in1                F.ReverseandSwap.ans1
 A.DistanceandAxis.out1  D.MaximumDistributedTree.ans1  F.ReverseandSwap.ans2
 B.TernarySequence.ans1  D.MaximumDistributedTree.cpp   F.ReverseandSwap.cpp
 B.TernarySequence.cpp   D.MaximumDistributedTree.in1   F.ReverseandSwap.in1
-B.TernarySequence.in1   E.DivideSquare.ans1
+B.TernarySequence.in1   E.DivideSquare.ans1            F.ReverseandSwap.in2
 ```
 
-The first thing to notice is that every file that corresponds to the "X" problem has the same name as "X",
+The first thing to notice is that every file that corresponds to the `X` problem has the same name as `X`,
 except for the extension. This is how `cpbooster` identifies which testcases correspond to a certain source file. 
-This means that you could create a new test case attached to "X" just by creating the corresponding `X.in2` and `X.ans2`
+This means that you could create a new test case attached to the problem `A.DistanceandAxis`
+just by creating the corresponding `A.DistanceandAxis.in2` and `A.DistanceandAxis.ans2`
 files, however, `cpbooster` has a way to automate this task. See [Add Test Case](/docs/add-test-case).
 
 The second thing to notice is that there are **no subfolders**!, the file structure is **flat**!, which is just amazing for several

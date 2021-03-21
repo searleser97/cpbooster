@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 import { colors } from './colors'
 
 `cpbooster` provides the following command for you to easily test your program against
-all available test cases.
+**all** available test cases.
 
 ```txt
 cpb test <filePath>
@@ -20,12 +20,42 @@ or the alias for `test` which is just `t`.
 cpb t <filePath>
 ```
 
+this command will **automatically compile** your program everytime you run it,
+WILL CREATE A BINARY FILE CALLED THE SAME WAY AS THE SOURCE FILE...
 
-or you can specify the test case, using the `--testId` flag or its alias `-t`.
+
+unless your program does not need to compile (i.e. python programs).
+See [Test Without Recompiling](#test-without-recompiling) for details on how to avoid recompiling your program each time.
+
+## Test With A Single Test Case
+
+You can specify the test case, using the `--testId` flag or its alias `-t`.
 
 ```txt
 cpb t <filePath> -t <number>
 ```
+
+:::important
+`<number>` should match with the numeric suffix of the corresponding `.in` and `.ans` files
+See [**File Structure**](/docs/clone#file-structure) for better understanding.
+:::
+
+## Test Without Recompiling
+
+You can tell `cpbooster` to run the tests using the last compiled version of your program
+by passing the flag `--noCompile` or its alias  `--nc`.
+
+```txt
+cpb test <filePath> --nc
+```
+
+:::caution
+By using this flag, `cpbooster` will assume that there is a corresponding compiled binary file
+for your program. By default the binary file name that `cpbooster` will look for
+must have the same name as the source file except for the extension, which will be `.exe`. 
+If you wish to specify other name for binary files you could specify it in <a href={"/docs/configuration#languageslangcommand-string"} style={{color: 'white'}}>`languages.<lang>.command`</a>
+:::
+
 
 ## Supported Veredicts
 
@@ -38,11 +68,9 @@ cpb t <filePath> -t <number>
 ## How does it work?
 
 If your code needs compilation, this will be the first thing that `cpbooster` will
-try to do, if the compilation fails it will print something similar to this:
+try to do, unless the `--noCompile` flag was used. If the compilation fails it will print something similar to [**THIS**](#compilation-error).
 
-IMAGE HERE
-
-If the compilation is successful or your code didn't need any compilation it will continue in
+If the compilation is successful or your code didn't need any compilation (i.e. `py` files) it will continue in
 this way, it is going to find all the `<fileName>.inX` files and use them as input
 for your program, it will then compare your program's output with the corresponding
 `<fileName>.ansX` files, 
@@ -50,38 +78,40 @@ for your program, it will then compare your program's output with the correspond
 
 :::important
 Notice that `<fileName>` should also be the name of the corresponding source file (`cpp`, `py`, ...),
-since `cpbooster` uses `<fileName>` to make associations between source files and test cases. See [File Structure](/docs/clone#file-structure)
+since `cpbooster` uses `<fileName>` to make associations between source files and test cases. See [**File Structure**](/docs/clone#file-structure)
 :::
+
+## 
 
 ## Showcase
 
-#### Wrong Answer
+### Accepted Solution
 
 <div class="text--center">
-  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+  <img alt="test" src={useBaseUrl('/img/demos/test_ac.gif')} />
 </div>
 
-#### Accepted Solution
+### Wrong Answer
 
 <div class="text--center">
-  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+  <img alt="test" src={useBaseUrl('/img/demos/test_wa.gif')} />
 </div>
 
-#### Compilation Error
+### Compilation Error
 
 <div class="text--center">
-  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+  <img alt="test" src={useBaseUrl('/img/demos/test_ce.gif')} />
 </div>
 
-#### Time Limit Exceeded
+### Time Limit Exceeded
 
 <div class="text--center">
-  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+  <img alt="test" src={useBaseUrl('/img/demos/test_tle.gif')} />
 </div>
 
-#### Runtime Error
+### Runtime Error
 
 <div class="text--center">
-  <img alt="test" src={useBaseUrl('/img/demos/test.gif')} />
+  <img alt="test" src={useBaseUrl('/img/demos/test_rte.gif')} />
 </div>
 
