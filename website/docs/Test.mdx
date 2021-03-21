@@ -20,12 +20,15 @@ or the alias for `test` which is just `t`.
 cpb t <filePath>
 ```
 
-this command will **automatically compile** your program everytime you run it,
-WILL CREATE A BINARY FILE CALLED THE SAME WAY AS THE SOURCE FILE...
-
-
-unless your program does not need to compile (i.e. python programs).
+This command will **automatically compile** your program everytime you run it.
 See [Test Without Recompiling](#test-without-recompiling) for details on how to avoid recompiling your program each time.
+
+The executable file will be located in your current directory and its name will
+match with the name of the source file except for the extension, which will be `.exe`. This is
+because `cpbooster` uses filenames to associate everything (See [**File Structure**](/docs/clone#file-structure) for better understanding).
+If you wish to save the executable file with a different name,
+you can specify it in your <a href={"/docs/configuration#languageslangcommand-string"} style={{color: 'white'}}>`languages.<lang>.command`</a>.
+
 
 ## Test With A Single Test Case
 
@@ -50,10 +53,10 @@ cpb test <filePath> --nc
 ```
 
 :::caution
-By using this flag, `cpbooster` will assume that there is a corresponding compiled binary file
-for your program. By default the binary file name that `cpbooster` will look for
-must have the same name as the source file except for the extension, which will be `.exe`. 
-If you wish to specify other name for binary files you could specify it in <a href={"/docs/configuration#languageslangcommand-string"} style={{color: 'white'}}>`languages.<lang>.command`</a>
+By using this flag, `cpbooster` will assume that there is a corresponding executable file
+for your program. Remember that the name of the executable file must be the same as the
+source file, except for the extension which must be `.exe`. Unless you specified otherwise
+in <a href={"/docs/configuration#languageslangcommand-string"} style={{color: 'white'}}>`languages.<lang>.command`</a>.
 :::
 
 
@@ -80,8 +83,6 @@ for your program, it will then compare your program's output with the correspond
 Notice that `<fileName>` should also be the name of the corresponding source file (`cpp`, `py`, ...),
 since `cpbooster` uses `<fileName>` to make associations between source files and test cases. See [**File Structure**](/docs/clone#file-structure)
 :::
-
-## 
 
 ## Showcase
 

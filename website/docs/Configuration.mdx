@@ -179,6 +179,22 @@ For example: If you use codeforces it is convenient that you use the same comman
 }
 ```
 
+:::tip
+If you specify the name of the executable file in this command, it will
+be used instead of the default name (same as source file). See [**Test**](/docs/test) section.
+
+**Example:** In `C++` you can use the `-o` flag to specify the name of the executable file that will be created after compilation.
+```json
+{
+  "languages": {
+    "cpp": {
+      "command": "g++ -std=gnu++17 -o executableName.exe"
+    }
+  }
+}
+```
+:::
+
 ### `languages.<lang>.debugCommand: string`
 
 The command that will be used to compile or run your program for debugging purposes.
