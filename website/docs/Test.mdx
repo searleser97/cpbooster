@@ -23,6 +23,8 @@ cpb t <filePath>
 This command will **automatically compile** your program everytime you run it.
 See [Test Without Recompiling](#test-without-recompiling) for details on how to avoid recompiling your program each time.
 
+### Executable File Details
+
 The executable file will be located in your current directory and its name will
 match with the name of the source file except for the extension, which will be `.exe`. This is
 because `cpbooster` uses filenames to associate everything (See [**File Structure**](/docs/clone#file-structure) for better understanding).
@@ -70,49 +72,114 @@ in <a href={"/docs/configuration#languageslangcommand-string"} style={{color: 'w
 
 ## How does it work?
 
-If your code needs compilation, this will be the first thing that `cpbooster` will
-try to do, unless the `--noCompile` flag was used. If the compilation fails it will print something similar to [**THIS**](#compilation-error).
+This sections explains How each possible output of the `test` command work.
 
-If the compilation is successful or your code didn't need any compilation (i.e. `py` files) it will continue in
-this way, it is going to find all the `<fileName>.inX` files and use them as input
+### Compilation Error
+
+If your code needs compilation (`cpp`, `java`, ...), this will be the first thing that `cpbooster` will
+try to do, unless the `--noCompile` flag was used.
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_ce.gif')} />
+</div>
+
+### Runtime Error
+
+`cpbooster` detects that there was a runtime error if your program exited with a [status code](https://en.wikipedia.org/wiki/Exit_status) different from **0**
+or if there were no corresponding `.in` and `.ans` files (See [File Structure](/docs/clone#file-structure) for better understanding).
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_rte.gif')} />
+</div>
+
+### Time Limit Exceeded
+
+To detect that the execution of a certain program has exceeded the time limit, `cpbooster` requires to know
+which is this time limit beforehand, the default value is **3000** milliseconds which equivalent to **3** seconds.
+To use a different value, the string `time-limit:` followed by the time limit in numeric format as **milliseconds**
+should be written somewhere in the source file as a commented line.
+
+#### Examples:
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<div>
+<table>
+<thead>
+<tr>
+<th>
+C++
+</th>
+<th>
+Python
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+```cpp
+// time-limit: 2000
+int main() {
+ int a, b;
+ cin >> a >> b;
+ cout << a + b << endl;
+}
+```
+
+</td>
+<td>
+
+```py
+# time-limit: 2000
+
+a, b = map(int, input().split())
+print(a + b)
+```
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+:::note
+This line will be automatically added at the top of your source file with the default value
+when running `cpb clone` or `cpb create`.
+:::
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_tle.gif')} />
+</div>
+
+
+### Wrong Answer
+
+It is going to find all the `<fileName>.inX` files and use them as input
 for your program, it will then compare your program's output with the corresponding
 `<fileName>.ansX` files, 
-
 
 :::important
 Notice that `<fileName>` should also be the name of the corresponding source file (`cpp`, `py`, ...),
 since `cpbooster` uses `<fileName>` to make associations between source files and test cases. See [**File Structure**](/docs/clone#file-structure)
 :::
 
-## Showcase
+#### Demo
 
-### Accepted Solution
-
-<div class="text--center">
-  <img alt="test" src={useBaseUrl('/img/demos/test_ac.gif')} />
-</div>
-
-### Wrong Answer
-
-<div class="text--center">
+<div className="text--center">
   <img alt="test" src={useBaseUrl('/img/demos/test_wa.gif')} />
 </div>
 
-### Compilation Error
 
-<div class="text--center">
-  <img alt="test" src={useBaseUrl('/img/demos/test_ce.gif')} />
-</div>
+### Accepted Solution
 
-### Time Limit Exceeded
-
-<div class="text--center">
-  <img alt="test" src={useBaseUrl('/img/demos/test_tle.gif')} />
-</div>
-
-### Runtime Error
-
-<div class="text--center">
-  <img alt="test" src={useBaseUrl('/img/demos/test_rte.gif')} />
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_ac.gif')} />
 </div>
 
