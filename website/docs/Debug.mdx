@@ -2,3 +2,30 @@
 id: debug
 title: Debug
 ---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+`cpbooster` provides a way for you to run your program using your debugging
+flags (<a href={"/docs/configuration#languageslangdebugcommand-string"} style={{color: 'white'}}>`languages.<lang>.debugCommand`</a>).
+You can pass the `--debug` flag (or its alias which is just `-d`) to the `test` command for this.
+
+## Debug With Keyboard As Input
+
+```txt
+cpb t <filePath> --debug
+```
+
+#### Demo
+
+
+## Debug With Input File
+
+```txt
+cpb t <filePath> -t <number> --debug
+```
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/debug_file.gif')} />
+</div>
