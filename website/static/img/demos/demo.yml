@@ -1,0 +1,190 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: /usr/bin/zsh
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /home/san/contests/Codeforces-CodeforcesRound665Div.2
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 91
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 20
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: cpbooster
+    style:
+      border: 0px black solid
+      boxShadow: none
+      margin: 0px
+      background: "#3B4048"
+      borderRadius: "0px 0px 0px 0px"
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  #fontFamily: "FiraCode Nerd Font Mono"
+  #fontFamily: "BitstreamVeraSansMono Nerd Font"
+  #fontFamily: "DejaVu Sans Mono" # good option
+  #fontFamily: "Droid Sans Mono" # good
+  #fontFamily: "Monofurbold Nerd Font Mono"
+  #fontFamily: "iMWritingQuattroS Nerd Font Mono"
+  fontFamily: "JetBrainsMonoExtraBold Nerd Font Mono"
+  #fontFamilyt: "Roboto Mono Medium for Powerline"
+  
+  fontWeight: "bold"
+  
+  # The size of the font
+  fontSize: 14
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#c70e00"
+    green: "#5b8a3a"
+    yellow: "#ffa727"
+    blue: "#0767ff"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#ae89fe"
+    brightBlack: "#626566"
+    brightRed: "#AB4642"
+    brightGreen: "#5b8a3f"
+    brightYellow: "#ebdf86"
+    brightBlue: "#0767ff"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 566
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                          \r \r\e]2;san@san-pc: ~/contests/Codeforces-CodeforcesRound665Div.2\a\e]1;..Round665Div.2\a"
+  - delay: 16
+    content: "\r\e[0m\e[27m\e[24m\e[J\e[37mCodeforces-CodeforcesRound665Div.2$ \e[00m\e[K\e[?1h\e=\e[?2004h"
+  - delay: 445
+    content: c
+  - delay: 61
+    content: "\bcp"
+  - delay: 80
+    content: b
+  - delay: 67
+    content: ' '
+  - delay: 76
+    content: t
+  - delay: 72
+    content: ' '
+  - delay: 80
+    content: a
+  - delay: 283
+    content: "\bA.DistanceandAxis."
+  - delay: 597
+    content: c
+  - delay: 120
+    content: p
+  - delay: 96
+    content: p
+  - delay: 363
+    content: ' '
+  - delay: 128
+    content: '-'
+  - delay: 141
+    content: d
+  - delay: 135
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;cpb t A.DistanceandAxis.cpp -d\a\e]1;cpb\a"
+  - delay: 397
+    content: "Compiling...\r\n\r\n"
+  - delay: 1968
+    content: "Running with debugging flags\r\n\r\nEnter your input manually\r\n\r\n"
+  - delay: 6
+    content: "\e[48;5;196m\e[38;5;15mRed lines just get printed in --debug mode\r\n\e[0m\r\n"
+  - delay: 909
+    content: '2'
+  - delay: 440
+    content: "\r\n"
+  - delay: 929
+    content: '4'
+  - delay: 151
+    content: ' '
+  - delay: 144
+    content: '1'
+  - delay: 377
+    content: "\r\n"
+  - delay: 1008
+    content: '5'
+  - delay: 120
+    content: ' '
+  - delay: 152
+    content: '8'
+  - delay: 416
+    content: "\r\n\e[48;5;196m\e[38;5;15mn = 4 k = 1\e[0m\r\n1\r\n\e[48;5;196m\e[38;5;15mn = 5 k = 8\e[0m\r\n3\r\n"
+  - delay: 25
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                          \r \r\e]2;san@san-pc: ~/contests/Codeforces-CodeforcesRound665Div.2\a\e]1;..Round665Div.2\a"
+  - delay: 6
+    content: "\r\e[0m\e[27m\e[24m\e[J\e[37mCodeforces-CodeforcesRound665Div.2$ \e[00m\e[K\e[?1h\e=\e[?2004h"
+  - delay: 2928
+    content: "\e[?2004l\r\r\n"
