@@ -51,7 +51,7 @@ You can tell `cpbooster` to run the tests using the last compiled version of you
 by passing the flag `--noCompile` or its alias  `--nc`.
 
 ```txt
-cpb test <filePath> --nc
+cpb t <filePath> --nc
 ```
 
 :::caution
@@ -161,13 +161,20 @@ when running `cpb clone` or `cpb create`.
 
 ### Wrong Answer
 
-It is going to find all the `<fileName>.inX` files and use them as input
-for your program, it will then compare your program's output with the corresponding
-`<fileName>.ansX` files, 
+Each time you run a test, `cpbooster` will create one or more `.outX` files (in the same directory as the
+source file) which will correspond to your program's output when using the correponding `.inX` file as
+input.
+Each `.outX` file will be compared against the corresponding `.ansX` file and if
+there are differences, they will be printed beautifully.
 
-:::important
-Notice that `<fileName>` should also be the name of the corresponding source file (`cpp`, `py`, ...),
-since `cpbooster` uses `<fileName>` to make associations between source files and test cases. See [**File Structure**](/docs/clone#file-structure)
+
+:::important IMPORTANT CLARIFICATIONS
+
+1. Each `.in`, `.ans` and `.out` file will and must have the same name as the source file associated with them.
+This is because `cpbooster` uses file names to make associations. See [**File Structure**](/docs/clone#file-structure).
+
+1. `X` should be an integer number and every `.in`, `.ans` and `.out` file associated with a certain test case,
+must have the same numeric suffix `X`.
 :::
 
 #### Demo
@@ -178,6 +185,18 @@ since `cpbooster` uses `<fileName>` to make associations between source files an
 
 
 ### Accepted Solution
+
+If there were no errors or differences between the `.out` and `.ans` files, `cpbooster` will tell you that you have an
+**Accepted Solution**.
+
+:::tip
+`cpbooster` will also tell you if your solution has extra leading or trailing blank spaces.
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_ac_2.gif')} />
+</div>
+:::
+
+#### Demo
 
 <div className="text--center">
   <img alt="test" src={useBaseUrl('/img/demos/test_ac.gif')} />
