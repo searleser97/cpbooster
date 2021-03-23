@@ -20,7 +20,7 @@ const features = [
   },
   {
     title: "Test",
-    imageUrl: "img/demos/test.gif",
+    imageUrl: "img/demos/test_wa.gif",
     description: (
       <>
         Test your code against sample testcases quickly and with a pretty output.
@@ -38,7 +38,7 @@ const features = [
   },
   {
     title: "Debug",
-    imageUrl: "img/undraw_docusaurus_react.svg",
+    imageUrl: "img/demos/debug_keyboard.gif",
     description: (
       <>
         Run code with your own debugging flags easily. Input can be from the keyboard or from a test
@@ -116,21 +116,22 @@ export default function Home() {
   return (
     <Layout description={`${siteConfig.title}`}>
       <header className={clsx("hero hero--primary", styles.heroBanner)}>
-        <div className={clsx("container", styles.container)}>
-          <h1 className={clsx(styles.boldInGreen, styles.title, "hero__title")}>
-            <b>cpb</b>ooster
-          </h1>
-          <p className={clsx(styles.boldInGreen, styles.subtitle, "hero__subtitle")}>
-            <b>C</b>ompetitive <b>P</b>rogramming <b>B</b>ooster
-          </p>
-          <div className={styles.buttons}>
-            <Link className={clsx(styles.getStartedButton)} to={useBaseUrl("docs/About")}>
-              Get Started
-            </Link>
+        <div className={clsx("container", "featuresRow_src-pages- row")}>
+          <div className={clsx("col col--5")}>
+            <h1 className={clsx(styles.boldInGreen, styles.title, "hero__title")}>
+              <b>cpb</b>ooster
+            </h1>
+            <p className={clsx(styles.boldInGreen, styles.subtitle, "hero__subtitle")}>
+              <b>C</b>ompetitive <b>P</b>rogramming <b>B</b>ooster
+            </p>
+            <div className={styles.buttons}>
+              <Link className={clsx(styles.getStartedButton)} to={useBaseUrl("docs/About")}>
+                Get Started
+              </Link>
+            </div>
           </div>
-          <br />
-          <br />
-          <div className={styles.demo_gif}>
+          <div style={{ width: "10px", height: "20px" }} />
+          <div className={clsx("text--center", "col col--6", styles.demo_gif)}>
             <img src="https://searleser97.gitlab.io/competitive-programming-notes/cpbooster/cpbooster.gif" />
           </div>
         </div>

@@ -10,6 +10,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  justify-content: center;
 }
 
 @media screen and (max-width: 966px) {
@@ -81,5 +82,4 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
 }
