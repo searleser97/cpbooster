@@ -122,69 +122,19 @@ config:
   
 # Records, feel free to edit them
 records:
-  - delay: 566
+  - delay: 553
     content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                          \r \r\e]2;san@san-pc: ~/contests/Codeforces-CodeforcesRound665Div.2\a\e]1;..Round665Div.2\a"
   - delay: 16
     content: "\r\e[0m\e[27m\e[24m\e[J\e[37mCodeforces-CodeforcesRound665Div.2$ \e[00m\e[K\e[?1h\e=\e[?2004h"
-  - delay: 445
-    content: c
-  - delay: 61
-    content: "\bcp"
-  - delay: 80
-    content: b
-  - delay: 67
-    content: ' '
-  - delay: 76
-    content: t
-  - delay: 72
-    content: ' '
-  - delay: 80
-    content: a
-  - delay: 283
-    content: "\bA.DistanceandAxis."
-  - delay: 597
-    content: c
-  - delay: 120
-    content: p
-  - delay: 96
-    content: p
-  - delay: 363
-    content: ' '
-  - delay: 128
-    content: '-'
-  - delay: 141
-    content: d
-  - delay: 135
-    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;cpb t A.DistanceandAxis.cpp -d\a\e]1;cpb\a"
-  - delay: 397
-    content: "Compiling...\r\n\r\n"
-  - delay: 1968
-    content: "Running with debugging flags\r\n\r\nEnter your input manually\r\n\r\n"
-  - delay: 6
-    content: "\e[48;5;196m\e[38;5;15mRed lines just get printed in --debug mode\r\n\e[0m\r\n"
-  - delay: 909
-    content: '2'
-  - delay: 440
-    content: "\r\n"
-  - delay: 929
-    content: '4'
-  - delay: 151
-    content: ' '
-  - delay: 144
-    content: '1'
-  - delay: 377
-    content: "\r\n"
-  - delay: 1008
-    content: '5'
-  - delay: 120
-    content: ' '
-  - delay: 152
-    content: '8'
-  - delay: 416
-    content: "\r\n\e[48;5;196m\e[38;5;15mn = 4 k = 1\e[0m\r\n1\r\n\e[48;5;196m\e[38;5;15mn = 5 k = 8\e[0m\r\n3\r\n"
-  - delay: 25
-    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                          \r \r\e]2;san@san-pc: ~/contests/Codeforces-CodeforcesRound665Div.2\a\e]1;..Round665Div.2\a"
-  - delay: 6
+  - delay: 769
+    content: l
+  - delay: 68
+    content: "\bls"
+  - delay: 201
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;ls --color=tty\a\e]1;ls\a"
+  - delay: 17
+    content: "A.DistanceandAxis.ans1  C.MereArray.ans1               E.DivideSquare.in1\r\nA.DistanceandAxis.cpp   C.MereArray.cpp                F.ReverseandSwap.ans1\r\n\e[0m\e[01;32mA.DistanceandAxis.exe\e[0m   C.MereArray.in1                F.ReverseandSwap.ans2\r\nA.DistanceandAxis.in1   D.MaximumDistributedTree.ans1  F.ReverseandSwap.cpp\r\nA.DistanceandAxis.out1  D.MaximumDistributedTree.cpp   F.ReverseandSwap.in1\r\nB.TernarySequence.ans1  D.MaximumDistributedTree.in1   F.ReverseandSwap.in2\r\nB.TernarySequence.cpp   E.DivideSquare.ans1\r\nB.TernarySequence.in1   E.DivideSquare.cpp\r\n\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                          \r \r\e]2;san@san-pc: ~/contests/Codeforces-CodeforcesRound665Div.2\a\e]1;..Round665Div.2\a"
+  - delay: 8
     content: "\r\e[0m\e[27m\e[24m\e[J\e[37mCodeforces-CodeforcesRound665Div.2$ \e[00m\e[K\e[?1h\e=\e[?2004h"
-  - delay: 2928
+  - delay: 3291
     content: "\e[?2004l\r\r\n"
