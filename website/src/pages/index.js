@@ -31,12 +31,6 @@ const features = [
     to: "docs/test"
   },
   {
-    title: "Create Files With Template",
-    imageUrl: "img/undraw_docusaurus_tree.svg",
-    description: <>Create source files with the corresponding template loaded</>,
-    to: "docs/create"
-  },
-  {
     title: "Debug",
     imageUrl: "img/demos/debug_keyboard.gif",
     description: (
@@ -49,7 +43,7 @@ const features = [
   },
   {
     title: "Add Test Cases",
-    imageUrl: "img/undraw_docusaurus_react.svg",
+    imageUrl: "img/demos/add-test-case.gif",
     description: (
       <>
         Add a test case for the specified source code file. It will prompt you for the input and the
@@ -65,6 +59,23 @@ const features = [
       <>Submit your code to online judges pretty fast by just running a single command.</>
     ),
     to: "docs/submit"
+  },
+  {
+    title: "Create Files With Template",
+    imageUrl: "img/demos/create.gif",
+    description: <>Create source files with the corresponding template loaded</>,
+    to: "docs/create"
+  },
+  {
+    title: "Flat File Structure",
+    imageUrl: "img/demos/flat-file-structure.gif",
+    description: (
+      <>
+        Having a flat file structure gives us <b>speed!</b>. See{" "}
+        <a href="/docs/clone#why-flat-file-structure">Why Flat File Structure?</a>.
+      </>
+    ),
+    to: "/docs/clone#why-flat-file-structure"
   },
   {
     title: "Vim Plugin",
