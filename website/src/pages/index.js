@@ -116,13 +116,17 @@ export default function Home() {
   return (
     <Layout description={`${siteConfig.title}`}>
       <header className={clsx("hero hero--primary", styles.heroBanner)}>
-        <div className={clsx("container", "featuresRow_src-pages- row")}>
-          <div className={clsx("col col--5")}>
+        <div className={clsx("featuresRow_src-pages- row", styles.container)}>
+          <div className={clsx("col col--4")}>
             <h1 className={clsx(styles.boldInGreen, styles.title, "hero__title")}>
               <b>cpb</b>ooster
             </h1>
             <p className={clsx(styles.boldInGreen, styles.subtitle, "hero__subtitle")}>
-              <b>C</b>ompetitive <b>P</b>rogramming <b>B</b>ooster
+              <b>C</b>ompetitive
+              <br />
+              <b>P</b>rogramming
+              <br />
+              <b>B</b>ooster
             </p>
             <div className={styles.buttons}>
               <Link className={clsx(styles.getStartedButton)} to={useBaseUrl("docs/About")}>
@@ -130,7 +134,6 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div style={{ width: "10px", height: "20px" }} />
           <div className={clsx("text--center", "col col--6", styles.demo_gif)}>
             <img src="https://searleser97.gitlab.io/competitive-programming-notes/cpbooster/cpbooster.gif" />
           </div>
