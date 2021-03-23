@@ -68,7 +68,7 @@ const features = [
   },
   {
     title: "Vim Plugin",
-    imageUrl: "https://miro.medium.com/max/1022/0*6ve47nqg93ZzZxws.png",
+    imageUrl: "img/vim-icon.png",
     description: (
       <>
         Vim users can install{" "}
@@ -76,31 +76,32 @@ const features = [
         their speed even more.
       </>
     ),
-    to: "https://github.com/searleser97/cpbooster.vim"
-  },
-  {
-    title: "Neovim Plugin",
-    imageUrl: "img/nvim-icon.png",
-    description: (
-      <>
-        Vim users can install{" "}
-        <Link to="https://github.com/searleser97/cpbooster.vim">cpbooster.vim</Link> plugin to boost
-        their speed even more.
-      </>
-    ),
-    to: "https://github.com/searleser97/cpbooster.vim"
+    to: "https://github.com/searleser97/cpbooster.vim",
+    className: styles.vim_img
   }
+  //{
+  //title: "Neovim Plugin",
+  //imageUrl: "img/nvim-icon.png",
+  //description: (
+  //<>
+  //Vim users can install{" "}
+  //<Link to="https://github.com/searleser97/cpbooster.vim">cpbooster.vim</Link> plugin to boost
+  //their speed even more.
+  //</>
+  //),
+  //to: "https://github.com/searleser97/cpbooster.vim"
+  //}
 ];
 
-function Feature({ imageUrl, title, description, to }) {
+function Feature({ imageUrl, title, description, to, className }) {
   const imgUrl = useBaseUrl(imageUrl);
   const toUrl = useBaseUrl(to);
   return (
     <div className={clsx("col col--4", styles.feature)}>
       {imgUrl && (
-        <div className="text--center">
+        <div className={clsx("text--center", className)}>
           <a href={toUrl}>
-            <img className={styles.featureImage} src={imgUrl} alt={title} />
+            <img className={clsx(className)} src={imgUrl} alt={title} />
           </a>
         </div>
       )}

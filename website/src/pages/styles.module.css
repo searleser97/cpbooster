@@ -37,11 +37,21 @@
   justify-content: center;
 }
 
-.featureImage {
-  width: 100%;
+.vim_img {
   height: auto;
-  /*height: 200px;*/
-  /*width: 200px;*/
+  width: auto;
+}
+
+@media screen and (min-width: 1000px) {
+  .vim_img {
+    max-height: 250px;
+  }
+}
+
+@media screen and (max-width: 999px) {
+  .vim_img {
+    max-height: 500px;
+  }
 }
 
 .getStartedButton {
