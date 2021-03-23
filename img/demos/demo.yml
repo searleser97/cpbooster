@@ -122,19 +122,77 @@ config:
   
 # Records, feel free to edit them
 records:
-  - delay: 553
+  - delay: 649
     content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                          \r \r\e]2;san@san-pc: ~/contests/Codeforces-CodeforcesRound665Div.2\a\e]1;..Round665Div.2\a"
-  - delay: 16
-    content: "\r\e[0m\e[27m\e[24m\e[J\e[37mCodeforces-CodeforcesRound665Div.2$ \e[00m\e[K\e[?1h\e=\e[?2004h"
-  - delay: 769
-    content: l
-  - delay: 68
-    content: "\bls"
-  - delay: 201
-    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;ls --color=tty\a\e]1;ls\a"
   - delay: 17
-    content: "A.DistanceandAxis.ans1  C.MereArray.ans1               E.DivideSquare.in1\r\nA.DistanceandAxis.cpp   C.MereArray.cpp                F.ReverseandSwap.ans1\r\n\e[0m\e[01;32mA.DistanceandAxis.exe\e[0m   C.MereArray.in1                F.ReverseandSwap.ans2\r\nA.DistanceandAxis.in1   D.MaximumDistributedTree.ans1  F.ReverseandSwap.cpp\r\nA.DistanceandAxis.out1  D.MaximumDistributedTree.cpp   F.ReverseandSwap.in1\r\nB.TernarySequence.ans1  D.MaximumDistributedTree.in1   F.ReverseandSwap.in2\r\nB.TernarySequence.cpp   E.DivideSquare.ans1\r\nB.TernarySequence.in1   E.DivideSquare.cpp\r\n\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                          \r \r\e]2;san@san-pc: ~/contests/Codeforces-CodeforcesRound665Div.2\a\e]1;..Round665Div.2\a"
-  - delay: 8
     content: "\r\e[0m\e[27m\e[24m\e[J\e[37mCodeforces-CodeforcesRound665Div.2$ \e[00m\e[K\e[?1h\e=\e[?2004h"
-  - delay: 3291
+  - delay: 439
+    content: c
+  - delay: 63
+    content: "\bcp"
+  - delay: 56
+    content: b
+  - delay: 55
+    content: ' '
+  - delay: 88
+    content: t
+  - delay: 88
+    content: ' '
+  - delay: 264
+    content: a
+  - delay: 219
+    content: "\bA.DistanceandAxis."
+  - delay: 269
+    content: c
+  - delay: 144
+    content: p
+  - delay: 104
+    content: p
+  - delay: 168
+    content: ' '
+  - delay: 168
+    content: '-'
+  - delay: 144
+    content: a
+  - delay: 297
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;cpb t A.DistanceandAxis.cpp -a\a\e]1;cpb\a"
+  - delay: 429
+    content: "\r\nPress ctrl+D to finish your input\r\n\r\nTest Case Input:\r\n\r\n"
+  - delay: 563
+    content: '2'
+  - delay: 342
+    content: "\r\r\n"
+  - delay: 423
+    content: '4'
+  - delay: 673
+    content: ' '
+  - delay: 135
+    content: '1'
+  - delay: 456
+    content: "\r\r\n"
+  - delay: 1048
+    content: '5'
+  - delay: 440
+    content: ' '
+  - delay: 152
+    content: '8'
+  - delay: 536
+    content: "\r\r\n"
+  - delay: 883
+    content: "\r\nTest Case Correct Output:\r\n\r\n"
+  - delay: 997
+    content: '1'
+  - delay: 160
+    content: "\r\r\n"
+  - delay: 304
+    content: '3'
+  - delay: 512
+    content: "\r\r\n"
+  - delay: 429
+    content: "\r\nTest case \e[33m2\e[39m written.\r\n"
+  - delay: 18
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                          \r \r\e]2;san@san-pc: ~/contests/Codeforces-CodeforcesRound665Div.2\a\e]1;..Round665Div.2\a"
+  - delay: 10
+    content: "\r\e[0m\e[27m\e[24m\e[J\e[37mCodeforces-CodeforcesRound665Div.2$ \e[00m\e[K\e[?1h\e=\e[?2004h"
+  - delay: 1975
     content: "\e[?2004l\r\r\n"
