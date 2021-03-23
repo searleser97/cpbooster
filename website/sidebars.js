@@ -21,13 +21,13 @@ module.exports = {
     {
       type: "category",
       label: "Contributing",
-      items: ["add-editor-support", "add-language-support"],
+      items: ["add-editor-support", "add-language-support", "add-online-judge-support"],
       collapsed: false
     },
     {
       type: "category",
       label: "Extras",
-      items: ["language-aliases"],
+      items: ["vim"],
       collapsed: false
     }
   ]

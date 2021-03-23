@@ -60,7 +60,7 @@ const features = [
   },
   {
     title: "Submit",
-    imageUrl: "img/undraw_docusaurus_react.svg",
+    imageUrl: "img/demos/submit.gif",
     description: (
       <>Submit your code to online judges pretty fast by just running a single command.</>
     ),
