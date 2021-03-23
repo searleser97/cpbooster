@@ -99,7 +99,7 @@ function Feature({ imageUrl, title, description, to, className }) {
   return (
     <div className={clsx("col col--4", styles.feature)}>
       {imgUrl && (
-        <div className={clsx("text--center", className)}>
+        <div className={clsx("text--center")}>
           <a href={toUrl}>
             <img className={clsx(className)} src={imgUrl} alt={title} />
           </a>

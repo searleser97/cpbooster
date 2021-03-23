@@ -42,13 +42,13 @@
   width: auto;
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 997px) {
   .vim_img {
     max-height: 250px;
   }
 }
 
-@media screen and (max-width: 999px) {
+@media screen and (max-width: 996px) {
   .vim_img {
     max-height: 500px;
   }
