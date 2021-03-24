@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .features {
@@ -93,12 +94,17 @@
 
 .demo_gif {
   display: flex;
-  /*width: 80%;*/
-  /*height: auto;*/
-  /*width: 100px;*/
-  /*height: 100px;*/
 }
 
 .container {
   gap: 30px;
+}
+
+.indexCtasGitHubButtonWrapper {
+  display: flex;
+}
+
+.indexCtasGitHubButton {
+  border: none;
+  overflow: hidden;
 }

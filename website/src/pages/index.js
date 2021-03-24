@@ -141,6 +141,16 @@ export default function Home() {
               <b>B</b>ooster
             </p>
             <div className={styles.buttons}>
+              <span className={styles.indexCtasGitHubButtonWrapper}>
+                <iframe
+                  className={styles.indexCtasGitHubButton}
+                  src="https://ghbtns.com/github-btn.html?user=searleser97&amp;repo=cpbooster&amp;type=star&amp;count=true&amp;size=large"
+                  width={160}
+                  height={30}
+                  title="GitHub Stars"
+                />
+              </span>
+              <div style={{ height: "18px" }} />
               <Link className={clsx(styles.getStartedButton)} to={useBaseUrl("docs/About")}>
                 Get Started
               </Link>
