@@ -1,6 +1,6 @@
 # cpbooster &middot; [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/searleser97/cpbooster/blob/master/LICENSE) [![npm version](https://badge.fury.io/js/cpbooster.svg#)](https://badge.fury.io/js/cpbooster)
 
-### Competitive Programming Booster
+### Competitive Programming Booster 🡲 https://searleser97.github.io/cpbooster/
 
 ## About
 
