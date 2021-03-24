@@ -75,7 +75,7 @@ const features = [
         <a href="/docs/clone#why-flat-file-structure">Why Flat File Structure?</a>.
       </>
     ),
-    to: "/docs/clone#why-flat-file-structure"
+    to: "docs/clone#why-flat-file-structure"
   },
   {
     title: "Vim / Neovim Plugin",
