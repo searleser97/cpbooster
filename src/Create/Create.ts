@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import Config from "../Config";
+import Config from "../Config/Config";
 import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
 import SourceFileCreator from "./SourceFileCreator";
 
@@ -25,5 +25,5 @@ export interface ICommandCreateArgs extends ICommandGlobalArgs {
 }
 
 export function create(args: ICommandCreateArgs) {
-  SourceFileCreator.create(args.filePath, Config.read(args.config));
+  SourceFileCreator.create(args.filePath, Config.read(args.configPath));
 }

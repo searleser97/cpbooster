@@ -15,7 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import Config from "../../Config";
+
+import Config from "../../Config/Config";
 import { Veredict } from "../../Types/Veredict";
 import Util from "../../Util";
 import * as fs from "fs";
@@ -86,9 +87,10 @@ export default abstract class Tester {
 
     if (ans.trim() === output.trim()) {
       console.log(`Test Case ${testId}:`, chalk.bgGreen(chalk.whiteBright(" A C ")), "\n");
-      if (ans !== output)
+      if (ans !== output) {
         console.log(chalk.yellow("Check leading and trailing blank spaces") + "\n");
-      console.log(chalk.bgGreen(chalk.whiteBright("Your Output:")) + "\n");
+      }
+      console.log(chalk.bgGreen(chalk.whiteBright("Your Output")) + "\n");
       console.log(output);
       return Veredict.AC;
     } else {
@@ -97,11 +99,15 @@ export default abstract class Tester {
       let ansLines = ans.split("\n");
       let maxOutputWidth = 0;
       for (let i = 0; i < outputLines.length; i++) {
-        if (outputLines[i].length > maxOutputWidth) maxOutputWidth = outputLines[i].length;
+        if (outputLines[i].length > maxOutputWidth) {
+          maxOutputWidth = outputLines[i].length;
+        }
       }
-      let columnWidth = Math.min(Math.max(maxOutputWidth, 15), process.stdout.columns - 8);
-      let leftHeader = chalk.bgRed(chalk.whiteBright("Your Output:".padEnd(columnWidth)));
-      let rightHeader = chalk.bgGreen(chalk.whiteBright("Correct Answer:"));
+      let columnWidth = Math.min(Math.max(maxOutputWidth, 16), process.stdout.columns - 8);
+      let leftHeader = chalk.bgRed(chalk.whiteBright(Util.padCenter("Your Output", columnWidth)));
+      let rightHeader = chalk.bgGreen(
+        chalk.whiteBright(Util.padCenter("Correct Answer", columnWidth))
+      );
       console.log(leftHeader + "|" + rightHeader);
       console.log("".padEnd(columnWidth) + "|" + "".padEnd(columnWidth));
       for (let i = 0; i < Math.max(outputLines.length, ansLines.length); i++) {
@@ -244,5 +250,9 @@ export default abstract class Tester {
 
   static printCompilationErrorMsg(): void {
     console.log(chalk.bgYellow(chalk.whiteBright(" Compilation Error ")), "\n");
+  }
+
+  static printUnnecesaryNoCompileFlagMsg(lang: string) {
+    console.log(`${lang} does not support compilation, using --noCompile option is unnecesary`);
   }
 }

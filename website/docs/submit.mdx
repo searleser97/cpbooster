@@ -1,0 +1,218 @@
+---
+id: submit
+title: Submit
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+`cpbooster` provides the following command to automatically
+**submit** your code to any supported Online Judge. See [Supported Online Judges](#supported-online-judges).
+
+```txt
+cpb submit <filePath> [url]
+```
+
+or its alias which is just `s`.
+
+```txt
+cpb s <filePath> [url]
+```
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/submit.gif')} />
+</div>
+
+## Requirements
+
+- [Login](#login) with `cpb login <OnlineJudgeName>`
+- [Specify URL](#how-to-specify-the-url) in file or as argument.
+- [Configure Language Aliases](#how-to-configure-language-aliases) for each platform and language.
+
+
+## Login
+
+Before you can use the `submit` command you will need to login
+to the Online Judge where you will submit your code.
+
+```txt
+cpb login <OnlineJudgeName>
+```
+
+
+For example, to login to AtCoder I would execute the following command
+
+```txt
+cpb login atcoder
+```
+
+The name can be written in upper or lowercase or mixed, it doesn't matter.
+
+:::note
+The `submit` command will automatically open the login page
+if it detects that you are not logged in, then it will continue
+to submit your code. So, the `submit` command will execute at most 2
+actions.
+:::
+
+:::note information
+`cpbooster` will NOT send any account information
+to anyone else, all it does is, save your cookies
+and session information like any browser does locally.
+:::
+
+## How To Specify The URL
+
+You can provide the `url` in **2** different ways:
+
+
+### 1. As A Command Argument
+
+You can specify the `url` after the `<filePath>` in the `submit` command.
+
+For example:
+
+```txt
+cpb s A.DistanceAndAxis.cpp "https://codeforces.com/contest/1401/problem/A"
+```
+
+### 2. As A Commented Line In The Source File
+
+Another way to specify the `url` is by writing the string `problem-url:` followed by
+the `url` as a commented line somewhere in your source file. In this way
+you will be able to submit your code without adding extra argument in the
+command, just like in the [demo](#demo).
+
+For example:
+
+##### `A.DistanceAndAxis.cpp`
+
+```cpp
+// problem-url: https://codeforces.com/contest/1401/problem/A
+int main() {
+  ...
+}
+```
+:::important
+This line will be automatically added when you clone a contest with `cpb clone`.
+So, no need to do anything manually during a contest.
+:::
+
+:::note
+If you specify the url in both ways (argument and commented line), the one
+specified as argument will be used.
+:::
+
+## How To Configure Language Aliases
+
+The language alias is the **ID** of the language for each Online Judge.
+See [How To Find Language IDs](#how-to-find-language-ids). For example, in Codeforces,
+the alias for `cpp` can be any of:
+
+|ID| Name|
+|--|-----|
+|42|GNU G++11 5.1.0|
+|50|GNU G++14 6.4.0|
+|54|GNU G++17 7.3.0|
+
+Let's say we want to submit our `cpp` file using G++17, then
+we should specify it
+in <a href={"/docs/configuration#languageslangaliases-objectonlinejudgename-string"} style={{color: 'white'}}>`languages.cpp.aliases.codeforces`</a>
+like this:
+
+```json
+{
+  "languages": {
+    "cpp": {
+      "aliases": {
+        "codeforces": "54"
+      }
+    }
+}
+```
+
+### How To Find Language IDs
+
+To find language IDs follow the next steps:
+
+#### 1. Navigate to the online judge page where the language dropdown is located
+
+Some online judges use group of radio buttons or some other type of selectors for languages,
+like Uva Online Judge.
+
+For example, in Codeforces and AtCoder you could go to any problem's page like:
+
+- https://atcoder.jp/contests/abc196/tasks/abc196_a
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/atcoder_dropdown.png')} />
+</div>
+- https://codeforces.com/contest/1401/problem/A
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/codeforces_dropdown.png')} />
+</div>
+
+#### 2. Open the inspection tool
+
+Usually to open the inspection tool, you can `right click` in the page,
+and then click on `Inspect`.
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/inspect_right_click.png')} />
+</div>
+<br />
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/inspect_tool.png')} />
+</div>
+
+#### 3. Locate the `<select>` tag
+
+Also, note that we could also be looking for radio buttons,
+for example: Uva Online Judge uses Radio Buttons instead of a dropdown menu.
+
+:::tip
+Press `ctrl+f` to open the search box, and type `<select`. This will help you
+to find the tag faster
+:::
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/search_select.png')} />
+</div>
+
+#### 4. Locate the `value` of the language you wish to use
+
+For this, we will need to unfold the contents of the `<select>` tag to see
+the options. This is done by clicking on the small arrow to the left.
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/select_options.png')} />
+</div>
+
+The content of the `value` property of each option is what `cpbooster` uses as **Alias**.
+So, now you can just copy and paste the value into your configuration file.
+
+For example, if I want to use `C++ (Clang 10.0.0)` for `cpp` files in AtCoder, I would write
+my configuration file as follows.
+
+```json
+{
+  "languages": {
+    "cpp": {
+      "aliases": {
+        "atcoder": "4004"
+      }
+    }
+  }
+}
+```
+
+## Supported Online Judges
+
+- [Codeforces](https://codeforces.com/)
+- [AtCoder](https://atcoder.jp/)
+
+:::note
+If you wish to add support for another Online Judge you can
+create a Pull Request in `cpbooster`'s github repository.
+See [Add Online Judge Support](/docs/add-online-judge-support) for guidance on how to do it.
+:::

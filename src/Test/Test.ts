@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import Config from "../Config";
+import Config from "../Config/Config";
 import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
 import Tester from "./TesterFactory/Tester";
 import TesterFactory from "./TesterFactory/TesterFactory";
@@ -30,7 +30,7 @@ export interface ICommandTestArgs extends ICommandGlobalArgs {
 }
 
 export function test(args: ICommandTestArgs) {
-  const config = Config.read(args.config);
+  const config = Config.read(args.configPath);
   if (args.add) {
     Tester.createTestCase(args.filePath);
   } else {

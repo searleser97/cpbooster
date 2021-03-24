@@ -1,0 +1,206 @@
+---
+id: test
+title: Test
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import styles from './styles.module.css';
+import { colors } from './colors'
+
+`cpbooster` provides the following command for you to easily test your program against
+**all** available test cases.
+
+```txt
+cpb test <filePath>
+```
+
+or the alias for `test` which is just `t`.
+
+```txt
+cpb t <filePath>
+```
+
+This command will **automatically compile** your program everytime you run it.
+See [Test Without Recompiling](#test-without-recompiling) for details on how to avoid recompiling your program each time.
+
+### Executable File Details
+
+The executable file will be located in your current directory and its name will
+match with the name of the source file except for the extension, which will be `.exe`. 
+For example, if your source file name is `ProblemA.cpp` then the executable file
+name will be `ProblemA.exe`.This is because `cpbooster` uses filenames to associate
+everything (See [**File Structure**](/docs/clone#file-structure) for better understanding).
+If you wish to save the executable file with a different name,
+you can specify it in your <a href={"/docs/configuration#languageslangcommand-string"} style={{color: 'white'}}>`languages.<lang>.command`</a>.
+
+
+## Test With A Single Test Case
+
+You can specify the test case, using the `--testId` flag or its alias `-t`.
+
+```txt
+cpb t <filePath> -t <number>
+```
+
+:::important
+`<number>` should match with the numeric suffix of the corresponding `.in` and `.ans` files
+See [**File Structure**](/docs/clone#file-structure) for better understanding.
+:::
+
+## Test Without Recompiling
+
+You can tell `cpbooster` to run the tests using the last compiled version of your program
+by passing the flag `--noCompile` or its alias  `--nc`.
+
+```txt
+cpb t <filePath> --nc
+```
+
+:::caution
+By using this flag, `cpbooster` will assume that there is a corresponding executable file
+for your program. Remember that the name of the executable file must be the same as the
+source file, except for the extension which must be `.exe`. Unless you specified otherwise
+in <a href={"/docs/configuration#languageslangcommand-string"} style={{color: 'white'}}>`languages.<lang>.command`</a>.
+:::
+
+
+## Supported Veredicts
+
+- <span style={{background: colors.green, color: "white"}} >&nbsp;<b>AC</b>&nbsp;</span> <a href="#accepted-solution">(Accepted Solution)</a>
+- <span style={{background: colors.red, color: "white"}}>&nbsp;<b>WA</b>&nbsp;</span> <a href="#wrong-answer">(Wrong Answer)</a>
+- <span style={{background: colors.yellow, color: "white"}}>&nbsp;<b>CE</b>&nbsp;</span> <a href="#compilation-error">(Compilation Error)</a>
+- <span style={{background: colors.purple, color: "white"}}>&nbsp;<b>TLE</b>&nbsp;</span> <a href="#time-limit-exceeded">(Time Limit Exceeded)</a>
+- <span style={{background: colors.blue, color: "white"}}>&nbsp;<b>RTE</b>&nbsp;</span> <a href="#runtime-error">(Runtime Error)</a>
+
+## How does it work?
+
+This sections explains How each possible output of the `test` command work.
+
+### Compilation Error
+
+If your code needs compilation (`cpp`, `java`, ...), this will be the first thing that `cpbooster` will
+try to do, unless the `--noCompile` flag was used.
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_ce.gif')} />
+</div>
+
+### Runtime Error
+
+`cpbooster` detects that there was a runtime error if your program exited with a [status code](https://en.wikipedia.org/wiki/Exit_status) different from **0**
+or if there were no corresponding `.in` and `.ans` files (See [File Structure](/docs/clone#file-structure) for better understanding).
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_rte.gif')} />
+</div>
+
+### Time Limit Exceeded
+
+To detect that the execution of a certain program has exceeded the time limit, `cpbooster` requires to know
+which is this time limit beforehand, the default value is **3000** milliseconds which equivalent to **3** seconds.
+To use a different value, the string `time-limit:` followed by the time limit in numeric format as **milliseconds**
+should be written somewhere in the source file as a commented line.
+
+#### Examples:
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<div>
+<table>
+<thead>
+<tr>
+<th>
+C++
+</th>
+<th>
+Python
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+```cpp
+// time-limit: 2000
+int main() {
+ int a, b;
+ cin >> a >> b;
+ cout << a + b << endl;
+}
+```
+
+</td>
+<td>
+
+```py
+# time-limit: 2000
+
+a, b = map(int, input().split())
+print(a + b)
+```
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+:::note
+This line will be automatically added at the top of your source file with the default value
+when running `cpb clone` or `cpb create`.
+:::
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_tle.gif')} />
+</div>
+
+
+### Wrong Answer
+
+Each time you run a test, `cpbooster` will create one or more `.outX` files (in the same directory as the
+source file) which will correspond to your program's output when using the correponding `.inX` file as
+input.
+Each `.outX` file will be compared against the corresponding `.ansX` file and if
+there are differences, they will be printed beautifully.
+
+
+:::important IMPORTANT CLARIFICATIONS
+
+1. Each `.in`, `.ans` and `.out` file will and must have the same name as the source file associated with them.
+This is because `cpbooster` uses file names to make associations. See [**File Structure**](/docs/clone#file-structure).
+
+1. `X` should be an integer number and every `.in`, `.ans` and `.out` file associated with a certain test case,
+must have the same numeric suffix `X`.
+:::
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_wa.gif')} />
+</div>
+
+
+### Accepted Solution
+
+If there were no errors or differences between the `.out` and `.ans` files, `cpbooster` will tell you that you have an
+**Accepted Solution**.
+
+:::tip
+`cpbooster` will also tell you if your solution has extra leading or trailing blank spaces.
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_ac_2.gif')} />
+</div>
+:::
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/test_ac.gif')} />
+</div>
+

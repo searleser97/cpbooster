@@ -17,5 +17,5 @@
  */
 
 export default interface ICommandGlobalArgs {
-  config?: string; // path to configuration file
+  configPath?: string; // path to configuration file
 }

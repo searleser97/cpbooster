@@ -1,0 +1,202 @@
+---
+id: debug
+title: Debug
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+`cpbooster` provides a way for you to run your program using your debugging
+flags (<a href={"/docs/configuration#languageslangdebugcommand-string"} style={{color: 'white'}}>`languages.<lang>.debugCommand`</a>).
+You can pass the `--debug` flag (or its alias which is just `-d`) to the `test` command for this.
+
+```txt
+cpb t <filePath> -d
+```
+
+By default, this command will request keyboard input, just like if you executed `./program.exe` or `python program.py`.
+If you wish to use a file as input See [Debug With Input File](#debug-with-input-file).
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/debug_keyboard.gif')} />
+</div>
+
+<br />
+
+:::note NOTES
+1. This command will **automatically compile** your program everytime you run it.
+See [Debug Without Recompiling](#debug-without-recompiling) for details on how to avoid recompiling your program each time.
+1. `cpbooster` does not print your debugging lines in red, this should be your code's behavior when running in debug mode.
+See [Debug Tips & Tricks](#debug-tips--tricks).
+:::
+
+### Executable File Details
+
+The executable file will be located in your current directory and its name will
+be the concatenation of the source file name and the word **"debug"** followed by the extension
+which will be `.exe`. For example, if your source file name is `ProblemA.cpp` then the executable file
+name will be `ProblemAdebug.exe`. This is because `cpbooster` uses filenames to associate everything
+(See [**File Structure**](/docs/clone#file-structure) for better understanding).
+If you wish to save the executable file with a different name,
+you can specify it in your <a href={"/docs/configuration#languageslangdebugcommand-string"} style={{color: 'white'}}>`languages.<lang>.debugCommand`</a>.
+
+
+## Debug With Input File
+
+You can specify a test case to run in debugging mode using the `--testId` flag or its alias `-t`.
+
+```txt
+cpb t <filePath> -t <number> -d
+```
+
+:::note
+The only difference between the command used to [Test With A Single Test Case](/docs/test#test-with-a-single-test-case) and this one, is the
+`-d` flag at the end, which tells` cpbooster` to run in **debug** mode.
+:::
+
+#### Demo
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/debug_file.gif')} />
+</div>
+
+## Debug Without Recompiling
+
+You can tell `cpbooster` to run in **debug** mode using the last compiled version of your program
+by passing the flag `--noCompile` or its alias  `--nc`.
+
+```txt
+cpb t <filePath> -d --nc
+```
+
+:::caution
+By using this flag, `cpbooster` will assume that there is a corresponding executable file
+for your program. Remember that the name of the executable file must be the same as the
+source file plus the word **"debug"**, followed by the extension which must be `.exe`. Unless you specified otherwise
+in <a href={"/docs/configuration#languageslangdebugcommand-string"} style={{color: 'white'}}>`languages.<lang>.debugCommand`</a>.
+:::
+
+## Debug Tips & Tricks
+
+### Improve RTE Feedback In C++
+
+You can use the following [debug command](/docs/configuration#languageslangdebugcommand-string) to get much better feedback in case of runtime errors.
+
+##### `cpbooster-config.json`
+```json
+{
+  "debugCommand": "g++ -std=gnu++17 -O3 -DDEBUG -g -fsanitize=signed-integer-overflow -fsanitize=bounds-strict -fsanitize=address -fsanitize=integer-divide-by-zero -fsanitize=float-divide-by-zero -fsanitize=pointer-overflow -fsanitize=shift-exponent -fsplit-stack -Wshadow -Wall -fconcepts"
+}
+```
+
+### Print Debug Lines In Red In C++
+
+##### `cpbooster-config.json`
+```json
+{
+  "debugCommand": "g++ -DDEBUG"
+}
+```
+
+##### `program.cpp`
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define coutc cout << "\033[48;5;196m\033[38;5;15m" // red color code
+#define endlc "\033[0m" << endl; // this resets the coloring
+
+int main() {
+  int a, b;
+  cin >> a >> b;
+#ifdef DEBUG
+  coutc << a << " " << b << endlc;
+#endif
+  cout << a + b << endl;
+  return 0;
+}
+```
+
+:::note
+Here we used the `-DDEBUG` flag in the debug command and therefore our `#ifdef` statement
+should check for the existence of `DEBUG`. If we had specified a different flag name,
+for example, `-DHOLA`, then the `#ifdef` statement should check the existence of `HOLA`.
+:::
+
+:::tip
+You can avoid writing `#ifdef` every time if you use a well done template like [**THIS**](https://gitlab.com/searleser97/competitive-programming-reference/-/blob/master/Reference/Coding%20Resources/C++/Competitive%20Programming%20Template.cpp) one,
+which allows you to use a `debug(...)` function that can print **anything** that you pass to it.
+See [Print Anything Like In Python With C++](#print-anything-like-in-python-with-c).
+:::
+
+### Debug Command In Python
+
+In `Python` you can use the `-O` flag to print statements just when this flag is used.
+
+##### `cpbooster-config.json`
+```json
+{
+  "debugCommand": "python3.9 -O"
+}
+```
+##### `program.py`
+```python
+if __debug__:
+  print("This line will be printed just when -O flag is used")
+```
+
+### Print Anything Like In Python With C++
+
+Placing the following code on top of your source file, will enable you
+to use a `debug(...)` function, which will work almost like the `print(...)` function
+in python and it will just work if we pass the `-DDEBUG` flag
+to the compilation command. This function can receive any amount of parameters and
+they can be of almost any type, to be strict, it supports all primitive types
+(`bool, int, char, ...`), all iterable types (`vector, map, set, deque, ...`) and some
+other types like `pair` and `tuple`.
+
+
+##### `cpbooster-config.json`
+```json
+{
+  "debugCommand": "g++ -std=gnu++17 -DDEBUG"
+}
+```
+
+##### `program.cpp`
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#ifdef DEBUG
+string to_string(char c) { return string({c}); }
+// 7
+template<class... Ts>
+ostream& operator<<(ostream& o, tuple<Ts...> t) {
+  string s = "(";
+  apply([&](auto&&... r) {
+    ((s += to_string(r) + ", "), ...); }, t);
+  return o << s.substr(0, len(s) - 2) + ")";
+}
+// 3
+ostream& operator<<(ostream &o, pair<auto, auto> p) {
+  return o << "(" << p.fi << ", " << p.se << ")";
+}
+// 7
+template<class C, class T = typename C::value_type,
+typename std::enable_if<!std::is_same<C, std::string>
+::value>::type* = nullptr>
+ostream& operator<<(ostream &o, C c) {
+  for (auto e : c) o << setw(7) << right << e;
+  return o << endc << endl << coutc;
+}
+// 7
+void debug(const auto &e, const auto &... r) {
+  cout << coutc << e;
+  ((cout << " " << r), ..., (cout << endc << endl));
+}
+#else
+#define debug(...)
+#endif
+```

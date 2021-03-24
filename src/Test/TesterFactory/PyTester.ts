@@ -15,7 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import Config from "../../Config";
+
+import Config from "../../Config/Config";
 import { Veredict } from "../../Types/Veredict";
 import Tester from "./Tester";
 
@@ -25,14 +26,29 @@ export default class PyTester extends Tester {
   }
 
   testOne(testId: number, compile: boolean): Veredict {
-    return this.runTest(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
+    if (!compile) {
+      Tester.printUnnecesaryNoCompileFlagMsg("python");
+    }
+    let commandAsArray: string[] = this.config.languages.py.command.split(" ");
+    return this.runTest(commandAsArray[0], [...commandAsArray.slice(1), this.filePath], testId);
   }
 
   debugOne(testId: number, compile: boolean): void {
-    this.runDebug(this.config.pyRunCommand.split(" ")[0], [this.filePath], testId);
+    if (!compile) {
+      Tester.printUnnecesaryNoCompileFlagMsg("python");
+    }
+    let debugCommandAsArray: string[] = this.config.languages.py.debugCommand.split(" ");
+    this.runDebug(debugCommandAsArray[0], [...debugCommandAsArray.slice(1), this.filePath], testId);
   }
 
   debugWithUserInput(compile: boolean): void {
-    this.runDebugWithUserInput(this.config.pyRunCommand.split(" ")[0], [this.filePath]);
+    if (!compile) {
+      Tester.printUnnecesaryNoCompileFlagMsg("python");
+    }
+    let debugCommandAsArray: string[] = this.config.languages.py.debugCommand.split(" ");
+    this.runDebugWithUserInput(debugCommandAsArray[0], [
+      ...debugCommandAsArray.slice(1),
+      this.filePath
+    ]);
   }
 }

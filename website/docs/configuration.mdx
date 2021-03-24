@@ -1,0 +1,244 @@
+---
+id: configuration
+title: Configuration
+---
+
+## Creating Your First Configuration File
+
+Execute the following command to create a configuration file:
+
+```shell
+cpbooster init
+```
+
+This command will create a file called `cpbooster-config.json` in your **$HOME** directory with default values.
+If you wish to create your configuration file somewhere else you can specify the path using `--configPath` flag.
+
+## Configuration File Example
+
+#### `cpbooster-config.json`
+
+```json
+{
+  "contestsDirectory": "/home/user/Contests",
+  "port": 1327,
+  "editor": "konsole",
+  "closeAfterClone": false,
+  "showStatusPageOnSubmit": false,
+  "preferredLang": "cpp",
+  "languages": {
+    "cpp": {
+      "template": "template.cpp",
+      "command": "g++ -std=gnu++17 -O2",
+      "debugCommand": "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
+      "aliases": {
+        "codeforces": "54",
+        "atcoder": "4003"
+      }
+    },
+    "py": {
+      "template": "template.py",
+      "command": "python3",
+      "debugCommand": "python3 -O",
+      "aliases": {
+        "codeforces": "31",
+        "atcoder": "4006"
+      }
+    }
+  }
+}
+```
+
+## Fields Description
+
+### `contestsDirectory: string`
+
+The path to the directory where contests folders will be created when you run `cpb clone`.
+
+The directory of a user that has cloned 3 contests would look like this:
+
+```txt
+$ cd path/to/contests/directory
+$ tree -L 1
+.
+├── AtCoder-AtCoderBeginnerContest194
+├── AtCoder-AtCoderRegularContest113
+└── Codeforces-CodeforcesRound665Div.2
+```
+
+### `port: number`
+
+Specifies the **port** where [competitive companion extension](https://github.com/jmerle/competitive-companion) will send problem's data.
+**1327** is the default port for `cpbooster` in competitive companion so, if you don't change
+the port, it will just work as expected. If you must change it, then be sure that you also
+change it in competitive companion extension settings.
+
+### `editor: string`
+
+Name of the **editor** that will be opened after running `cpb clone`.
+The **editor** value should match with the terminal command you use to launch it. See [Editor Requirements](#editor-requirements)
+
+#### Editor Requirements
+
+1. You must be able to open your **editor** using a terminal command.
+2. The **editor command** should support the following format to open a directory:
+
+```shell
+$ editor [directory]
+```
+
+If your editor does not support this format but has another way to open a directory, you could take a look at
+"[How to add an editor](/docs/add-editor-support)"
+
+#### Examples
+
+- Using **regular editor** ( _VSCode_ ):
+
+```json
+{
+  "editor": "code"
+}
+```
+
+since `code` is the command that is used to execute _vscode_ from the terminal.
+
+- Using **terminal emulator** ( _konsole_ ):
+
+```json
+{
+  "editor": "konsole"
+}
+```
+
+:::note
+**Terminal Emulator** support is currently limited to this [List of supported terminals](#list-of-supported-terminals).
+Visit the section "[How to add an editor](/docs/add-editor-support)" if you wish to contribute and add support
+for other terminal emulators.
+:::
+
+#### List of supported terminals
+
+- `"konsole"`
+- `"xterm"`
+- `"gnome-terminal"`
+- `"deepin-terminal"`
+- `"kitty"`
+- `"terminal"` (MacOS)
+
+### `closeAfterClone: boolean`
+
+Whether to close the terminal after the execution of `cpb clone` or not.
+
+:::caution
+When using this option as `true` verify that your [**editor**](#editor-string) satisfies the [Editor Requirements](#editor-requirements), otherwise,
+you might end up with your terminal closed and no editor opened.
+:::
+
+### `showStatusPageOnSubmit: boolean`
+
+Whether to open a browser window in the submission status page or not, after running `cpb submit`
+
+### `preferredLang: string`
+
+The extension name in lowercase of your preferred language. ( i.e. `"cpp"`, `"py"`, `"java"`, ... ),
+`cpb clone` uses this value to create corresponding source files with the template of your
+preferred language.
+
+:::note
+Currently the only supported languages are **C++** and **Python**, If you wish to contribute and add support
+for other languages visit the section "[How to add a language](/docs/add-language-support)".
+:::
+
+### `languages.<lang>.template: string`
+
+Path to your competitive programming template for the corresponding `<lang>`.
+
+Here are some examples of competitive programming templates (if you wish, you can download them and use them):
+
+- [CompetitiveProgrammingTemplate.cpp](https://gitlab.com/searleser97/competitive-programming-reference/-/blob/master/Reference/Coding%20Resources/C++/Competitive%20Programming%20Template.cpp)
+  - This template allows you to print anything like in python with a `debug` function that just works when `debugCommand` is used. See [Debug](/docs/debug) section.
+- [CompetitiveProgrammingTemplate.py](https://gitlab.com/searleser97/competitive-programming-reference/-/blob/master/Reference/Coding%20Resources/Python/Competitive%20Programming%20Template.py)
+  - This template includes Fast IO operations for python
+
+### `languages.<lang>.command: string`
+
+The command that will be used to compile (C++, Java, ...) or run (Python, Ruby) your program for testing purposes.
+
+For example: If you use codeforces it is convenient that you use the same command they use for each language
+
+```json
+{
+  "languages": {
+    "cpp": {
+      "command": "g++ -std=gnu++17 -O2"
+    },
+    "py": {
+      "command": "python3"
+    }
+  }
+}
+```
+
+:::tip
+If you specify the name of the executable file in this command, it will
+be used instead of the default name (same as source file). See [**Test**](/docs/test) section.
+
+**Example:** In `C++` you can use the `-o` flag to specify the name of the executable file that will be created after compilation.
+```json
+{
+  "languages": {
+    "cpp": {
+      "command": "g++ -std=gnu++17 -o executableName.exe"
+    }
+  }
+}
+```
+:::
+
+### `languages.<lang>.debugCommand: string`
+
+The command that will be used to compile or run your program for debugging purposes.
+Usually `debugCommand` has more flags than `command`.
+
+Some debug command examples for `cpp` and `py`:
+
+```json
+{
+  "languages": {
+    "cpp": {
+      "command": "g++ -std=gnu++17 -O2",
+      "debugCommand": "g++ -std=gnu++17 -O3 -DDEBUG -Wshadow -Wall"
+    },
+    "py": {
+      "command": "python3",
+      "debugCommand": "python3 -O"
+    }
+  }
+}
+```
+
+:::tip
+You can specify the name of the executable file in the same way you would do it
+in <a href={"#languageslangcommand-string"} style={{color: 'white'}}>`languages.<lang>.command`</a>.
+
+Visit the [**Debug**](/docs/debug) section to see usage examples of this feature.
+:::
+
+### `languages.<lang>.aliases: Object<OnlineJudgeName, string>`
+
+Language "aliases" for each OnlineJudge. See [How To Configure Language Aliases](/docs/submit#how-to-configure-language-aliases).
+
+For example: the alias for `C++` in Codeforces and AtCoder is `"54"` and `"4006"` respectively
+
+```json
+{
+  "languages": {
+    "cpp": {
+      "aliases": {
+        "codeforces": "54",
+        "atcoder": "4006"
+      }
+    }
+  }
+}
+```

@@ -23,10 +23,12 @@ import yargs from "yargs";
 import * as os from "os";
 import * as Path from "path";
 import ICommandGlobalArgs from "./Types/ICommandGlobalArgs";
-import { ICommandServeArgs, serve } from "./Serve/Serve";
+import { ICommandCloneArgs, clone } from "./Clone/Clone";
 import { ICommandTestArgs, test } from "./Test/Test";
 import { create, ICommandCreateArgs } from "./Create/Create";
 import { init } from "./Init/Init";
+import { ICommandLoginArgs, login } from "./Login/Login";
+import { ICommandSubmitArgs, submit } from "./Submit/Submit";
 
 const pkg = require("../package.json");
 updateNotifier({
@@ -39,12 +41,15 @@ updateNotifier({
 });
 
 let descriptions = {
-  serve: "Run cpbooster as server for competitive companion plugin.",
+  clone: "Run cpbooster as server for competitive companion plugin.",
   test: "Test your code against one or all (default) available test cases.",
   create:
-    "Creates new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
+    "Create a new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
   init:
-    "Creates a new configuration file with default values in $HOME directory or if --config is specified, it writes it in the given path."
+    "Create a new configuration file with default values in $HOME directory or if --configPath is specified, it writes it in the given path.",
+  login: "Log in to the specified Online Judge (i.e. Codeforces, AtCoder, ...).",
+  submit:
+    "Submit a source code file as a solution to a problem in an Online Judge (i.e. Codeforces, AtCoder, ...)."
 };
 
 yargs
@@ -52,16 +57,18 @@ yargs
     "\nUsage: $0 <command> [options]\n\nRun `$0 <command> --help` to show help for an specific command."
   )
   .command(
-    "serve",
-    descriptions.serve,
+    "clone",
+    descriptions.clone,
     (serve_yargs) => {
-      serve_yargs.usage("\n" + descriptions.serve + "\n\nUsage: $0 serve [options]").option("port", {
-        alias: "p",
-        type: "number",
-        description: "Port where competitive companion plugin will send parsed data from problems"
-      });
+      serve_yargs
+        .usage("\n" + descriptions.clone + "\n\nUsage: $0 clone [options]")
+        .option("port", {
+          alias: "p",
+          type: "number",
+          description: "Port where competitive companion plugin will send parsed data from problems"
+        });
     },
-    (argv) => serve((argv as unknown) as ICommandServeArgs)
+    (argv) => clone((argv as unknown) as ICommandCloneArgs)
   )
   .command(
     ["test <filePath>", "t"],
@@ -127,7 +134,7 @@ yargs
             "    examples:\n" +
             "      > $0 create {a..d}.cpp (any amount of dots greater than 1 work)\n" +
             "      > $0 create /home/cpbooster/{a..d}.cpp\n" +
-            "      > $0 create {a-d}.py (single hyphen also works)\n"
+            "      > $0 create {a-d}.py (single dash also works)\n"
         )
         .fail((msg: string, _, yargs) => {
           yargs.showHelp();
@@ -146,21 +153,62 @@ yargs
     (new_yargs) => {
       new_yargs
         .usage("\n" + descriptions.init + "\n\nUsage: $0 init [options]")
-        .config(
-          "config",
-          "Path where the JSON configuration file will be created" +
+        .option("configPath", {
+          type: "string",
+          description:
+            "Path where the JSON configuration file will be created" +
             `\n[default: "${Path.join(os.homedir(), "cpbooster-config.json")}"]`
-        );
+        });
     },
     (argv) => init((argv as unknown) as ICommandGlobalArgs)
+  )
+  .command(
+    ["login <url>", "l"],
+    descriptions.login,
+    (new_yargs) => {
+      new_yargs
+        .usage(
+          "\n" +
+            descriptions.login +
+            " The name of the Online Judge can be given instead of <url>." +
+            "\n\nUsage: $0 login <url>"
+        )
+        .fail((msg: string, _, yargs) => {
+          yargs.showHelp();
+          if (msg === "Not enough non-option arguments: got 0, need at least 1") {
+            console.log("\nMissing <url> in arguments");
+          } else {
+            console.log("\n" + msg);
+          }
+        });
+    },
+    (argv) => login((argv as unknown) as ICommandLoginArgs)
+  )
+  .command(
+    ["submit <filePath>", "s"],
+    descriptions.submit,
+    (new_yargs) => {
+      new_yargs
+        .usage("\n" + descriptions.submit + "\n\nUsage: $0 submit <filePath> [url]")
+        .fail((msg: string, _, yargs) => {
+          yargs.showHelp();
+          if (msg === "Not enough non-option arguments: got 0, need at least 1") {
+            console.log("\nMissing <filePath> in arguments");
+          } else {
+            console.log("\n" + msg);
+          }
+        });
+    },
+    (argv) => submit((argv as unknown) as ICommandSubmitArgs)
   )
   .help("help")
   .alias("help", "h")
   .alias("version", "v")
   .demandCommand()
   .strict()
-  .config(
-    "config",
-    "Path to JSON configuration file" +
+  .option("configPath", {
+    type: "string",
+    description:
+      "Path to JSON configuration file" +
       `\n[default: "${Path.join(os.homedir(), "cpbooster-config.json")}"]`
-  ).argv;
+  }).argv;

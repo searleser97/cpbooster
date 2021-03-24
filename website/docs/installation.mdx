@@ -1,0 +1,68 @@
+---
+id: installation
+title: Installation
+---
+
+You can install `cpbooster` with a **single** comand, either using `npm` or `yarn`.
+
+## Requirements
+
+- Node.js >= v12.18.2
+- [Competitive Companion Extension (Chrome or Firefox)](https://github.com/jmerle/competitive-companion)
+
+## Install using `npm`
+
+```shell
+npm install cpbooster -g
+```
+
+**Note:** In some cases you may need to run above command with `sudo`.
+
+## Install using `yarn`
+
+```shell
+yarn install cpbooster -g
+```
+
+## Verify Installation
+
+```shell
+cpbooster --help
+```
+
+You should see the description of each of the available commands. Read it to know what you can do with each of them.
+
+```txt
+
+Usage: cpb <command> [options]
+
+Run `cpb <command> --help` to show help for an specific command.
+
+Commands:
+  cpb clone              Run cpbooster as server for competitive companion
+                         plugin.
+  cpb test <filePath>    Test your code against one or all (default) available
+                         test cases. Run `cpb test --help` to see more usage
+                         options                                    [aliases: t]
+  cpb create <filePath>  Create a new source code file with the corresponding
+                         template loaded or multiple source files if a sequence
+                         is given as file name. Run `cpb create --help` to see
+                         usage options and examples                 [aliases: c]
+  cpb init               Create a new configuration file with default values in
+                         $HOME directory or if --configPath is specified, it
+                         writes it in the given path.               [aliases: i]
+  cpb login <url>        Log in to the specified Online Judge (i.e. Codeforces,
+                         AtCoder, ...).                             [aliases: l]
+  cpb submit <filePath>  Submit a source code file as a solution to a problem in
+                         an Online Judge (i.e. Codeforces, AtCoder, ...).
+                                                                    [aliases: s]
+
+Options:
+  --version, -v  Show version number                                   [boolean]
+  --help, -h     Show help                                             [boolean]
+  --configPath   Path to JSON configuration file
+                 [default: "/home/san/cpbooster-config.json"]           [string]
+```
+
+### The next step is to create your configuration file. Continue to the [next](/docs/configuration) section, to see how to do this.
+

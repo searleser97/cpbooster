@@ -1,0 +1,32 @@
+---
+id: add-test-case
+title: Add Test Case
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+You can add a test case associated with the give source file
+by passing the `--add` flag or its alias `-a` to the `test` command.
+See [Test](/docs/test).
+
+```txt
+cpb t A.DistanceAndAxis.cpp -a
+```
+
+## Demo
+
+
+<div className="text--center">
+  <img alt="test" src={useBaseUrl('/img/demos/add-test-case.gif')} />
+</div>
+
+## How Does It Work?
+
+This Command will create the corresponding `.inX` and `.ansX` files
+with the same name as the source file.
+This is because `cpbooster` uses filenames to associate test cases and
+source files. See [File Structure](/docs/clone#file-structure) for better understanding.
+
+:::note
+The id `X` will be equal to the maximum test case ID that already exists plus 1.
+:::

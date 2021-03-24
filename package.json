@@ -2,7 +2,7 @@
   "name": "cpbooster",
   "author": "searleser97",
   "version": "1.9.3",
-  "description": "cpbooster is a command line utility that gets you up and running quickly for competitive programming contests",
+  "description": "cpbooster is a cross-platform CLI tool designed to boost competitive programmer's speed during contests by automating various routine tasks",
   "homepage": "https://github.com/searleser97/cpbooster",
   "repository": "github:searleser97/cpbooster",
   "keywords": [
@@ -22,18 +22,17 @@
     "start": "npm run build && node dist/index.js test -h",
     "start:dev": "nodemon",
     "build": "rimraf ./dist && tsc",
-    "install:Linux": "npm run build && sudo npm uninstall cpbooster -g && sudo npm install -g",
-    "install:Windows": "npm run build && npm uninstall cpbooster -g && npm install -g",
+    "install:dev": "npm run build && npm uninstall cpbooster -g && npm install -g",
     "test": "echo \"no test specified\" "
   },
-  "license": "AGPL-3.0-only",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/diff": "^4.0.2",
     "@types/express": "^4.17.6",
     "@types/node": "^14.0.14",
-    "@types/yargs": "^15.0.5",
     "@types/update-notifier": "^4.1.0",
+    "@types/yargs": "^15.0.5",
     "nodemon": "^2.0.4",
     "rimraf": "^3.0.2",
     "ts-node": "^8.10.2",
@@ -42,6 +41,7 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "express": "^4.17.1",
+    "playwright-chromium": "^1.9.1",
     "update-notifier": "^4.1.0",
     "yargs": "^15.4.0"
   }

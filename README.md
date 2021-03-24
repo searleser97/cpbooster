@@ -11,28 +11,38 @@
 
 ## Features
 
-1. `cpbooster` comes with a short alias command called `cpb` to avoid writing the long command each time.
+1. `cpbooster` comes with a short alias command called `cpb` to avoid writing the long command each time
 1. Automatically clone sample testcases files with corresponding source code files with template loaded into a desired directory
-   - `cpb serve` waits for competitive companion plugin to send parsed data for each problem
+   - `cpb clone` waits for competitive companion plugin to send parsed data for each problem
 1. Create source files with corresponding template loaded
-   - `cpb create b.py` creates single file with corresponding template loaded based on file extension
+   - `cpb create a.py` creates single file with corresponding template loaded based on file extension
    - `cpb create {a..n}.cpp` creates multiple consecutive files from "a.cpp" to "n.cpp"
    - `cpb create {a...n}.cpp` same as previous command (Any amount of dots greater than 1 work)
    - `cpb create {a-n}.cpp` same as previous command (Single dash also works)
-1. Test your code against sample testcases quickly.
+   - `cpb create /some/path/a.cpp` creates "a.cpp" in the specified path instead of current location
+   - `cpb create /some/path/{a-n}.cpp` creates "a.cpp ... n.cpp" in the specified path instead of current location
+1. Test your code against sample testcases quickly
+
    - `cpb test mycode.cpp` test your program against all available test cases
-   - `cpb test mycode.cpp -t 1` test your program against the test case with the given id.
+   - `cpb test mycode.cpp -t 1` test your program against the test case with the given id
+   - `cpb test /some/path/mycode.cpp` test a program that is not located in your current location
 
    Supported results:
+
    - **AC** (Accepted)
    - **WA** (Wrong Answer) Shows differences between accepted output and your output beautifully
    - **TLE** (Time Limit Exceeded)
    - **RTE** (Runtime Error)
    - **CE** (Compilation Error)
+
 1. Run code with your own debugging flags easily
    - `cpb test mycode.cpp -d` to use keyboard as input
    - `cpb test mycode.cpp -t 2 -d` to use a test case file as input
+   - `cpb test /some/path/mycode.cpp -d` debug a program that is not located in your current location
+1. Submit your code from the terminal really quickly.
+   - `cpb submit mycode.cpp` submits your file to the corresponding judge.
 1. open a new terminal in the contest directory immediately after cloning it
+
    - List of **supported terminals** for this feature:
      - konsole
      - xterm
@@ -42,7 +52,7 @@
      - kitty
      - vscode
        - I recommend adding this setting to your vscode `settings.json` so that green doesn't look to bright:
-       `"workbench.colorCustomizations" : { "terminal.ansiGreen":"#5b8a3a" }`
+         `"workbench.colorCustomizations" : { "terminal.ansiGreen":"#5b8a3a" }`
 
 1. Vim plugin [cpbooster.vim](https://github.com/searleser97/cpbooster.vim) **boosts** your speed even more
 
@@ -65,11 +75,13 @@
 2. Run:
 
 ```shell
-  cpbooster new
+  cpbooster init
 ```
-  or
+
+or
+
 ```shell
-  cpb new
+  cpb init
 ```
 
 3. Edit the configuration file created in your home directory according to your needs.
@@ -99,30 +111,33 @@
 ```
 Usage: cpb <command> [options]
 
+Run `cpb <command> --help` to show help for an specific command.
+
 Commands:
-  cpb serve   Run cpbooster as server for competitive companion plugin
-  cpb test    By default this command runs your <program> against all available
-              test cases, run 'cpbooster test --help' to get information about
-              more options
-  cpb create  Creates new source code file with the corresponding template
-              loaded or multiple source files if a sequence is given as file
-              name, run 'cpbooster create --help' for more details
-  cpb new     Creates new configuration file with default values in $HOME or, if
-              --configPath option is set it writes it in the specified path
+  cpb clone              Run cpbooster as server for competitive companion
+                         plugin.
+  cpb test <filePath>    Test your code against one or all (default) available
+                         test cases. Run `cpb test --help` to see more usage
+                         options                                    [aliases: t]
+  cpb create <filePath>  Creates new source code file with the corresponding
+                         template loaded or multiple source files if a sequence
+                         is given as file name. Run `cpb create --help` to see
+                         usage options and examples                 [aliases: c]
+  cpb init               Creates a new configuration file with default values in
+                         $HOME directory or if --config is specified, it writes
+                         it in the given path.                      [aliases: i]
 
 Options:
-  --version, -v     Show version number                                [boolean]
-  --help, -h        Show help                                          [boolean]
-  --configPath, -c  Path to read/write configuration file               [string]
+  --version, -v  Show version number                                   [boolean]
+  --help, -h     Show help                                             [boolean]
+  --config       Path to JSON configuration file
+                 [default: "/home/san/cpbooster-config.json"]]
 ```
 
-**Note:** Run `cpbooster <command> --help` to display help information about a specific command.
-
-**Note 2:** `cpb` is the short alias for `cpbooster`.
+**Note:** `cpb` is the short alias for `cpbooster`.
 
 ## Future updates
 
-- `cpb submit` comming really soon.
 - Add the possibility to test interactive problems
 - Add the possibility to test current file using test cases of another file (test --as \<filename>)
 - Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)

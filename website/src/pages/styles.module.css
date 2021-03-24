@@ -1,0 +1,104 @@
+/* stylelint-disable docusaurus/copyright-header */
+
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 5rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  justify-content: center;
+}
+
+@media screen and (max-width: 966px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.featuresRow {
+  align-items: center;
+  justify-content: center;
+}
+
+.vim_img {
+  height: auto;
+  width: auto;
+}
+
+@media screen and (min-width: 997px) {
+  .vim_img {
+    max-height: 250px;
+  }
+}
+
+@media screen and (max-width: 996px) {
+  .vim_img {
+    max-height: 500px;
+  }
+}
+
+.getStartedButton {
+  border: 2px solid var(--ifm-color-primary);
+  display: inline-block;
+  line-height: 1.2em;
+  text-decoration: none !important;
+  text-transform: uppercase;
+  transition: background 0.3s, color 0.3s;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 14px 40px;
+}
+
+.boldInGreen b {
+  color: var(--ifm-color-primary);
+}
+
+.title {
+  font-size: 65px;
+  white-space: nowrap;
+}
+
+.subtitle {
+  font-size: 35px;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 320px) {
+  .title {
+    font-size: 60px;
+  }
+  .subtitle {
+    font-size: 30px;
+  }
+}
+
+.demo_gif {
+  display: flex;
+  /*width: 80%;*/
+  /*height: auto;*/
+  /*width: 100px;*/
+  /*height: 100px;*/
+}
+
+.container {
+  gap: 30px;
+}
