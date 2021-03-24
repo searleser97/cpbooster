@@ -72,10 +72,10 @@ const features = [
     description: (
       <>
         Having a flat file structure gives us <b>speed!</b>. See{" "}
-        <a href="/docs/clone#why-flat-file-structure">Why Flat File Structure?</a>.
+        <a href="docs/clone#why-flat-file-structure">Why Flat File Structure?</a>.
       </>
     ),
-    to: "docs/clone#why-flat-file-structure"
+    to: "docs/clone#file-structure"
   },
   {
     title: "Vim / Neovim Plugin",
@@ -90,18 +90,6 @@ const features = [
     to: "https://github.com/searleser97/cpbooster.vim",
     className: styles.vim_img
   }
-  //{
-  //title: "Neovim Plugin",
-  //imageUrl: "img/nvim-icon.png",
-  //description: (
-  //<>
-  //Vim users can install{" "}
-  //<Link to="https://github.com/searleser97/cpbooster.vim">cpbooster.vim</Link> plugin to boost
-  //their speed even more.
-  //</>
-  //),
-  //to: "https://github.com/searleser97/cpbooster.vim"
-  //}
 ];
 
 function Feature({ imageUrl, title, description, to, className }) {
