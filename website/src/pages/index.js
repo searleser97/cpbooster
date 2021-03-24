@@ -87,7 +87,7 @@ const features = [
         their speed even more.
       </>
     ),
-    to: "https://github.com/searleser97/cpbooster.vim",
+    to: "docs/vim",
     className: styles.vim_img
   }
 ];
