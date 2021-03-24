@@ -147,7 +147,10 @@ export default function Home() {
             </div>
           </div>
           <div className={clsx("text--center", "col col--6", styles.demo_gif)}>
-            <img src="https://searleser97.gitlab.io/competitive-programming-notes/cpbooster/cpbooster.gif" />
+            <video controls style={{ maxWidth: "100%" }}>
+              <source src="img/demos/video_demo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </header>
