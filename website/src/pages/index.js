@@ -78,11 +78,11 @@ const features = [
     to: "/docs/clone#why-flat-file-structure"
   },
   {
-    title: "Vim Plugin",
+    title: "Vim / Neovim Plugin",
     imageUrl: "img/vim-icon.png",
     description: (
       <>
-        Vim users can install{" "}
+        Vim / Neovim users can install{" "}
         <Link to="https://github.com/searleser97/cpbooster.vim">cpbooster.vim</Link> plugin to boost
         their speed even more.
       </>
