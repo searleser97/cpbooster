@@ -62,6 +62,8 @@
 - Fully support windows CMD.
 - Add Stress tests (using brute force solution and tests generator)
 
+**Note:** I will not be working on cpbooster for a while, so **Pull requests** are very welcomed.
+
 ## Final Notes
 
 - I am open to feature requests.
