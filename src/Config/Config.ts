@@ -20,16 +20,14 @@ import * as fs from "fs";
 import * as Path from "path";
 import * as os from "os";
 import { exit } from "process";
-import { LangConfig } from "./Types/LangConfig";
 import { Languages } from "./Types/Languages";
 
 export default class Config {
-  static readonly defaultConfigFilePath = Path.join(os.homedir(), "cpbooster-config.json");
-  static readonly alternativeConfigFilePath = Path.join(
-    os.homedir(),
-    ".cpbooster",
-    "cpbooster-config.json"
-  );
+  static readonly defaultConfigFilePaths = [
+    Path.join(os.homedir(), "cpbooster-config.json"),
+    Path.join(os.homedir(), ".cpbooster", "cpbooster-config.json"),
+    Path.join(os.homedir(), ".config", "cpbooster", "cpbooster-config.json")
+  ];
 
   contestsDirectory: string;
   port: number;
@@ -77,43 +75,31 @@ export default class Config {
     console.log(`Your configuration file has been written in: "${configFilePath}"`);
   }
 
-  static write(configFilePath: string | undefined | null): void {
-    if (configFilePath) {
-      if (fs.existsSync(configFilePath)) {
-        this.printAlreadyExistsMsg(configFilePath);
-      } else {
-        fs.writeFileSync(configFilePath, JSON.stringify(new Config(), null, 2));
-        this.printConfigWrittenMsg(configFilePath);
-      }
+  static write(configFilePath: string = this.defaultConfigFilePaths[0]): void {
+    if (fs.existsSync(configFilePath)) {
+      this.printAlreadyExistsMsg(configFilePath);
     } else {
-      if (fs.existsSync(Config.defaultConfigFilePath)) {
-        this.printAlreadyExistsMsg(Config.defaultConfigFilePath);
-      } else if (fs.existsSync(Config.alternativeConfigFilePath)) {
-        this.printAlreadyExistsMsg(Config.alternativeConfigFilePath);
-      } else {
-        fs.writeFileSync(Config.defaultConfigFilePath, JSON.stringify(new Config(), null, 2));
-        this.printConfigWrittenMsg(Config.defaultConfigFilePath);
-      }
+      fs.writeFileSync(configFilePath, JSON.stringify(new Config(), null, 2));
+      this.printConfigWrittenMsg(configFilePath);
     }
   }
 
   static read(configFilePath: string | undefined | null): Config {
-    if (configFilePath && fs.existsSync(configFilePath)) {
-      // for now we are assuming that all the properties are defined in the config file
-      return JSON.parse(fs.readFileSync(configFilePath, "utf8"));
-    } else if (fs.existsSync(Config.defaultConfigFilePath)) {
-      return JSON.parse(fs.readFileSync(Config.defaultConfigFilePath, "utf8"));
-    } else if (fs.existsSync(Config.alternativeConfigFilePath)) {
-      return JSON.parse(fs.readFileSync(Config.alternativeConfigFilePath, "utf8"));
-    } else {
-      console.log("\nconfiguration file not found in any of the following locations:\n");
-      if (configFilePath) {
-        console.log("->", configFilePath);
+    let configFilePaths = configFilePath ? [configFilePath] : [];
+    configFilePaths.push(...this.defaultConfigFilePaths);
+
+    for (let configPath of configFilePaths) {
+      if (fs.existsSync(configPath)) {
+        // for now we are assuming that all the properties are defined in the config file
+        return JSON.parse(fs.readFileSync(configPath, "utf8"));
       }
-      console.log("->", Config.defaultConfigFilePath);
-      console.log("->", Config.alternativeConfigFilePath, "\n");
-      console.log("You can create one in your $HOME directory by running 'cpbooster init'\n");
-      exit(0);
     }
+
+    console.log("\nconfiguration file not found in any of the following locations:\n");
+    for (let configPath of configFilePaths) {
+      console.log("->", configPath);
+    }
+    console.log("\nYou can create one in your $HOME directory by running 'cpbooster init'\n");
+    exit(0);
   }
 }
