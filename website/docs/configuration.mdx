@@ -90,10 +90,15 @@ change it in competitive companion extension settings.
 Name of the **editor** that will be opened after running `cpb clone`.
 The **editor** value should match with the terminal command you use to launch it. See [Editor Requirements](#editor-requirements)
 
+:::note
+An **editor** can be a [terminal emulator](#list-of-supported-terminals) also.
+:::
+
 #### Editor Requirements
 
 1. You must be able to open your **editor** using a terminal command.
-2. The **editor command** should support the following format to open a directory:
+2. If the **editor** is a **terminal emulator** it should be in the [list of supported terminals](#list-of-supported-terminals).
+3. If the **editor** is NOT a **terminal emulator**. The **editor command** should support the following format to open a directory:
 
 ```shell
 $ editor [directory]
