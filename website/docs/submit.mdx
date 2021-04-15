@@ -30,6 +30,16 @@ cpb s <filePath> [url]
 - [Specify URL](#how-to-specify-the-url) in file or as argument.
 - [Configure Language Aliases](#how-to-configure-language-aliases) for each platform and language.
 
+:::note
+`cpbooster` uses a specific chromium binary that gets installed automatically in OS-specific cache
+folders:
+
+- `%USERPROFILE%\AppData\Local\ms-playwright` on Windows
+- `~/Library/Caches/ms-playwright` on MacOS
+- `~/.cache/ms-playwright` on Linux
+
+according to [playwright docs](https://playwright.dev/docs/installation/)
+:::
 
 ## Login
 
@@ -65,7 +75,7 @@ and session information like any browser does locally (in
 
 ## How To Specify The URL
 
-You can provide the `url` in **2** different ways:
+When you run `cpb submit` you can provide the `url` in **2** different ways:
 
 
 ### 1. As A Command Argument
