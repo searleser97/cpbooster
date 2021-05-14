@@ -6,6 +6,11 @@ labels: ''
 assignees: ''
 
 ---
+**Please complete the following information:**
+OS: (e.g. Windows, Arch, Ubuntu, MacOS, ...)
+Using Vim? : (yes, no)
+Using Neovim? : (yes, no)
+Terminal Name: (Konsole, Gnome-Terminal, CMD, ...)
 
 **Describe the bug**
 A clear and concise description of what the bug is.
@@ -20,7 +25,3 @@ A clear and concise description of what you expected to happen.
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. Windows, Arch, Ubuntu, MacOS, ...]
- - Version [e.g. 1.9]
