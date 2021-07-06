@@ -3,16 +3,21 @@
     "target": "es5",
     "module": "commonjs",
     "lib": ["es6"],
-    "allowJs": true,
+    "allowJs": false,
     "outDir": "dist",
     "rootDir": "src",
     "strict": true,
     "noImplicitAny": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "src",
+    "plugins": [{ "transform": "@zerollup/ts-transform-paths" }],
+    "paths": {
+      "*": ["./*", "Test/*"]
+    }
   },
   "exclude": ["website/*"]
 }

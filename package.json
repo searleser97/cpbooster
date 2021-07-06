@@ -12,7 +12,7 @@
     "tool",
     "helper"
   ],
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "bin": {
     "cpbooster": "dist/index.js",
     "cpb": "dist/index.js"
@@ -21,7 +21,7 @@
   "scripts": {
     "start": "npm run build && node dist/index.js test -h",
     "start:dev": "nodemon",
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && ttsc",
     "install:dev": "npm run build && npm uninstall cpbooster -g && npm install -g",
     "test": "echo \"no test specified\" "
   },
@@ -33,9 +33,11 @@
     "@types/node": "^14.0.14",
     "@types/update-notifier": "^4.1.0",
     "@types/yargs": "^15.0.5",
+    "@zerollup/ts-transform-paths": "^1.7.18",
     "nodemon": "^2.0.4",
     "rimraf": "^3.0.2",
     "ts-node": "^8.10.2",
+    "ttypescript": "^1.5.12",
     "typescript": "^3.9.6"
   },
   "dependencies": {
