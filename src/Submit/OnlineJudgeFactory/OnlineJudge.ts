@@ -23,6 +23,7 @@ import { exit } from "process";
 import GlobalConstants from "../../GlobalConstants";
 import Config from "../../Config/Config";
 import { LangAliases } from "../../Config/Types/LangAliases";
+import open from "open";
 
 export enum OnlineJudgeName {
   codeforces = "codeforces",
@@ -119,13 +120,7 @@ export default abstract class OnlineJudge {
 
   async openBrowserInUrl(url: string) {
     try {
-      let browser = await chromium.launch({ headless: false });
-      const context = await this.restoreSession(browser);
-      context.on("page", (_) => this.closeAllOtherTabs(context));
-      const pages = context.pages();
-      let page = pages.length > 0 ? pages[0] : await context.newPage();
-      page.on("close", (_) => exit(0));
-      await page.goto(url);
+      await open(url);
     } catch (_) {
       // This line apparently never gets executed
       console.log("Browser closed");
