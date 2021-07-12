@@ -1,5 +1,7 @@
 export function getTerminalCommand(terminalName: string, contestPath: string): string | null {
   switch (terminalName) {
+    case "alacritty":
+      return `alacritty --working-directory="${contestPath}" & disown`;
     case "konsole":
       return `konsole --workdir "${contestPath}"`;
     case "gnome-terminal":
