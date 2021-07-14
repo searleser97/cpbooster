@@ -34,6 +34,7 @@ export default class Config {
   terminal: string;
   closeAfterClone: boolean;
   showStatusPageOnSubmit: boolean;
+  useUserDefaultBrowser: boolean;
   preferredLang: string;
 
   languages: Languages;
@@ -44,6 +45,7 @@ export default class Config {
     this.terminal = "konsole";
     this.closeAfterClone = false;
     this.showStatusPageOnSubmit = false;
+    this.useUserDefaultBrowser = true;
     this.preferredLang = "cpp";
     this.languages = {
       cpp: {

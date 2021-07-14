@@ -125,9 +125,19 @@ export default abstract class OnlineJudge {
     }
   }
 
-  async openBrowserInUrl(url: string) {
+  async openBrowserInUrl(url: string, useUserDefaultBrowser: boolean) {
     try {
-      await open(url);
+      if (useUserDefaultBrowser) {
+        await open(url);
+      } else {
+        let browser = await chromium.launch({ headless: false });
+        const context = await this.restoreSession(browser);
+        context.on("page", (_) => this.closeAllOtherTabs(context));
+        const pages = context.pages();
+        let page = pages.length > 0 ? pages[0] : await context.newPage();
+        page.on("close", (_) => exit(0));
+        await page.goto(url);
+      }
     } catch (_) {
       // This line apparently never gets executed
       console.log("Browser closed");
@@ -215,11 +225,11 @@ export default abstract class OnlineJudge {
           // -> route.continue: Target page, context or browser has been closedError
           // when you submit for the very first time after installing cpbooster
           //await new Promise((resolve) => setTimeout(resolve, 500));
-          await this.openBrowserInUrl(page.url());
+          await this.openBrowserInUrl(page.url(), config.useUserDefaultBrowser);
         } catch (_) {
           // fixes the error: route.continue: Target page, context or browser has been closedError
           // when you submit for the very first time after installing cpbooster
-          await this.openBrowserInUrl(page.url());
+          await this.openBrowserInUrl(page.url(), config.useUserDefaultBrowser);
         }
       }
     } catch (e) {
