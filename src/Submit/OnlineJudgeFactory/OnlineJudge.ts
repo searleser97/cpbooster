@@ -112,6 +112,9 @@ export default abstract class OnlineJudge {
   getLangAlias(filePath: string, config: Config): string | undefined {
     const lang = this.getExtensionName(filePath);
     const langAliases = this.getLangAliasesObject(lang, config);
+    /* TODO: make <key, value> object with Online Judge Name as key
+             and langAliases as value. Then, we can iterate over it
+             instead of writing one line per Online Judge */
     switch (this.onlineJudgeName) {
       case OnlineJudgeName.codeforces:
         return langAliases?.codeforces;
