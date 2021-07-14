@@ -47,7 +47,7 @@ export default class Config {
     this.preferredLang = "cpp";
     this.languages = {
       cpp: {
-        template: "template.cpp",
+        template: "",
         command: "g++ -std=gnu++17 -O2",
         debugCommand: "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
         aliases: {
@@ -56,7 +56,7 @@ export default class Config {
         }
       },
       py: {
-        template: "template.py",
+        template: "",
         command: "python3",
         debugCommand: "python3 -O",
         aliases: {
