@@ -24,7 +24,7 @@ import * as os from "os";
 import * as Path from "path";
 import ICommandGlobalArgs from "./Types/ICommandGlobalArgs";
 import { ICommandCloneArgs, clone } from "./Clone/Clone";
-import { ICommandTestArgs, test } from "./Test/Test";
+import { ICommandTestArgs, test } from "Test";
 import { create, ICommandCreateArgs } from "./Create/Create";
 import { init } from "./Init/Init";
 import { ICommandLoginArgs, login } from "./Login/Login";
