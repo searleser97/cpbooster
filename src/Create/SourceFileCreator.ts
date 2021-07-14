@@ -61,9 +61,9 @@ export default class SourceFileCreator {
         template += `${commentString} problem-url: ${problemUrl}\n`;
       }
     }
-    if (extension == ".cpp" && config.languages.cpp.template) {
+    if (extension == ".cpp" && config.languages.cpp?.template) {
       template += fs.readFileSync(config.languages.cpp.template).toString();
-    } else if (extension == ".py" && config.languages.py.template) {
+    } else if (extension == ".py" && config.languages.py?.template) {
       template += fs.readFileSync(config.languages.py.template).toString();
     }
     if (!fs.existsSync(filePath)) {
