@@ -24,6 +24,12 @@ import { exit } from "process";
 import chalk from "chalk";
 import { spawnSync } from "child_process";
 import * as Path from "path";
+import { LangConfig } from "Config/Types/LangConfig";
+
+export enum SupportedLanguages {
+  cpp = "cpp",
+  py = "py"
+}
 
 export default abstract class Tester {
   config: Config;
@@ -254,5 +260,33 @@ export default abstract class Tester {
 
   static printUnnecesaryNoCompileFlagMsg(lang: string) {
     console.log(`${lang} does not support compilation, using --noCompile option is unnecesary`);
+  }
+
+  protected getSegmentedCommand(language: SupportedLanguages, debug: boolean): string[] {
+    let langConfig: LangConfig | undefined;
+    switch (language) {
+      case SupportedLanguages.cpp:
+        langConfig = this.config.languages.cpp;
+        break;
+      case SupportedLanguages.py:
+        langConfig = this.config.languages.py;
+        break;
+      default:
+        langConfig = undefined;
+    }
+
+    if (langConfig) {
+      let segmentedCommand: string[];
+      if (debug) {
+        segmentedCommand = langConfig.debugCommand.split(" ");
+      } else {
+        segmentedCommand = langConfig.command.split(" ");
+      }
+      // TODO: log message and exit(0) when segmentedCommand is empty
+      return segmentedCommand;
+    } else {
+      console.log(`${debug ? "debug " : ""}command not specified in cpbooster-config.json`);
+      exit(0);
+    }
   }
 }

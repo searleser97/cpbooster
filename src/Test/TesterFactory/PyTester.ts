@@ -18,7 +18,7 @@
 
 import Config from "../../Config/Config";
 import { Veredict } from "../../Types/Veredict";
-import Tester from "./Tester";
+import Tester, { SupportedLanguages } from "./Tester";
 
 export default class PyTester extends Tester {
   constructor(config: Config, filePath: string) {
@@ -29,7 +29,7 @@ export default class PyTester extends Tester {
     if (!compile) {
       Tester.printUnnecesaryNoCompileFlagMsg("python");
     }
-    let commandAsArray: string[] = this.config.languages.py.command.split(" ");
+    let commandAsArray = this.getSegmentedCommand(SupportedLanguages.py, false);
     return this.runTest(commandAsArray[0], [...commandAsArray.slice(1), this.filePath], testId);
   }
 
@@ -37,7 +37,7 @@ export default class PyTester extends Tester {
     if (!compile) {
       Tester.printUnnecesaryNoCompileFlagMsg("python");
     }
-    let debugCommandAsArray: string[] = this.config.languages.py.debugCommand.split(" ");
+    let debugCommandAsArray = this.getSegmentedCommand(SupportedLanguages.py, true);
     this.runDebug(debugCommandAsArray[0], [...debugCommandAsArray.slice(1), this.filePath], testId);
   }
 
@@ -45,7 +45,7 @@ export default class PyTester extends Tester {
     if (!compile) {
       Tester.printUnnecesaryNoCompileFlagMsg("python");
     }
-    let debugCommandAsArray: string[] = this.config.languages.py.debugCommand.split(" ");
+    let debugCommandAsArray = this.getSegmentedCommand(SupportedLanguages.py, true);
     this.runDebugWithUserInput(debugCommandAsArray[0], [
       ...debugCommandAsArray.slice(1),
       this.filePath

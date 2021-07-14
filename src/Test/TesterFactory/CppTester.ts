@@ -24,7 +24,7 @@ import Util from "../../Util";
 import { spawnSync } from "child_process";
 import { exit } from "process";
 import { Veredict } from "../../Types/Veredict";
-import Tester from "./Tester";
+import Tester, { SupportedLanguages } from "./Tester";
 
 export default class CppTester extends Tester {
   constructor(config: Config, filePath: string) {
@@ -71,12 +71,7 @@ export default class CppTester extends Tester {
   }
 
   getNameForBinary(debug: boolean): string | undefined {
-    let segmentedCommand: string[];
-    if (debug) {
-      segmentedCommand = this.config.languages.cpp.debugCommand.split(" ");
-    } else {
-      segmentedCommand = this.config.languages.cpp.command.split(" ");
-    }
+    let segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
 
     for (let i = 0; i < segmentedCommand.length; i++) {
       if (segmentedCommand[i] == "-o") {
@@ -95,12 +90,8 @@ export default class CppTester extends Tester {
 
   compile(debug: boolean) {
     console.log("Compiling...\n");
-    let segmentedCommand: string[];
-    if (debug) {
-      segmentedCommand = this.config.languages.cpp.debugCommand.split(" ");
-    } else {
-      segmentedCommand = this.config.languages.cpp.command.split(" ");
-    }
+    let segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
+
     let args = [...segmentedCommand.slice(1), this.filePath];
     let compileCommand = segmentedCommand[0];
 
