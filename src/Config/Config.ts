@@ -44,7 +44,7 @@ export default class Config {
     this.port = 1327;
     this.terminal = "konsole";
     this.closeAfterClone = false;
-    this.showStatusPageOnSubmit = false;
+    this.showStatusPageOnSubmit = true;
     this.useUserDefaultBrowser = true;
     this.preferredLang = "cpp";
     this.languages = {
