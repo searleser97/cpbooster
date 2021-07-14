@@ -101,9 +101,11 @@ export default abstract class OnlineJudge {
   getLangAliasesObject(lang: string, config: Config): LangAliases | undefined {
     switch (lang) {
       case "cpp":
-        return config.languages.cpp.aliases;
+        return config.languages.cpp?.aliases;
       case "py":
-        return config.languages.py.aliases;
+        return config.languages.py?.aliases;
+      default:
+        return undefined;
     }
   }
 
@@ -115,6 +117,8 @@ export default abstract class OnlineJudge {
         return langAliases?.codeforces;
       case OnlineJudgeName.atcoder:
         return langAliases?.atcoder;
+      default:
+        return undefined;
     }
   }
 
