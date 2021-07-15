@@ -32,11 +32,11 @@ export interface ICommandSubmitArgs extends ICommandGlobalArgs {
 
 function extractUrlFromFile(filePath: string): string | undefined {
   const text = fs.readFileSync(filePath).toString();
-  const match = /problem-url\s*:\s*.+/g.exec(text);
+  let commentString = Util.getCommentString(Path.extname(filePath));
+  let re = new RegExp(String.raw`^\s*${commentString}\s*problem-url\s*:\s*(.+)$`, "gm");
+  const match = re.exec(text);
   if (match) {
-    const patternFound = match[0];
-    let url = patternFound.substr(patternFound.indexOf(":") + 1).trim();
-    return url;
+    return match[1].trim();
   } else {
     return undefined;
   }
@@ -48,8 +48,8 @@ export function submit(args: ICommandSubmitArgs) {
     const commentString = Util.getCommentString(Path.extname(args.filePath));
     console.log(
       "Problem URL couldn't be found in file, please provide it as argument or" +
-        " add it as a comment in your file in the following format:\n\n" +
-        `${commentString} problem-url: <url>`
+      " add it as a comment in your file in the following format:\n\n" +
+      `${commentString} problem-url: <url>`
     );
     exit(0);
   }
