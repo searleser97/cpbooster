@@ -78,7 +78,7 @@ export default class Util {
   }
 
   static getCommentString(extension: string) {
-    extension = Util.replaceAll(extension, ".", "");
+    extension = Util.replaceAll(extension, ".", "").toLowerCase();
     let slashes = ["java", "cpp", "c"];
     if (slashes.includes(extension)) {
       return "//";

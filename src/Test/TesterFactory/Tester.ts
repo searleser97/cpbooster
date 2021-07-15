@@ -65,14 +65,12 @@ export default abstract class Tester {
 
   extractTimeLimit(): number {
     let text = fs.readFileSync(this.filePath).toString();
-    let match = /time-limit\s*:\s*[0-9]+/g.exec(text);
+    let commentString = Util.getCommentString(Path.extname(this.filePath));
+    let re = new RegExp(String.raw`^\s*${commentString}\s*time-limit\s*:\s*([0-9]+)\s*$`, "gm");
+    let match = re.exec(text);
     let time = 3000; // Default time
     if (match) {
-      let i = match.index;
-      let milis = "";
-      while (i < text.length && !("0" <= text[i] && text[i] <= "9")) i++;
-      while (i < text.length && "0" <= text[i] && text[i] <= "9") milis += text[i++];
-      time = parseInt(milis);
+      time = parseInt(match[1]);
     }
     return time;
   }
