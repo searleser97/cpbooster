@@ -34,7 +34,7 @@ export function test(args: ICommandTestArgs) {
   if (args.add) {
     Tester.createTestCase(args.filePath);
   } else {
-    let tester = TesterFactory.getTester(config, args.filePath);
+    const tester = TesterFactory.getTester(config, args.filePath);
     if (args.debug) {
       if (args.testId) tester.debugOne(args.testId, !args.noCompile);
       else tester.debugWithUserInput(!args.noCompile);

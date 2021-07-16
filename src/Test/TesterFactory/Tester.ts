@@ -51,7 +51,7 @@ export default abstract class Tester {
   abstract debugWithUserInput(compile: boolean): void;
 
   testAll(compile: boolean): void {
-    let testcasesIds = Tester.getTestCasesIds(this.filePath);
+    const testcasesIds = Tester.getTestCasesIds(this.filePath);
     if (testcasesIds.length == 0) {
       console.log("No testcases available for this file:", this.filePath);
       exit(0);
@@ -64,10 +64,10 @@ export default abstract class Tester {
   }
 
   extractTimeLimit(): number {
-    let text = fs.readFileSync(this.filePath).toString();
-    let commentString = Util.getCommentString(Path.extname(this.filePath));
-    let re = new RegExp(String.raw`^\s*${commentString}\s*time-limit\s*:\s*([0-9]+)\s*$`, "gm");
-    let match = re.exec(text);
+    const text = fs.readFileSync(this.filePath).toString();
+    const commentString = Util.getCommentString(Path.extname(this.filePath));
+    const re = new RegExp(String.raw`^\s*${commentString}\s*time-limit\s*:\s*([0-9]+)\s*$`, "gm");
+    const match = re.exec(text);
     let time = 3000; // Default time
     if (match) {
       time = parseInt(match[1]);
@@ -76,8 +76,8 @@ export default abstract class Tester {
   }
 
   printTestResults(testId: number): Veredict {
-    let outputFilePath = Tester.getOutputPath(this.filePath, testId);
-    let answerFilePath = Tester.getAnswerPath(this.filePath, testId);
+    const outputFilePath = Tester.getOutputPath(this.filePath, testId);
+    const answerFilePath = Tester.getAnswerPath(this.filePath, testId);
     if (!fs.existsSync(outputFilePath)) {
       console.log("output file not found in", outputFilePath);
       return Veredict.RTE;
@@ -86,8 +86,8 @@ export default abstract class Tester {
       console.log("answer file not found in", answerFilePath);
       return Veredict.RTE;
     }
-    let ans = fs.readFileSync(answerFilePath).toString();
-    let output = fs.readFileSync(outputFilePath).toString();
+    const ans = fs.readFileSync(answerFilePath).toString();
+    const output = fs.readFileSync(outputFilePath).toString();
 
     if (ans.trim() === output.trim()) {
       console.log(`Test Case ${testId}:`, chalk.bgGreen(chalk.whiteBright(" A C ")), "\n");
@@ -99,17 +99,17 @@ export default abstract class Tester {
       return Veredict.AC;
     } else {
       console.log(`Test Case ${testId}:`, chalk.bgRed(chalk.whiteBright(" W A ")), "\n");
-      let outputLines = output.split("\n");
-      let ansLines = ans.split("\n");
+      const outputLines = output.split("\n");
+      const ansLines = ans.split("\n");
       let maxOutputWidth = 0;
       for (let i = 0; i < outputLines.length; i++) {
         if (outputLines[i].length > maxOutputWidth) {
           maxOutputWidth = outputLines[i].length;
         }
       }
-      let columnWidth = Math.min(Math.max(maxOutputWidth, 16), process.stdout.columns - 8);
-      let leftHeader = chalk.bgRed(chalk.whiteBright(Util.padCenter("Your Output", columnWidth)));
-      let rightHeader = chalk.bgGreen(
+      const columnWidth = Math.min(Math.max(maxOutputWidth, 16), process.stdout.columns - 8);
+      const leftHeader = chalk.bgRed(chalk.whiteBright(Util.padCenter("Your Output", columnWidth)));
+      const rightHeader = chalk.bgGreen(
         chalk.whiteBright(Util.padCenter("Correct Answer", columnWidth))
       );
       console.log(leftHeader + "|" + rightHeader);
@@ -143,7 +143,7 @@ export default abstract class Tester {
 
   protected runDebug(execCommand: string, args: string[], testId: number) {
     console.log("Running Test Case", testId, "with debugging flags\n");
-    let execution = spawnSync(
+    const execution = spawnSync(
       execCommand,
       [...args, "<", `"${Tester.getInputPath(this.filePath, testId)}"`],
       { shell: true }
@@ -162,7 +162,7 @@ export default abstract class Tester {
 
   protected runTest(execCommand: string, args: string[], testId: number): Veredict {
     console.log("\nEvaluating...\n");
-    let execution = spawnSync(execCommand, args, {
+    const execution = spawnSync(execCommand, args, {
       input: fs.readFileSync(Tester.getInputPath(this.filePath, testId)),
       timeout: this.extractTimeLimit() + 500
     });
@@ -183,7 +183,7 @@ export default abstract class Tester {
       return Veredict.RTE;
     }
 
-    let outputPath = Tester.getOutputPath(this.filePath, testId);
+    const outputPath = Tester.getOutputPath(this.filePath, testId);
     if (execution.stdout) {
       fs.writeFileSync(outputPath, execution.stdout.toString());
     }
@@ -196,55 +196,55 @@ export default abstract class Tester {
   }
 
   static getInputPath(filePath: string, testId: number) {
-    let filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
+    const filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
     return `${filePathNoExtension}.in${testId}`;
   }
 
   static getOutputPath(filePath: string, testId: number) {
-    let filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
+    const filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
     return `${filePathNoExtension}.out${testId}`;
   }
 
   static getAnswerPath(filePath: string, testId: number) {
-    let filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
+    const filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
     return `${filePathNoExtension}.ans${testId}`;
   }
 
   static getTestCasesIds(filePath: string) {
-    let parsedPath = Path.parse(filePath);
+    const parsedPath = Path.parse(filePath);
     let directoryPath = parsedPath.dir;
     if (directoryPath == "") directoryPath = ".";
-    let fileNameNoExtension = parsedPath.name;
-    var testcasesFiles = fs
+    const fileNameNoExtension = parsedPath.name;
+    const testcasesFiles = fs
       .readdirSync(directoryPath)
       .filter((fileName) => fileName.startsWith(`${fileNameNoExtension}.in`));
-    let testcasesIds: number[] = [];
+    const testcasesIds: number[] = [];
     testcasesFiles.forEach((filename) => {
-      let num = parseInt(filename.replace(`${fileNameNoExtension}.in`, ""));
+      const num = parseInt(filename.replace(`${fileNameNoExtension}.in`, ""));
       testcasesIds.push(num);
     });
     return testcasesIds;
   }
 
   static async createTestCase(filePath: string) {
-    let testcasesIds = Tester.getTestCasesIds(filePath);
-    let maxTestCaseId = testcasesIds.length == 0 ? 0 : Math.max(...testcasesIds);
-    let thisTCId = maxTestCaseId + 1;
+    const testcasesIds = Tester.getTestCasesIds(filePath);
+    const maxTestCaseId = testcasesIds.length == 0 ? 0 : Math.max(...testcasesIds);
+    const thisTCId = maxTestCaseId + 1;
     console.log("\nPress ctrl+D to finish your input\n");
     console.log("Test Case Input:\n");
-    let input = await Util.readToEOF();
+    const input = await Util.readToEOF();
     console.log("\nTest Case Correct Output:\n");
-    let answer = await Util.readToEOF();
+    const answer = await Util.readToEOF();
     fs.writeFileSync(Tester.getInputPath(filePath, thisTCId), input);
     fs.writeFileSync(Tester.getAnswerPath(filePath, thisTCId), answer);
     console.log("\nTest case", thisTCId, "written.");
   }
 
   static printScore(ac: number, total: number): void {
-    let plainmsg = `| ${ac.toString()} / ${total} AC |`;
+    const plainmsg = `| ${ac.toString()} / ${total} AC |`;
     let msg = `| ${ac.toString()} / ${total} ${chalk.greenBright("AC")} |`;
     if (ac == total) msg += " 🎉🎉🎉";
-    let summary = "Summary: ";
+    const summary = "Summary: ";
     console.log();
     console.log(Util.repeat(" ", summary.length) + Util.repeat("+", plainmsg.length));
     console.log(summary + msg);

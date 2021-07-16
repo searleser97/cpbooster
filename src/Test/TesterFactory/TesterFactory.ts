@@ -33,7 +33,7 @@ export default class TesterFactory {
       console.log("File not found:", filePath);
       exit(0);
     }
-    let extension = TesterFactory.normalizeExtension(Path.extname(filePath));
+    const extension = TesterFactory.normalizeExtension(Path.extname(filePath));
     if (extension == ".cpp") return new CppTester(config, filePath);
     else if (extension == ".py") return new PyTester(config, filePath);
     else {

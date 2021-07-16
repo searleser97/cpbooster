@@ -87,10 +87,10 @@ export default class Config {
   }
 
   static read(configFilePath: string | undefined | null): Config {
-    let configFilePaths = configFilePath ? [configFilePath] : [];
+    const configFilePaths = configFilePath ? [configFilePath] : [];
     configFilePaths.push(...this.defaultConfigFilePaths);
 
-    for (let configPath of configFilePaths) {
+    for (const configPath of configFilePaths) {
       if (fs.existsSync(configPath)) {
         // for now we are assuming that all the properties are defined in the config file
         return JSON.parse(fs.readFileSync(configPath, "utf8"));
@@ -98,7 +98,7 @@ export default class Config {
     }
 
     console.log("\nconfiguration file not found in any of the following locations:\n");
-    for (let configPath of configFilePaths) {
+    for (const configPath of configFilePaths) {
       console.log("->", configPath);
     }
     console.log("\nYou can create one in your $HOME directory by running 'cpbooster init'\n");

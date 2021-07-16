@@ -24,13 +24,13 @@ export default class SourceFileCreator {
   static create(
     filePath: string,
     config: Config,
-    timeLimitInMS: number = 3000,
+    timeLimitInMS = 3000,
     problemUrl?: string
   ) {
-    let filename = Path.basename(filePath);
-    let match = /\{[a-zA-Z](\.{2,}|-)[a-zA-Z]\}\.[a-zA-Z0-9]+/g.exec(filename);
+    const filename = Path.basename(filePath);
+    const match = /\{[a-zA-Z](\.{2,}|-)[a-zA-Z]\}\.[a-zA-Z0-9]+/g.exec(filename);
     if (match) {
-      let idx = match[0].indexOf("}");
+      const idx = match[0].indexOf("}");
       this.createMultiple(
         filePath,
         config,
@@ -47,14 +47,14 @@ export default class SourceFileCreator {
   static createSingle(
     filePath: string,
     config: Config,
-    timeLimitInMS: number = 3000,
+    timeLimitInMS = 3000,
     problemUrl?: string
   ) {
-    let extension = Path.extname(filePath);
-    let filename = Util.normalizeName(Path.basename(filePath));
+    const extension = Path.extname(filePath);
+    const filename = Util.normalizeName(Path.basename(filePath));
     filePath = Path.join(Path.dirname(filePath), filename);
     let template = "";
-    let commentString = Util.getCommentString(extension);
+    const commentString = Util.getCommentString(extension);
     if (commentString) {
       template += `${commentString} time-limit: ${timeLimitInMS}\n`;
       if (problemUrl) {
@@ -79,15 +79,15 @@ export default class SourceFileCreator {
     config: Config,
     start: string,
     end: string,
-    timeLimitInMS: number = 3000,
+    timeLimitInMS = 3000,
     problemUrl?: string
   ) {
     if (start.length != 1 || end.length != 1) {
       throw new Error("incorrect format of start or end, it should be a single character");
     }
-    let dirname = Path.dirname(filePath);
-    let extension = Path.extname(filePath);
-    let filePaths: any[] = [];
+    const dirname = Path.dirname(filePath);
+    const extension = Path.extname(filePath);
+    const filePaths: any[] = [];
     let startCode = start.toLowerCase().charCodeAt(0);
     let endCode = end.toLowerCase().charCodeAt(0);
     if (endCode < startCode) {

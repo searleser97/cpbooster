@@ -40,7 +40,7 @@ updateNotifier({
   defer: false
 });
 
-let descriptions = {
+const descriptions = {
   clone: "Run cpbooster as server for competitive companion plugin.",
   test: "Test your code against one or all (default) available test cases.",
   create:

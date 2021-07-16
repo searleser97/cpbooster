@@ -130,11 +130,11 @@ export default abstract class OnlineJudge {
       if (useUserDefaultBrowser) {
         await open(url);
       } else {
-        let browser = await chromium.launch({ headless: false });
+        const browser = await chromium.launch({ headless: false });
         const context = await this.restoreSession(browser);
         context.on("page", (_) => this.closeAllOtherTabs(context));
         const pages = context.pages();
-        let page = pages.length > 0 ? pages[0] : await context.newPage();
+        const page = pages.length > 0 ? pages[0] : await context.newPage();
         page.on("close", (_) => exit(0));
         await page.goto(url);
       }
@@ -145,12 +145,12 @@ export default abstract class OnlineJudge {
   }
 
   async login(): Promise<void> {
-    let browser = await chromium.launch({ headless: false });
+    const browser = await chromium.launch({ headless: false });
     const context = await this.restoreSession(browser);
 
     context.on("page", (_) => this.closeAllOtherTabs(context));
     const pages = context.pages();
-    let page = pages.length > 0 ? pages[0] : await context.newPage();
+    const page = pages.length > 0 ? pages[0] : await context.newPage();
 
     try {
       await page.goto(this.loginUrl);
@@ -172,11 +172,11 @@ export default abstract class OnlineJudge {
   }
 
   async submit(filePath: string, url: string, config: Config, langAlias?: string) {
-    let browser = await chromium.launch({ headless: true });
+    const browser = await chromium.launch({ headless: true });
     const context = await this.restoreSession(browser);
 
     const pages = context.pages();
-    let page = pages.length > 0 ? pages[0] : await context.newPage();
+    const page = pages.length > 0 ? pages[0] : await context.newPage();
 
     await page.route("**/*", (route) => {
       if (this.blockedResourcesOnSubmit.has(route.request().resourceType())) {

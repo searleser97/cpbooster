@@ -26,7 +26,7 @@ export default class Util {
     if (char.length != 1) {
       return false;
     } else {
-      let thisCharCode = char.charCodeAt(0);
+      const thisCharCode = char.charCodeAt(0);
       if (
         ("a".charCodeAt(0) <= thisCharCode && thisCharCode <= "z".charCodeAt(0)) ||
         ("A".charCodeAt(0) <= thisCharCode && thisCharCode <= "Z".charCodeAt(0))
@@ -42,7 +42,7 @@ export default class Util {
     if (char.length != 1) {
       return false;
     } else {
-      let thisCharCode = char.charCodeAt(0);
+      const thisCharCode = char.charCodeAt(0);
       if ("0".charCodeAt(0) <= thisCharCode && thisCharCode <= "9".charCodeAt(0)) {
         return true;
       } else {
@@ -69,7 +69,7 @@ export default class Util {
 
   static normalizeName(name: string) {
     let normalName = "";
-    for (let c of name) {
+    for (const c of name) {
       if (this.isAlphaNum(c) || this.allowedSpecialChars.has(c)) {
         normalName += c;
       }
@@ -79,7 +79,7 @@ export default class Util {
 
   static getCommentString(extension: string) {
     extension = Util.replaceAll(extension, ".", "").toLowerCase();
-    let slashes = ["java", "cpp", "c"];
+    const slashes = ["java", "cpp", "c"];
     if (slashes.includes(extension)) {
       return "//";
     } else if (extension == "py") {
@@ -114,10 +114,10 @@ export default class Util {
     if (str.length >= width) {
       return str;
     } else {
-      let remaningSpace = width - str.length;
-      let spaceOnLeftSide = Math.floor(remaningSpace / 2);
-      let spaceOnRightSide = remaningSpace - spaceOnLeftSide;
-      let answer = this.repeat(" ", spaceOnLeftSide) + str + this.repeat(" ", spaceOnRightSide);
+      const remaningSpace = width - str.length;
+      const spaceOnLeftSide = Math.floor(remaningSpace / 2);
+      const spaceOnRightSide = remaningSpace - spaceOnLeftSide;
+      const answer = this.repeat(" ", spaceOnLeftSide) + str + this.repeat(" ", spaceOnRightSide);
       return answer;
     }
   }

@@ -32,8 +32,8 @@ export interface ICommandSubmitArgs extends ICommandGlobalArgs {
 
 function extractUrlFromFile(filePath: string): string | undefined {
   const text = fs.readFileSync(filePath).toString();
-  let commentString = Util.getCommentString(Path.extname(filePath));
-  let re = new RegExp(String.raw`^\s*${commentString}\s*problem-url\s*:\s*(.+)$`, "gm");
+  const commentString = Util.getCommentString(Path.extname(filePath));
+  const re = new RegExp(String.raw`^\s*${commentString}\s*problem-url\s*:\s*(.+)$`, "gm");
   const match = re.exec(text);
   if (match) {
     return match[1].trim();

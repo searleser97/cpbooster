@@ -34,7 +34,7 @@ export default class CppTester extends Tester {
   testOne(testId: number, compile: boolean): Veredict {
     let binaryFileName = this.getNameForBinary(false);
     if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(false);
-    let binaryFilePath = `.${Path.sep}${binaryFileName}`;
+    const binaryFilePath = `.${Path.sep}${binaryFileName}`;
     if (compile) {
       this.compile(false);
     } else if (!fs.existsSync(binaryFilePath)) {
@@ -47,7 +47,7 @@ export default class CppTester extends Tester {
   debugOne(testId: number, compile: boolean): void {
     let binaryFileName = this.getNameForBinary(true);
     if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(true);
-    let binaryFilePath = `.${Path.sep}${binaryFileName}`;
+    const binaryFilePath = `.${Path.sep}${binaryFileName}`;
     if (compile) {
       this.compile(true);
     } else if (!fs.existsSync(binaryFilePath)) {
@@ -60,7 +60,7 @@ export default class CppTester extends Tester {
   debugWithUserInput(compile: boolean): void {
     let binaryFileName = this.getNameForBinary(true);
     if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(true);
-    let binaryFilePath = `.${Path.sep}${binaryFileName}`;
+    const binaryFilePath = `.${Path.sep}${binaryFileName}`;
     if (compile) {
       this.compile(true);
     } else if (!fs.existsSync(binaryFilePath)) {
@@ -71,7 +71,7 @@ export default class CppTester extends Tester {
   }
 
   getNameForBinary(debug: boolean): string | undefined {
-    let segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
+    const segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
 
     for (let i = 0; i < segmentedCommand.length; i++) {
       if (segmentedCommand[i] == "-o") {
@@ -90,16 +90,16 @@ export default class CppTester extends Tester {
 
   compile(debug: boolean) {
     console.log("Compiling...\n");
-    let segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
+    const segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
 
-    let args = [...segmentedCommand.slice(1), this.filePath];
-    let compileCommand = segmentedCommand[0];
+    const args = [...segmentedCommand.slice(1), this.filePath];
+    const compileCommand = segmentedCommand[0];
 
     if (!this.getNameForBinary(debug)) {
       args.push("-o", this.getDefaultBinaryName(debug));
     }
 
-    let compilation = spawnSync(compileCommand, args);
+    const compilation = spawnSync(compileCommand, args);
 
     if (compilation.stderr) {
       let compileStderr = Buffer.from(compilation.stderr).toString("utf8").trim();
