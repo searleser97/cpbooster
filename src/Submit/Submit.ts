@@ -42,14 +42,14 @@ function extractUrlFromFile(filePath: string): string | undefined {
   }
 }
 
-export function submit(args: ICommandSubmitArgs) {
+export function submit(args: ICommandSubmitArgs): void {
   const url = args.url ?? extractUrlFromFile(args.filePath);
   if (!url) {
     const commentString = Util.getCommentString(Path.extname(args.filePath));
     console.log(
       "Problem URL couldn't be found in file, please provide it as argument or" +
-      " add it as a comment in your file in the following format:\n\n" +
-      `${commentString} problem-url: <url>`
+        " add it as a comment in your file in the following format:\n\n" +
+        `${commentString} problem-url: <url>`
     );
     exit(0);
   }

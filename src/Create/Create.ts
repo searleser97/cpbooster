@@ -24,6 +24,6 @@ export interface ICommandCreateArgs extends ICommandGlobalArgs {
   filePath: string;
 }
 
-export function create(args: ICommandCreateArgs) {
+export function create(args: ICommandCreateArgs): void {
   SourceFileCreator.create(args.filePath, Config.read(args.configPath));
 }

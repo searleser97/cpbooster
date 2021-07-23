@@ -24,7 +24,7 @@ export interface ICommandCloneArgs extends ICommandGlobalArgs {
   port?: number;
 }
 
-export function clone(args: ICommandCloneArgs) {
+export function clone(args: ICommandCloneArgs): void {
   const config = Config.read(args.configPath);
   if (args.port) {
     config.port = args.port;

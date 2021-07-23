@@ -125,7 +125,7 @@ export default abstract class OnlineJudge {
     }
   }
 
-  async openBrowserInUrl(url: string, useUserDefaultBrowser: boolean) {
+  async openBrowserInUrl(url: string, useUserDefaultBrowser: boolean): Promise<void> {
     try {
       if (useUserDefaultBrowser) {
         await open(url);
@@ -171,7 +171,7 @@ export default abstract class OnlineJudge {
     }
   }
 
-  async submit(filePath: string, url: string, config: Config, langAlias?: string) {
+  async submit(filePath: string, url: string, config: Config, langAlias?: string): Promise<void> {
     const browser = await chromium.launch({ headless: true });
     const context = await this.restoreSession(browser);
 

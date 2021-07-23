@@ -19,6 +19,6 @@
 import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
 import Config from "../Config/Config";
 
-export function init(args: ICommandGlobalArgs) {
+export function init(args: ICommandGlobalArgs): void {
   Config.write(args.configPath);
 }

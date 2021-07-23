@@ -88,7 +88,7 @@ export default class CppTester extends Tester {
     return defaultName;
   }
 
-  compile(debug: boolean) {
+  compile(debug: boolean): void {
     console.log("Compiling...\n");
     const segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
 

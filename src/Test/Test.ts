@@ -29,7 +29,7 @@ export interface ICommandTestArgs extends ICommandGlobalArgs {
   add?: boolean;
 }
 
-export function test(args: ICommandTestArgs) {
+export function test(args: ICommandTestArgs): void {
   const config = Config.read(args.configPath);
   if (args.add) {
     Tester.createTestCase(args.filePath);

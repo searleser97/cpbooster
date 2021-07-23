@@ -67,7 +67,7 @@ export default class CCServer {
     });
   }
 
-  run() {
+  run(): void {
     if (!this.config.preferredLang) {
       console.log("Missing preferred language (preferredLang) key in configuration");
       exit(0);

@@ -45,8 +45,7 @@ const descriptions = {
   test: "Test your code against one or all (default) available test cases.",
   create:
     "Create a new source code file with the corresponding template loaded or multiple source files if a sequence is given as file name.",
-  init:
-    "Create a new configuration file with default values in $HOME directory or if --configPath is specified, it writes it in the given path.",
+  init: "Create a new configuration file with default values in $HOME directory or if --configPath is specified, it writes it in the given path.",
   login: "Log in to the specified Online Judge (i.e. Codeforces, AtCoder, ...).",
   submit:
     "Submit a source code file as a solution to a problem in an Online Judge (i.e. Codeforces, AtCoder, ...)."
@@ -68,7 +67,7 @@ yargs
           description: "Port where competitive companion plugin will send parsed data from problems"
         });
     },
-    (argv) => clone((argv as unknown) as ICommandCloneArgs)
+    (argv) => clone(argv as unknown as ICommandCloneArgs)
   )
   .command(
     ["test <filePath>", "t"],
@@ -116,7 +115,7 @@ yargs
           }
         });
     },
-    (argv) => test((argv as unknown) as ICommandTestArgs)
+    (argv) => test(argv as unknown as ICommandTestArgs)
   )
   .command(
     ["create <filePath>", "c"],
@@ -145,7 +144,7 @@ yargs
           }
         });
     },
-    (argv) => create((argv as unknown) as ICommandCreateArgs)
+    (argv) => create(argv as unknown as ICommandCreateArgs)
   )
   .command(
     ["init", "i"],
@@ -160,7 +159,7 @@ yargs
             `\n[default: "${Path.join(os.homedir(), "cpbooster-config.json")}"]`
         });
     },
-    (argv) => init((argv as unknown) as ICommandGlobalArgs)
+    (argv) => init(argv as unknown as ICommandGlobalArgs)
   )
   .command(
     ["login <url>", "l"],
@@ -182,7 +181,7 @@ yargs
           }
         });
     },
-    (argv) => login((argv as unknown) as ICommandLoginArgs)
+    (argv) => login(argv as unknown as ICommandLoginArgs)
   )
   .command(
     ["submit <filePath>", "s"],
@@ -199,7 +198,7 @@ yargs
           }
         });
     },
-    (argv) => submit((argv as unknown) as ICommandSubmitArgs)
+    (argv) => submit(argv as unknown as ICommandSubmitArgs)
   )
   .help("help")
   .alias("help", "h")

@@ -21,12 +21,7 @@ import * as Path from "path";
 import Util from "../Util";
 
 export default class SourceFileCreator {
-  static create(
-    filePath: string,
-    config: Config,
-    timeLimitInMS = 3000,
-    problemUrl?: string
-  ) {
+  static create(filePath: string, config: Config, timeLimitInMS = 3000, problemUrl?: string): void {
     const filename = Path.basename(filePath);
     const match = /\{[a-zA-Z](\.{2,}|-)[a-zA-Z]\}\.[a-zA-Z0-9]+/g.exec(filename);
     if (match) {
@@ -49,7 +44,7 @@ export default class SourceFileCreator {
     config: Config,
     timeLimitInMS = 3000,
     problemUrl?: string
-  ) {
+  ): void {
     const extension = Path.extname(filePath);
     const filename = Util.normalizeName(Path.basename(filePath));
     filePath = Path.join(Path.dirname(filePath), filename);
@@ -81,13 +76,13 @@ export default class SourceFileCreator {
     end: string,
     timeLimitInMS = 3000,
     problemUrl?: string
-  ) {
+  ): void {
     if (start.length != 1 || end.length != 1) {
       throw new Error("incorrect format of start or end, it should be a single character");
     }
     const dirname = Path.dirname(filePath);
     const extension = Path.extname(filePath);
-    const filePaths: any[] = [];
+    const filePaths: string[] = [];
     let startCode = start.toLowerCase().charCodeAt(0);
     let endCode = end.toLowerCase().charCodeAt(0);
     if (endCode < startCode) {

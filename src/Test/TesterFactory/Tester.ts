@@ -141,7 +141,7 @@ export default abstract class Tester {
     }
   }
 
-  protected runDebug(execCommand: string, args: string[], testId: number) {
+  protected runDebug(execCommand: string, args: string[], testId: number): void {
     console.log("Running Test Case", testId, "with debugging flags\n");
     const execution = spawnSync(
       execCommand,
@@ -190,27 +190,27 @@ export default abstract class Tester {
     return this.printTestResults(testId);
   }
 
-  protected runDebugWithUserInput(command: string, args: string[] = []) {
+  protected runDebugWithUserInput(command: string, args: string[] = []): void {
     console.log("Running with debugging flags\n\nEnter your input manually\n");
     spawnSync(command, args, { stdio: "inherit" });
   }
 
-  static getInputPath(filePath: string, testId: number) {
+  static getInputPath(filePath: string, testId: number): string {
     const filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
     return `${filePathNoExtension}.in${testId}`;
   }
 
-  static getOutputPath(filePath: string, testId: number) {
+  static getOutputPath(filePath: string, testId: number): string {
     const filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
     return `${filePathNoExtension}.out${testId}`;
   }
 
-  static getAnswerPath(filePath: string, testId: number) {
+  static getAnswerPath(filePath: string, testId: number): string {
     const filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
     return `${filePathNoExtension}.ans${testId}`;
   }
 
-  static getTestCasesIds(filePath: string) {
+  static getTestCasesIds(filePath: string): number[] {
     const parsedPath = Path.parse(filePath);
     let directoryPath = parsedPath.dir;
     if (directoryPath == "") directoryPath = ".";
@@ -226,7 +226,7 @@ export default abstract class Tester {
     return testcasesIds;
   }
 
-  static async createTestCase(filePath: string) {
+  static async createTestCase(filePath: string): Promise<void> {
     const testcasesIds = Tester.getTestCasesIds(filePath);
     const maxTestCaseId = testcasesIds.length == 0 ? 0 : Math.max(...testcasesIds);
     const thisTCId = maxTestCaseId + 1;
@@ -256,7 +256,7 @@ export default abstract class Tester {
     console.log(chalk.bgYellow(chalk.whiteBright(" Compilation Error ")), "\n");
   }
 
-  static printUnnecesaryNoCompileFlagMsg(lang: string) {
+  static printUnnecesaryNoCompileFlagMsg(lang: string): void {
     console.log(`${lang} does not support compilation, using --noCompile option is unnecesary`);
   }
 

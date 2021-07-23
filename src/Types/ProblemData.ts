@@ -26,7 +26,7 @@ export default interface ProblemData {
   timeLimit: number;
   tests: TestData[];
   testType: string;
-  input: object;
-  output: object;
-  languages: object;
+  input: unknown;
+  output: unknown;
+  languages: unknown;
 }

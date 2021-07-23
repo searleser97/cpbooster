@@ -19,7 +19,7 @@
 import OnlineJudgeFactory from "../Submit/OnlineJudgeFactory/OnlineJudgeFactory";
 
 export interface ICommandLoginArgs {
-  url: string
+  url: string;
 }
 
 export function login(args: ICommandLoginArgs): void {

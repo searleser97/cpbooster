@@ -67,7 +67,7 @@ export default class Util {
     return text.split(oldString).join(newString);
   }
 
-  static normalizeName(name: string) {
+  static normalizeName(name: string): string {
     let normalName = "";
     for (const c of name) {
       if (this.isAlphaNum(c) || this.allowedSpecialChars.has(c)) {
@@ -77,7 +77,7 @@ export default class Util {
     return normalName;
   }
 
-  static getCommentString(extension: string) {
+  static getCommentString(extension: string): "//" | "#" | undefined {
     extension = Util.replaceAll(extension, ".", "").toLowerCase();
     const slashes = ["java", "cpp", "c"];
     if (slashes.includes(extension)) {
