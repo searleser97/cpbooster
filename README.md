@@ -63,7 +63,6 @@
 - Add Stress tests (using brute force solution and tests generator)
 - Add leading and trailing whitespace check for each line of output
 
-**Note:** I will not be working on cpbooster for a while, so **Pull requests** are very welcomed.
 
 ## Final Notes
 
