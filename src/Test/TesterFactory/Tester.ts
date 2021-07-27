@@ -88,8 +88,16 @@ export default abstract class Tester {
     }
     const ans = fs.readFileSync(answerFilePath).toString();
     const output = fs.readFileSync(outputFilePath).toString();
+    const outputLines = output.split("\n");
+    const ansLines = ans.split("\n");
 
-    if (ans.trim() === output.trim()) {
+    const trimmedOutputLines = outputLines.map((item) => { return item.trim() });
+    const trimmedAnsLines = ansLines.map((item) => { return item.trim() });
+
+    const isTrimmedOutputSame = trimmedOutputLines.length === trimmedAnsLines.length
+      && trimmedOutputLines.every((value, index) => value === trimmedAnsLines[index]);
+
+    if ((ans.trim() === output.trim()) || isTrimmedOutputSame) {
       console.log(`Test Case ${testId}:`, chalk.bgGreen(chalk.whiteBright(" A C ")), "\n");
       if (ans !== output) {
         console.log(chalk.yellow("Check leading and trailing blank spaces") + "\n");
@@ -99,12 +107,10 @@ export default abstract class Tester {
       return Veredict.AC;
     } else {
       console.log(`Test Case ${testId}:`, chalk.bgRed(chalk.whiteBright(" W A ")), "\n");
-      const outputLines = output.split("\n");
-      const ansLines = ans.split("\n");
       let maxOutputWidth = 0;
-      for (let i = 0; i < outputLines.length; i++) {
-        if (outputLines[i].length > maxOutputWidth) {
-          maxOutputWidth = outputLines[i].length;
+      for (let i = 0; i < trimmedOutputLines.length; i++) {
+        if (trimmedOutputLines[i].length > maxOutputWidth) {
+          maxOutputWidth = trimmedOutputLines[i].length;
         }
       }
       const columnWidth = Math.min(Math.max(maxOutputWidth, 16), process.stdout.columns - 8);
@@ -114,21 +120,22 @@ export default abstract class Tester {
       );
       console.log(leftHeader + "|" + rightHeader);
       console.log("".padEnd(columnWidth) + "|" + "".padEnd(columnWidth));
-      for (let i = 0; i < Math.max(outputLines.length, ansLines.length); i++) {
+      for (let i = 0; i < Math.max(trimmedOutputLines.length, trimmedAnsLines.length); i++) {
         let line = "";
-        if (i < outputLines.length) {
-          line += outputLines[i].padEnd(columnWidth) + "|";
+        if (i < trimmedOutputLines.length) {
+          line += trimmedOutputLines[i].padEnd(columnWidth) + "|";
         } else {
           line += "".padEnd(columnWidth) + "|";
         }
 
-        if (i < ansLines.length) {
-          line += ansLines[i].padEnd(columnWidth);
+        if (i < trimmedAnsLines.length) {
+          line += trimmedAnsLines[i].padEnd(columnWidth);
         } else {
           line += "".padEnd(columnWidth);
         }
 
-        if (i < outputLines.length && i < ansLines.length && outputLines[i] === ansLines[i]) {
+        if (i < trimmedOutputLines.length && i < trimmedAnsLines.length
+             && trimmedOutputLines[i] === trimmedAnsLines[i]) {
           line += chalk.bgGreen("  ");
         } else {
           line += chalk.bgRed("  ");
