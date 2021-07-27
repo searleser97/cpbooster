@@ -61,8 +61,6 @@
 - Add support for Java
 - Fully support windows CMD.
 - Add Stress tests (using brute force solution and tests generator)
-- Add leading and trailing whitespace check for each line of output
-
 
 ## Final Notes
 
