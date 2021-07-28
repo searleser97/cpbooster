@@ -58,6 +58,13 @@
 1. Fork this repository and clone it locally `git clone https://github.com/{yourUsername}/cpbooster`
 2. Install dependencies `npm install`
 3. Install `cpbooster` from source: `npm run install:dev`
+4. Make code changes
+5. Run `npm run lint` and fix possible linting errors before making a Pull Request
+
+### Recommended VSCode extensions
+
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 ## Future updates
 
