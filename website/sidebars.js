@@ -21,7 +21,7 @@ module.exports = {
     {
       type: "category",
       label: "Contributing",
-      items: ["add-editor-support", "add-language-support", "add-online-judge-support"],
+      items: ["setup-dev-env", "add-editor-support", "add-language-support", "add-online-judge-support"],
       collapsed: false
     },
     {
