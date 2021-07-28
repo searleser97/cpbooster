@@ -123,16 +123,17 @@ export default class Util {
   }
 
   /**
-   * Creates a sequence of numbers from `start` to `end - 1`
+   * Creates a sequence of numbers from `start` to `end`
    *
    * @param {number} start The start of the sequence inclusively
    * @param {number} end The end of the sequence exclusively
    * @returns an array of size `end - start` containing the sequence of numbers in the range [start, end)
    */
   static sequence(start: number, end: number): number[] {
-    const n = Math.max(0, end - start);
+    const n = Math.abs(end - start);
     const seq = new Array(n);
-    for (let i = 0; i < n; i++, start++) {
+    const isDecreasing = start > end;
+    for (let i = 0; i < n; i++, start += isDecreasing ? -1 : 1) {
       seq[i] = start;
     }
     return seq;
