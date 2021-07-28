@@ -86,18 +86,28 @@ export default abstract class Tester {
       console.log("answer file not found in", answerFilePath);
       return Veredict.RTE;
     }
-    const ans = fs.readFileSync(answerFilePath).toString();
+
     const output = fs.readFileSync(outputFilePath).toString();
-    const outputLines = output.split("\n");
-    const ansLines = ans.split("\n");
+    const ans = fs.readFileSync(answerFilePath).toString();
+    const trimmedOutput = output.trim();
+    const trimmedAns = ans.trim();
+    const outputLines = trimmedOutput.split("\n");
+    const ansLines = trimmedAns.split("\n");
 
-    const trimmedOutputLines = outputLines.map((item) => { return item.trim() });
-    const trimmedAnsLines = ansLines.map((item) => { return item.trim() });
+    const trimmedOutputLines = outputLines.map((item) => {
+      return item.trim(); // remove '\r' char if exists
+    });
+    const trimmedAnsLines = ansLines.map((item) => {
+      return item.trim(); // remove '\r' char if exists
+    });
 
-    const isTrimmedOutputSame = trimmedOutputLines.length === trimmedAnsLines.length
-      && trimmedOutputLines.every((value, index) => value === trimmedAnsLines[index]);
+    const isTrimmedOutputSame =
+      trimmedOutputLines.length === trimmedAnsLines.length &&
+      Util.sequence(0, trimmedAnsLines.length).every(
+        (index) => trimmedOutputLines[index] === trimmedAnsLines[index]
+      );
 
-    if ((ans.trim() === output.trim()) || isTrimmedOutputSame) {
+    if (isTrimmedOutputSame) {
       console.log(`Test Case ${testId}:`, chalk.bgGreen(chalk.whiteBright(" A C ")), "\n");
       if (ans !== output) {
         console.log(chalk.yellow("Check leading and trailing blank spaces") + "\n");
@@ -134,8 +144,11 @@ export default abstract class Tester {
           line += "".padEnd(columnWidth);
         }
 
-        if (i < trimmedOutputLines.length && i < trimmedAnsLines.length
-             && trimmedOutputLines[i] === trimmedAnsLines[i]) {
+        if (
+          i < trimmedOutputLines.length &&
+          i < trimmedAnsLines.length &&
+          trimmedOutputLines[i] === trimmedAnsLines[i]
+        ) {
           line += chalk.bgGreen("  ");
         } else {
           line += chalk.bgRed("  ");
