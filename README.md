@@ -55,11 +55,16 @@
 
 ## How to Contribute
 
-1. Fork this repository and clone it locally `git clone https://github.com/{yourUsername}/cpbooster`
-2. Install dependencies `npm install`
-3. Install `cpbooster` from source: `npm run install:dev`
-4. Make code changes
-5. Run `npm run lint` and fix possible linting errors before making a Pull Request
+1. Fork this repository and clone it locally: `git clone https://github.com/{yourUsername}/cpbooster`
+2. `cd` (change directory) to `cpbooster` repo directory
+3. Install dependencies: run `npm install`
+4. Install `cpbooster` from source: `npm run install:dev`
+5. Make code changes
+
+### Before making a Pull Request
+
+1. Lint your code and fix possible linting errors: `npm run lint`
+2. Verify all tests pass: `npm t`
 
 ### Recommended VSCode extensions
 
