@@ -5,7 +5,7 @@
     "lib": ["es6"],
     "allowJs": false,
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -14,10 +14,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
-    "plugins": [{ "transform": "@zerollup/ts-transform-paths" }],
     "paths": {
       "*": ["./*", "Test/*"]
-    }
+    },
+    "plugins": [{ "transform": "@zerollup/ts-transform-paths" }]
   },
-  "exclude": ["website/*"]
+  "exclude": ["website/*", "node_modules", "dist"]
 }

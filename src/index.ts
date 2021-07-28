@@ -30,11 +30,12 @@ import { init } from "./Init/Init";
 import { ICommandLoginArgs, login } from "./Login/Login";
 import { ICommandSubmitArgs, submit } from "./Submit/Submit";
 
-const pkg = require("../package.json");
+import * as pkg from "../package.json";
+
 updateNotifier({
   pkg: pkg,
   shouldNotifyInNpmScript: true,
-  updateCheckInterval: 1000 * 60 * 60 * 2
+  updateCheckInterval: 1000 * 60 * 60 * 2 // 2 hrs
 }).notify({
   isGlobal: true,
   defer: false
