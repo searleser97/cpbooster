@@ -53,6 +53,12 @@
 
 1. Flat File Structure. See [Why Flat File Structure](https://searleser97.github.io/cpbooster/docs/clone/#why-flat-file-structure)
 
+## How to Contribute
+
+1. Fork this repository and clone it locally `git clone https://github.com/{yourUsername}/cpbooster`
+2. Install dependencies `npm install`
+3. Install `cpbooster` from source: `npm run install:dev`
+
 ## Future updates
 
 - Add the possibility to test interactive problems
