@@ -3,6 +3,12 @@ id: add-editor-support
 title: Add Editor Support
 ---
 
-:::caution
-Page under construction
-:::
+`cpbooster` uses terminal commands to open editors, which can be either other terminals
+or common editors like _vscode_ or _sublime text_. You can find an example of the supported
+editors in the following file
+https://github.com/searleser97/cpbooster/blob/master/app/src/Clone/TerminalCommandBuilder.ts
+
+<img src="/cpbooster/img/terminalCommandBuilder.png" />
+
+To add another editor you need to investigate how to launch it specifying the working directory
+from a terminal command, then just add the proper command in the `switch` statement as shown in the image.
