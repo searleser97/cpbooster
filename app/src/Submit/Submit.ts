@@ -22,7 +22,7 @@ import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
 import OnlineJudgeFactory from "./OnlineJudgeFactory/OnlineJudgeFactory";
 import * as fs from "fs";
 import * as Path from "path";
-import Util from "../Util";
+import Util from "../Utils/Util";
 
 export interface ICommandSubmitArgs extends ICommandGlobalArgs {
   filePath: string;

@@ -18,7 +18,7 @@
 
 import Config from "../../Config/Config";
 import { Veredict } from "../../Types/Veredict";
-import Util from "../../Util";
+import Util from "../../Utils/Util";
 import * as fs from "fs";
 import { exit } from "process";
 import chalk from "chalk";

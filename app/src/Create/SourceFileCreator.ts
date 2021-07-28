@@ -18,7 +18,7 @@
 import * as fs from "fs";
 import Config from "../Config/Config";
 import * as Path from "path";
-import Util from "../Util";
+import Util from "../Utils/Util";
 
 export default class SourceFileCreator {
   static create(filePath: string, config: Config, timeLimitInMS = 3000, problemUrl?: string): void {

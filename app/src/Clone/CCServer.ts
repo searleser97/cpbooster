@@ -23,7 +23,7 @@ import ProblemData from "../Types/ProblemData";
 import Config from "../Config/Config";
 import { exit } from "process";
 import { spawn, spawnSync } from "child_process";
-import Util from "../Util";
+import Util from "../Utils/Util";
 import SourceFileCreator from "../Create/SourceFileCreator";
 import * as os from "os";
 import { getTerminalCommand } from "./TerminalCommandBuilder";
