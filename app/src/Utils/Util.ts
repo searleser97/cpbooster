@@ -130,7 +130,7 @@ export default class Util {
    * @returns an array of size `end - start` containing the sequence of numbers in the range [start, end)
    */
   static sequence(start: number, end: number): number[] {
-    const n = end - start;
+    const n = Math.max(0, end - start);
     const seq = new Array(n);
     for (let i = 0; i < n; i++, start++) {
       seq[i] = start;
