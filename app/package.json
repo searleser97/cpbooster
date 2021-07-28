@@ -23,7 +23,7 @@
     "start:dev": "nodemon",
     "build": "rimraf ./dist && ttsc",
     "install:dev": "npm run build && npm uninstall cpbooster -g && npm install -g",
-    "test": "echo \"no test specified\" ",
+    "test": "jest",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix"
   },
@@ -32,6 +32,7 @@
     "@types/chalk": "^2.2.0",
     "@types/diff": "^4.0.2",
     "@types/express": "^4.17.6",
+    "@types/jest": "^26.0.24",
     "@types/node": "^14.0.14",
     "@types/update-notifier": "^4.1.0",
     "@types/yargs": "^15.0.5",
@@ -41,9 +42,11 @@
     "eslint": "^7.31.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^27.0.6",
     "nodemon": "^2.0.4",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.4",
     "ts-node": "^8.10.2",
     "ttypescript": "^1.5.12",
     "typescript": "^3.9.6"
