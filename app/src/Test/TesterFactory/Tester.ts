@@ -247,7 +247,7 @@ export default abstract class Tester {
   }
 
   /**
-   * @param {string} filePath to the source code file
+   * @param {string} filePath path to the source code file
    * @returns the id with maximum numeric value from all the
    * test cases that correspond to `filePath`
    */
