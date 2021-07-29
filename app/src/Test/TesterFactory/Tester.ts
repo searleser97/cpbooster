@@ -256,8 +256,19 @@ export default abstract class Tester {
     return testCasesIds.length === 0 ? 0 : Math.max(...testCasesIds);
   }
 
+  /**
+   * Computes the unique Id of a testcase that does not exist yet,
+   * useful to know what will be the id of the next new testcase
+   * before actually creating it.
+   * @param {string} filePath path to the source code file
+   * @returns the id of the next testcase
+   */
+  static getNextTestCaseId(filePath: string): number {
+    return Tester.getMaxTestCaseId(filePath) + 1;
+  }
+
   static async createTestCase(filePath: string): Promise<void> {
-    const thisTCId = Tester.getMaxTestCaseId(filePath) + 1;
+    const thisTCId = Tester.getNextTestCaseId(filePath);
     console.log("\nPress ctrl+D to finish your input\n");
     console.log("Test Case Input:\n");
     const input = await Util.readToEOF();
