@@ -246,10 +246,18 @@ export default abstract class Tester {
     return testcasesIds;
   }
 
+  /**
+   * @param {string} filePath to the source code file
+   * @returns the id with maximum numeric value from all the
+   * test cases that correspond to `filePath`
+   */
+  static getMaxTestCaseId(filePath: string): number {
+    const testCasesIds = Tester.getTestCasesIds(filePath);
+    return testCasesIds.length === 0 ? 0 : Math.max(...testCasesIds);
+  }
+
   static async createTestCase(filePath: string): Promise<void> {
-    const testcasesIds = Tester.getTestCasesIds(filePath);
-    const maxTestCaseId = testcasesIds.length == 0 ? 0 : Math.max(...testcasesIds);
-    const thisTCId = maxTestCaseId + 1;
+    const thisTCId = Tester.getMaxTestCaseId(filePath) + 1;
     console.log("\nPress ctrl+D to finish your input\n");
     console.log("Test Case Input:\n");
     const input = await Util.readToEOF();
