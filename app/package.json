@@ -25,7 +25,8 @@
     "install:dev": "npm run build && npm uninstall cpbooster -g && npm install -g",
     "test": "jest",
     "lint": "eslint . --ext .ts",
-    "lint-and-fix": "eslint . --ext .ts --fix"
+    "lint-and-fix": "eslint . --ext .ts --fix",
+    "publish": "npm run build && np"
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
