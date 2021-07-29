@@ -15,7 +15,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
     "paths": {
-      "@cpb": ["./*", "Test/*"]
+      "@cpb/*": ["./*", "Test/*"]
     },
     "plugins": [{ "transform": "@zerollup/ts-transform-paths" }]
   },
