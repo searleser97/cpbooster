@@ -45,6 +45,11 @@ export default abstract class OnlineJudge {
 
   abstract isLoggedIn(page: Page): Promise<boolean>;
 
+  /**
+   * @param {string} filePath path to the source code file
+   * @param {Page} page submission page, usually same as problem page
+   * @param {string} langAlias Id of the language for the OnlineJudge.
+   */
   abstract uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean>;
 
   getSession(): Array<{
