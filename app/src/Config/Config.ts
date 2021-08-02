@@ -54,7 +54,8 @@ export default class Config {
         debugCommand: "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
         aliases: {
           codeforces: "54",
-          atcoder: "4003"
+          atcoder: "4003",
+          omegaup: "cpp17-gcc"
         }
       },
       py: {
@@ -63,7 +64,8 @@ export default class Config {
         debugCommand: "python3 -O",
         aliases: {
           codeforces: "31",
-          atcoder: "4006"
+          atcoder: "4006",
+          omegaup: "py3"
         }
       }
     };
