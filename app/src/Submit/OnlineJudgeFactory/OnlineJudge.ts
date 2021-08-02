@@ -27,7 +27,8 @@ import open from "open";
 
 export enum OnlineJudgeName {
   codeforces = "codeforces",
-  atcoder = "atcoder"
+  atcoder = "atcoder",
+  omegaup = "omegaup"
 }
 
 export default abstract class OnlineJudge {
