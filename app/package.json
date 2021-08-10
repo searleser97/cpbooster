@@ -1,7 +1,7 @@
 {
   "name": "cpbooster",
   "author": "searleser97",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "description": "cpbooster is a cross-platform CLI tool designed to boost competitive programmer's speed during contests by automating various routine tasks",
   "homepage": "https://github.com/searleser97/cpbooster",
   "repository": "github:searleser97/cpbooster",
@@ -25,8 +25,7 @@
     "install:dev": "npm run build && npm uninstall cpbooster -g && npm install -g",
     "test": "jest",
     "lint": "eslint . --ext .ts",
-    "lint-and-fix": "eslint . --ext .ts --fix",
-    "publish": "npm run build && np"
+    "lint-and-fix": "eslint . --ext .ts --fix"
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
