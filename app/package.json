@@ -27,6 +27,9 @@
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix"
   },
+  "files": [
+    "*"
+  ],
   "license": "GPL-3.0-only",
   "devDependencies": {
     "@types/chalk": "^2.2.0",
