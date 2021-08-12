@@ -20,7 +20,7 @@ import CompiledTester from "./CompiledTester";
 import * as Path from "path";
 import { exit } from "process";
 import * as fs from "fs";
-import PyTester from "./PyTester";
+import InterpretedTester from "./InterpretedTester";
 import Tester from "./Tester";
 
 export default class TesterFactory {
@@ -35,7 +35,7 @@ export default class TesterFactory {
     }
     const extension = TesterFactory.normalizeExtension(Path.extname(filePath));
     if (extension == ".cpp") return new CompiledTester(config, filePath);
-    else if (extension == ".py") return new PyTester(config, filePath);
+    else if (extension == ".py") return new InterpretedTester(config, filePath);
     else {
       console.log("Language not supported");
       exit(0);

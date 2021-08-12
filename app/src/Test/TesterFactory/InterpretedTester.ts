@@ -20,7 +20,7 @@ import Config from "../../Config/Config";
 import { Veredict } from "../../Types/Veredict";
 import Tester, { SupportedLanguages } from "./Tester";
 
-export default class PyTester extends Tester {
+export default class InterpretedTester extends Tester {
   constructor(config: Config, filePath: string) {
     super(config, filePath);
   }
