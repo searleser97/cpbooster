@@ -34,6 +34,7 @@ export enum SupportedLanguages {
 export default abstract class Tester {
   config: Config;
   filePath: string;
+  fileExtension: string;
 
   constructor(config: Config, filePath: string) {
     if (!fs.existsSync(filePath)) {
@@ -42,6 +43,7 @@ export default abstract class Tester {
     }
     this.config = config;
     this.filePath = filePath;
+    this.fileExtension = Path.extname(this.filePath).slice(1).toLowerCase();
   }
 
   abstract testOne(testId: number, compile: boolean): Veredict;
@@ -65,7 +67,7 @@ export default abstract class Tester {
 
   extractTimeLimit(): number {
     const text = fs.readFileSync(this.filePath).toString();
-    const commentString = Util.getCommentString(Path.extname(this.filePath));
+    const commentString = Util.getCommentString(this.fileExtension);
     const re = new RegExp(String.raw`^\s*${commentString}\s*time-limit\s*:\s*([0-9]+)\s*$`, "gm");
     const match = re.exec(text);
     let time = 3000; // Default time
