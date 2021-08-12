@@ -27,7 +27,7 @@ export default class InterpretedTester extends Tester {
 
   testOne(testId: number, compile: boolean): Veredict {
     if (!compile) {
-      Tester.printUnnecesaryNoCompileFlagMsg("python");
+      Tester.printUnnecesaryNoCompileFlagMsg(this.fileExtension);
     }
     const commandAsArray = this.getSegmentedCommand(SupportedLanguages.py, false);
     return this.runTest(commandAsArray[0], [...commandAsArray.slice(1), this.filePath], testId);
@@ -35,7 +35,7 @@ export default class InterpretedTester extends Tester {
 
   debugOne(testId: number, compile: boolean): void {
     if (!compile) {
-      Tester.printUnnecesaryNoCompileFlagMsg("python");
+      Tester.printUnnecesaryNoCompileFlagMsg(this.fileExtension);
     }
     const debugCommandAsArray = this.getSegmentedCommand(SupportedLanguages.py, true);
     this.runDebug(debugCommandAsArray[0], [...debugCommandAsArray.slice(1), this.filePath], testId);
@@ -43,7 +43,7 @@ export default class InterpretedTester extends Tester {
 
   debugWithUserInput(compile: boolean): void {
     if (!compile) {
-      Tester.printUnnecesaryNoCompileFlagMsg("python");
+      Tester.printUnnecesaryNoCompileFlagMsg(this.fileExtension);
     }
     const debugCommandAsArray = this.getSegmentedCommand(SupportedLanguages.py, true);
     this.runDebugWithUserInput(debugCommandAsArray[0], [

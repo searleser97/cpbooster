@@ -297,8 +297,11 @@ export default abstract class Tester {
     console.log(chalk.bgYellow(chalk.whiteBright(" Compilation Error ")), "\n");
   }
 
-  static printUnnecesaryNoCompileFlagMsg(lang: string): void {
-    console.log(`${lang} does not support compilation, using --noCompile option is unnecesary`);
+  static printUnnecesaryNoCompileFlagMsg(fileExtension: string): void {
+    console.log(
+      `${fileExtension} files will be interpreted not compiled, therefore, the --noCompile flag will be ignored.\n` +
+        `If this was not the expected behavior verify the settings in your config file`
+    );
   }
 
   protected getSegmentedCommand(language: SupportedLanguages, debug: boolean): string[] {
