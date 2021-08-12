@@ -26,7 +26,7 @@ import { exit } from "process";
 import { Veredict } from "../../Types/Veredict";
 import Tester, { SupportedLanguages } from "./Tester";
 
-export default class CppTester extends Tester {
+export default class CompiledTester extends Tester {
   constructor(config: Config, filePath: string) {
     super(config, filePath);
   }
@@ -72,9 +72,10 @@ export default class CppTester extends Tester {
 
   getNameForBinary(debug: boolean): string | undefined {
     const segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
+    const outputFilenameOptions = new Set(["-o", "-out", "/out"]);
 
     for (let i = 0; i < segmentedCommand.length; i++) {
-      if (segmentedCommand[i] == "-o") {
+      if (outputFilenameOptions.has(segmentedCommand[i])) {
         return segmentedCommand[i + 1];
       }
     }

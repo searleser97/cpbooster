@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import Config from "../../Config/Config";
-import CppTester from "./CppTester";
+import CompiledTester from "./CompiledTester";
 import * as Path from "path";
 import { exit } from "process";
 import * as fs from "fs";
@@ -34,7 +34,7 @@ export default class TesterFactory {
       exit(0);
     }
     const extension = TesterFactory.normalizeExtension(Path.extname(filePath));
-    if (extension == ".cpp") return new CppTester(config, filePath);
+    if (extension == ".cpp") return new CompiledTester(config, filePath);
     else if (extension == ".py") return new PyTester(config, filePath);
     else {
       console.log("Language not supported");
