@@ -72,10 +72,9 @@ export default class CompiledTester extends Tester {
 
   getNameForBinary(debug: boolean): string | undefined {
     const segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
-    const outputFilenameOptions = new Set(["-o", "-out", "/out"]);
 
     for (let i = 0; i < segmentedCommand.length; i++) {
-      if (outputFilenameOptions.has(segmentedCommand[i])) {
+      if (segmentedCommand[i] == "-o") {
         return segmentedCommand[i + 1];
       }
     }
