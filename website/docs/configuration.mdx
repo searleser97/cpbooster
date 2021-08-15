@@ -48,7 +48,9 @@ for context.
         "codeforces": "54",
         "atcoder": "4003",
         "omegaup": "cpp17-gcc"
-      }
+      },
+      "type": "compiled",
+      "commentString": "//"
     },
     "py": {
       "template": "template.py",
@@ -58,7 +60,9 @@ for context.
         "codeforces": "31",
         "atcoder": "4006",
         "omegaup": "py3"
-      }
+      },
+      "type": "interpreted",
+      "commentString": "#"
     }
   }
 }
@@ -267,3 +271,28 @@ For example: the alias for `C++` in Codeforces and AtCoder is `"54"` and `"4006"
   }
 }
 ```
+
+### `languages.<lang>.type: "compiled" | "interpreted" | "mixed"`
+
+Specifies whether the language is "compiled", "interpreted" or "mixed".
+`cpbooster` is aware that some languages can be "interpreted" as well as "compiled",
+therefore with this option it gives you the chance to tell it how to work with
+the language you provide.
+
+:::note
+In case this option is not provided, then `cpbooster` will try to infer the type
+depending on the language.
+:::
+
+### `languages.<lang>.commentString: string`
+
+Tells `cpbooster` which comment string to use depending on the language.
+`cpbooster` uses a generic algorithm to support a great variety of languages,
+some of them are know by `cpbooster` but some others are unknown for it,
+therefore `cpbooster` might not know how to write comments in that language.
+
+:::note
+Comments are used to write information in the source code file such as:
+- time-limit
+- problem-url
+:::
