@@ -178,6 +178,14 @@ Currently the only supported languages are **C++** and **Python**, If you wish t
 for other languages visit the section "[How to add a language](/docs/add-language-support)".
 :::
 
+### `languages: Record<LangExtension, LangConfig>`
+
+In `languages` you can configure the settings of each programming language.
+
+:::important
+The key must match with the extension used in the file name.
+:::
+
 ### `languages.<lang>.template: string`
 
 Path to your competitive programming template for the corresponding `<lang>`.
