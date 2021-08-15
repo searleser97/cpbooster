@@ -18,34 +18,34 @@
 
 import Config from "../../Config/Config";
 import { Veredict } from "../../Types/Veredict";
-import Tester, { SupportedLanguages } from "./Tester";
+import Tester from "./Tester";
 
-export default class PyTester extends Tester {
+export default class InterpretedTester extends Tester {
   constructor(config: Config, filePath: string) {
     super(config, filePath);
   }
 
   testOne(testId: number, compile: boolean): Veredict {
     if (!compile) {
-      Tester.printUnnecesaryNoCompileFlagMsg("python");
+      Tester.printUnnecesaryNoCompileFlagMsg(this.langExtension);
     }
-    const commandAsArray = this.getSegmentedCommand(SupportedLanguages.py, false);
+    const commandAsArray = this.getSegmentedCommand(this.langExtension, false);
     return this.runTest(commandAsArray[0], [...commandAsArray.slice(1), this.filePath], testId);
   }
 
   debugOne(testId: number, compile: boolean): void {
     if (!compile) {
-      Tester.printUnnecesaryNoCompileFlagMsg("python");
+      Tester.printUnnecesaryNoCompileFlagMsg(this.langExtension);
     }
-    const debugCommandAsArray = this.getSegmentedCommand(SupportedLanguages.py, true);
+    const debugCommandAsArray = this.getSegmentedCommand(this.langExtension, true);
     this.runDebug(debugCommandAsArray[0], [...debugCommandAsArray.slice(1), this.filePath], testId);
   }
 
   debugWithUserInput(compile: boolean): void {
     if (!compile) {
-      Tester.printUnnecesaryNoCompileFlagMsg("python");
+      Tester.printUnnecesaryNoCompileFlagMsg(this.langExtension);
     }
-    const debugCommandAsArray = this.getSegmentedCommand(SupportedLanguages.py, true);
+    const debugCommandAsArray = this.getSegmentedCommand(this.langExtension, true);
     this.runDebugWithUserInput(debugCommandAsArray[0], [
       ...debugCommandAsArray.slice(1),
       this.filePath

@@ -16,27 +16,47 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import Config from "../../Config/Config";
-import CppTester from "./CppTester";
-import * as Path from "path";
+import CompiledTester from "./CompiledTester";
 import { exit } from "process";
 import * as fs from "fs";
-import PyTester from "./PyTester";
+import InterpretedTester from "./InterpretedTester";
 import Tester from "./Tester";
+import { LangExtensions } from "../../Utils/LangExtensions";
+import Util from "../../Utils/Util";
 
 export default class TesterFactory {
-  static normalizeExtension(extension: string): string {
-    return extension.toLowerCase();
-  }
+  static compiledExtensions = new Set([
+    LangExtensions.cpp.toString(),
+    LangExtensions.c.toString(),
+    LangExtensions.csharp.toString(),
+    LangExtensions.go.toString()
+  ]);
+
+  static interpretedExtensions = new Set([
+    LangExtensions.python.toString(),
+    LangExtensions.javascript.toString(),
+    LangExtensions.ruby.toString()
+  ]);
 
   static getTester(config: Config, filePath: string): Tester {
     if (!fs.existsSync(filePath)) {
       console.log("File not found:", filePath);
       exit(0);
     }
-    const extension = TesterFactory.normalizeExtension(Path.extname(filePath));
-    if (extension == ".cpp") return new CppTester(config, filePath);
-    else if (extension == ".py") return new PyTester(config, filePath);
-    else {
+
+    const langExtension = Util.getExtensionName(filePath);
+
+    if (
+      config.languages[langExtension]?.type === "compiled" ||
+      this.compiledExtensions.has(langExtension)
+    ) {
+      return new CompiledTester(config, filePath);
+    } else if (
+      config.languages[langExtension]?.type === "interpreted" ||
+      this.interpretedExtensions.has(langExtension)
+    ) {
+      return new InterpretedTester(config, filePath);
+    } else {
       console.log("Language not supported");
       exit(0);
     }

@@ -24,6 +24,7 @@ import GlobalConstants from "../../GlobalConstants";
 import Config from "../../Config/Config";
 import { LangAliases } from "../../Config/Types/LangAliases";
 import open from "open";
+import Util from "../../Utils/Util";
 
 export enum OnlineJudgeName {
   codeforces = "codeforces",
@@ -100,23 +101,12 @@ export default abstract class OnlineJudge {
     }
   }
 
-  getExtensionName(filePath: string): string {
-    return Path.extname(filePath).substr(1).toLowerCase();
-  }
-
-  getLangAliasesObject(lang: string, config: Config): LangAliases | undefined {
-    switch (lang) {
-      case "cpp":
-        return config.languages.cpp?.aliases;
-      case "py":
-        return config.languages.py?.aliases;
-      default:
-        return undefined;
-    }
+  getLangAliasesObject(langExtension: string, config: Config): LangAliases | undefined {
+    return config.languages[langExtension]?.aliases;
   }
 
   getLangAlias(filePath: string, config: Config): string | undefined {
-    const lang = this.getExtensionName(filePath);
+    const lang = Util.getExtensionName(filePath);
     const langAliases = this.getLangAliasesObject(lang, config);
     /* TODO: make <key, value> object with Online Judge Name as key
              and langAliases as value. Then, we can iterate over it
@@ -213,7 +203,7 @@ export default abstract class OnlineJudge {
           result = await this.uploadFile(filePath, page, langAliasFromConfig);
         } else {
           console.log(
-            `${this.onlineJudgeName} alias for "${this.getExtensionName(
+            `${this.onlineJudgeName} alias for "${Util.getExtensionName(
               filePath
             )}" was not found in config file.`
           );

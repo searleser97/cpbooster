@@ -18,9 +18,12 @@
 
 import { createInterface } from "readline";
 import { once } from "events";
+import * as Path from "path";
+import { LangExtensions } from "./LangExtensions";
+import Config from "Config/Config";
 
 export default class Util {
-  static allowedSpecialChars = new Set(["-", "_", "+", "."]);
+  static allowedSpecialChars = new Set(["_", "."]);
 
   static isAlpha(char: string): boolean {
     if (char.length != 1) {
@@ -67,9 +70,26 @@ export default class Util {
     return text.split(oldString).join(newString);
   }
 
-  static normalizeName(name: string): string {
+  static replaceExtraDotsWithUnderscore(fileName: string): string {
+    const fileNameNoDots = Array.from(fileName);
+    let extensionDotFound = false;
+    for (let i = fileName.length - 1; i >= 0; i--) {
+      if (!extensionDotFound && fileName[i] === ".") {
+        extensionDotFound = true;
+        continue;
+      }
+
+      if (fileName[i] === ".") {
+        fileNameNoDots[i] = "_";
+      }
+    }
+    return fileNameNoDots.join("");
+  }
+
+  static normalizeFileName(fileName: string): string {
+    fileName = this.replaceExtraDotsWithUnderscore(fileName);
     let normalName = "";
-    for (const c of name) {
+    for (const c of fileName) {
       if (this.isAlphaNum(c) || this.allowedSpecialChars.has(c)) {
         normalName += c;
       }
@@ -77,15 +97,17 @@ export default class Util {
     return normalName;
   }
 
-  static getCommentString(extension: string): "//" | "#" | undefined {
-    extension = Util.replaceAll(extension, ".", "").toLowerCase();
-    const slashes = ["java", "cpp", "c"];
-    if (slashes.includes(extension)) {
-      return "//";
-    } else if (extension == "py") {
+  static getCommentString(langExtension: string, config: Config): string {
+    const langConfig = config.languages[langExtension];
+    if (langConfig?.commentString) {
+      return langConfig.commentString;
+    }
+    langExtension = Util.replaceAll(langExtension, ".", "").toLowerCase();
+    const hashes = [LangExtensions.python.toString(), LangExtensions.ruby.toString()];
+    if (hashes.includes(langExtension)) {
       return "#";
     } else {
-      return undefined;
+      return "//";
     }
   }
 
@@ -137,5 +159,9 @@ export default class Util {
       seq[i] = start;
     }
     return seq;
+  }
+
+  static getExtensionName(filePath: string): string {
+    return Path.extname(filePath).substr(1).toLowerCase();
   }
 }

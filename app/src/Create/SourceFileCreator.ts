@@ -45,22 +45,22 @@ export default class SourceFileCreator {
     timeLimitInMS = 3000,
     problemUrl?: string
   ): void {
-    const extension = Path.extname(filePath);
-    const filename = Util.normalizeName(Path.basename(filePath));
+    const langExtension = Util.getExtensionName(filePath);
+    const filename = Util.normalizeFileName(Path.basename(filePath));
     filePath = Path.join(Path.dirname(filePath), filename);
     let template = "";
-    const commentString = Util.getCommentString(extension);
+    const commentString = Util.getCommentString(langExtension, config);
     if (commentString) {
       template += `${commentString} time-limit: ${timeLimitInMS}\n`;
       if (problemUrl) {
         template += `${commentString} problem-url: ${problemUrl}\n`;
       }
     }
-    if (extension == ".cpp" && config.languages.cpp?.template) {
-      template += fs.readFileSync(config.languages.cpp.template).toString();
-    } else if (extension == ".py" && config.languages.py?.template) {
-      template += fs.readFileSync(config.languages.py.template).toString();
+    const langConfig = config.languages[langExtension];
+    if (langConfig?.template) {
+      template += fs.readFileSync(langConfig.template).toString();
     }
+
     if (!fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, template);
       console.info("Source file", filename, "created.");

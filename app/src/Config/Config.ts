@@ -20,7 +20,7 @@ import * as fs from "fs";
 import * as Path from "path";
 import * as os from "os";
 import { exit } from "process";
-import { Languages } from "./Types/Languages";
+import { LangConfig } from "./Types/LangConfig";
 
 export default class Config {
   static readonly defaultConfigFilePaths = [
@@ -35,9 +35,11 @@ export default class Config {
   closeAfterClone: boolean;
   showStatusPageOnSubmit: boolean;
   useUserDefaultBrowser: boolean;
+  // preferred language extension
   preferredLang: string;
 
-  languages: Languages;
+  // config for language extension
+  languages: Record<string, LangConfig | undefined>;
 
   constructor() {
     this.contestsDirectory = Path.join(os.homedir(), "Contests");
@@ -56,7 +58,9 @@ export default class Config {
           codeforces: "54",
           atcoder: "4003",
           omegaup: "cpp17-gcc"
-        }
+        },
+        type: "compiled",
+        commentString: "//"
       },
       py: {
         template: "",
@@ -66,7 +70,65 @@ export default class Config {
           codeforces: "31",
           atcoder: "4006",
           omegaup: "py3"
-        }
+        },
+        type: "interpreted",
+        commentString: "#"
+      },
+      js: {
+        template: "",
+        command: "node",
+        debugCommand: "node",
+        aliases: {
+          codeforces: "55",
+          atcoder: "4030"
+        },
+        type: "interpreted",
+        commentString: "//"
+      },
+      rb: {
+        template: "",
+        command: "ruby",
+        debugCommand: "ruby",
+        aliases: {
+          codeforces: "67",
+          atcoder: "4049"
+        },
+        type: "interpreted",
+        commentString: "#"
+      },
+      cs: {
+        template: "",
+        command: "msc",
+        debugCommand: "msc",
+        aliases: {
+          codeforces: "55",
+          atcoder: "4030",
+          omegaup: "cs"
+        },
+        type: "compiled",
+        commentString: "//"
+      },
+      rs: {
+        template: "",
+        command: "rustc",
+        debugCommand: "rustc",
+        aliases: {
+          codeforces: "49",
+          atcoder: "4050"
+        },
+        type: "compiled",
+        commentString: "//"
+      },
+      go: {
+        template: "",
+        command: "go build",
+        debugCommand: "go build",
+        aliases: {
+          codeforces: "32",
+          atcoder: "4026"
+        },
+        type: "compiled",
+        commentString: "//"
       }
     };
   }

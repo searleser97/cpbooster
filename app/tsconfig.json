@@ -13,11 +13,9 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "plugins": [{ "transform": "@zerollup/ts-transform-paths" }],
     "baseUrl": "src",
-    "paths": {
-      "@cpb/*": ["./*", "Test/*"]
-    },
-    "plugins": [{ "transform": "@zerollup/ts-transform-paths" }]
+    "paths": {}
   },
   "exclude": ["website/*", "node_modules", "dist"],
   "allowSyntheticDefaultImports": true

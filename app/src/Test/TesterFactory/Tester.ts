@@ -24,16 +24,11 @@ import { exit } from "process";
 import chalk from "chalk";
 import { spawnSync } from "child_process";
 import * as Path from "path";
-import { LangConfig } from "Config/Types/LangConfig";
-
-export enum SupportedLanguages {
-  cpp = "cpp",
-  py = "py"
-}
 
 export default abstract class Tester {
   config: Config;
   filePath: string;
+  langExtension: string;
 
   constructor(config: Config, filePath: string) {
     if (!fs.existsSync(filePath)) {
@@ -42,6 +37,7 @@ export default abstract class Tester {
     }
     this.config = config;
     this.filePath = filePath;
+    this.langExtension = Path.extname(this.filePath).slice(1).toLowerCase();
   }
 
   abstract testOne(testId: number, compile: boolean): Veredict;
@@ -65,7 +61,7 @@ export default abstract class Tester {
 
   extractTimeLimit(): number {
     const text = fs.readFileSync(this.filePath).toString();
-    const commentString = Util.getCommentString(Path.extname(this.filePath));
+    const commentString = Util.getCommentString(this.langExtension, this.config);
     const re = new RegExp(String.raw`^\s*${commentString}\s*time-limit\s*:\s*([0-9]+)\s*$`, "gm");
     const match = re.exec(text);
     let time = 3000; // Default time
@@ -295,22 +291,15 @@ export default abstract class Tester {
     console.log(chalk.bgYellow(chalk.whiteBright(" Compilation Error ")), "\n");
   }
 
-  static printUnnecesaryNoCompileFlagMsg(lang: string): void {
-    console.log(`${lang} does not support compilation, using --noCompile option is unnecesary`);
+  static printUnnecesaryNoCompileFlagMsg(fileExtension: string): void {
+    console.log(
+      `${fileExtension} files will be interpreted not compiled, therefore, the --noCompile flag will be ignored.\n` +
+        `If this was not the expected behavior verify the settings in your config file`
+    );
   }
 
-  protected getSegmentedCommand(language: SupportedLanguages, debug: boolean): string[] {
-    let langConfig: LangConfig | undefined;
-    switch (language) {
-      case SupportedLanguages.cpp:
-        langConfig = this.config.languages.cpp;
-        break;
-      case SupportedLanguages.py:
-        langConfig = this.config.languages.py;
-        break;
-      default:
-        langConfig = undefined;
-    }
+  protected getSegmentedCommand(langExtension: string, debug: boolean): string[] {
+    const langConfig = this.config.languages[langExtension];
 
     if (langConfig) {
       let segmentedCommand: string[];
@@ -322,8 +311,16 @@ export default abstract class Tester {
       // TODO: log message and exit(0) when segmentedCommand is empty
       return segmentedCommand;
     } else {
-      console.log(`${debug ? "debug " : ""}command not specified in cpbooster-config.json`);
+      console.log(
+        `${
+          debug ? "debug " : ""
+        }command not specified in cpbooster-config.json for ${langExtension} files`
+      );
       exit(0);
     }
+  }
+
+  protected getCompilerCommand(langExtension: string, debug: boolean): string {
+    return this.getSegmentedCommand(langExtension, debug)[0];
   }
 }
