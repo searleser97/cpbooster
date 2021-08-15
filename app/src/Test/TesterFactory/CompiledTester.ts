@@ -24,16 +24,27 @@ import Util from "../../Utils/Util";
 import { spawnSync } from "child_process";
 import { exit } from "process";
 import { Veredict } from "../../Types/Veredict";
-import Tester, { SupportedLanguages } from "./Tester";
+import Tester from "./Tester";
+
+// Todo: If the list increases significantly, creating a Set containing
+// the enum values would be reasonable for quick access.
+export enum NonStandardCompilers {
+  mcs = "mcs",
+  csc = "csc"
+}
 
 export default class CompiledTester extends Tester {
+  private static fileNameOptionForCommand: Map<string, string> = new Map([
+    [NonStandardCompilers.mcs, "-out:"], // csharp compiler
+    [NonStandardCompilers.csc, "/out:"] // csharp compiler
+  ]);
+
   constructor(config: Config, filePath: string) {
     super(config, filePath);
   }
 
   testOne(testId: number, compile: boolean): Veredict {
-    let binaryFileName = this.getNameForBinary(false);
-    if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(false);
+    const binaryFileName = this.getExecutableFileNameOrDefault(false);
     const binaryFilePath = `.${Path.sep}${binaryFileName}`;
     if (compile) {
       this.compile(false);
@@ -45,8 +56,7 @@ export default class CompiledTester extends Tester {
   }
 
   debugOne(testId: number, compile: boolean): void {
-    let binaryFileName = this.getNameForBinary(true);
-    if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(true);
+    const binaryFileName = this.getExecutableFileNameOrDefault(true);
     const binaryFilePath = `.${Path.sep}${binaryFileName}`;
     if (compile) {
       this.compile(true);
@@ -58,8 +68,7 @@ export default class CompiledTester extends Tester {
   }
 
   debugWithUserInput(compile: boolean): void {
-    let binaryFileName = this.getNameForBinary(true);
-    if (!binaryFileName) binaryFileName = this.getDefaultBinaryName(true);
+    const binaryFileName = this.getExecutableFileNameOrDefault(true);
     const binaryFilePath = `.${Path.sep}${binaryFileName}`;
     if (compile) {
       this.compile(true);
@@ -70,36 +79,63 @@ export default class CompiledTester extends Tester {
     this.runDebugWithUserInput(binaryFilePath);
   }
 
-  getNameForBinary(debug: boolean): string | undefined {
-    const segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
+  getExecutableFileName(debug: boolean): string | undefined {
+    const segmentedCommand = this.getSegmentedCommand(this.langExtension, debug);
+    const compilerCommand = this.getCompilerCommand(this.langExtension, debug);
+    const fileNameOption = this.getFileNameOptionForCompilerCommand(compilerCommand);
 
     for (let i = 0; i < segmentedCommand.length; i++) {
-      if (segmentedCommand[i] == "-o") {
-        return segmentedCommand[i + 1];
+      if (segmentedCommand[i].startsWith(fileNameOption)) {
+        if (Object.keys(NonStandardCompilers).includes(compilerCommand)) {
+          // using pop to reduce amount of code to return the last element
+          return segmentedCommand[i].split(":").pop();
+        } else {
+          return segmentedCommand[i + 1];
+        }
       }
     }
     return undefined;
   }
 
-  getDefaultBinaryName(debug: boolean): string {
+  getDefaultExecutableFileName(debug: boolean): string {
     let defaultName = Util.replaceAll(Path.parse(this.filePath).name, " ", "");
     if (debug) defaultName += "debug";
     defaultName += ".exe";
     return defaultName;
   }
 
+  getExecutableFileNameOrDefault(debug: boolean): string {
+    return this.getExecutableFileName(debug) ?? this.getDefaultExecutableFileName(debug);
+  }
+
+  getFileNameOptionForCompilerCommand(compilerCommand: string): string {
+    return CompiledTester.fileNameOptionForCommand.get(compilerCommand) ?? "-o";
+  }
+
   compile(debug: boolean): void {
     console.log("Compiling...\n");
-    const segmentedCommand = this.getSegmentedCommand(SupportedLanguages.cpp, debug);
+    const segmentedCommand = this.getSegmentedCommand(this.langExtension, debug);
 
-    const args = [...segmentedCommand.slice(1), this.filePath];
-    const compileCommand = segmentedCommand[0];
+    const args = [...segmentedCommand.slice(1)];
+    const compilerCommand = this.getCompilerCommand(this.langExtension, debug);
 
-    if (!this.getNameForBinary(debug)) {
-      args.push("-o", this.getDefaultBinaryName(debug));
+    if (!this.getExecutableFileName(debug)) {
+      if (Object.keys(NonStandardCompilers).includes(compilerCommand)) {
+        args.push(
+          this.getFileNameOptionForCompilerCommand(compilerCommand) +
+            this.getDefaultExecutableFileName(debug)
+        );
+      } else {
+        args.push(
+          this.getFileNameOptionForCompilerCommand(compilerCommand),
+          this.getDefaultExecutableFileName(debug)
+        );
+      }
     }
 
-    const compilation = spawnSync(compileCommand, args);
+    args.push(this.filePath);
+
+    const compilation = spawnSync(compilerCommand, args);
 
     if (compilation.stderr) {
       let compileStderr = Buffer.from(compilation.stderr).toString("utf8").trim();
