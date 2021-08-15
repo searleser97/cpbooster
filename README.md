@@ -71,14 +71,16 @@
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 - [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-## Future updates
+## Future Updates (work not started yet)
 
 - Add the possibility to test interactive problems
+- Add Stress tests (using brute force solution and tests generator)
+- Add support for Java and other mixed languages like Kotlin and Scala.
 - Add the possibility to test current file using test cases of another file (test --as \<filename>)
 - Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)
-- Add support for Java and other languages (interpreted, compiled and mixed)
 - Fully support windows CMD.
-- Add Stress tests (using brute force solution and tests generator)
+- Add support for `NODE_ENV` in compile/debug command for debugging purposes. 
+
 
 ## Final Notes
 
