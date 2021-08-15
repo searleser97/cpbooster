@@ -21,7 +21,7 @@ import * as Path from "path";
 import * as os from "os";
 import { exit } from "process";
 import { LangConfig } from "./Types/LangConfig";
-import Util from "Utils/Util";
+import Util from "../Utils/Util";
 
 export default class Config {
   static readonly defaultConfigFilePaths = [
