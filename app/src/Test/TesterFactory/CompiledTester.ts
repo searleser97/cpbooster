@@ -82,7 +82,7 @@ export default class CompiledTester extends Tester {
   getExecutableFileName(debug: boolean): string | undefined {
     const segmentedCommand = this.getSegmentedCommand(this.langExtension, debug);
     const compilerCommand = this.getCompilerCommand(this.langExtension, debug);
-    const fileNameOption = this.getFileNameOptionForCompilerCommand(compilerCommand);
+    const fileNameOption = CompiledTester.getFileNameOptionForCompilerCommand(compilerCommand);
 
     for (let i = 0; i < segmentedCommand.length; i++) {
       if (segmentedCommand[i].startsWith(fileNameOption)) {
@@ -108,33 +108,15 @@ export default class CompiledTester extends Tester {
     return this.getExecutableFileName(debug) ?? this.getDefaultExecutableFileName(debug);
   }
 
-  getFileNameOptionForCompilerCommand(compilerCommand: string): string {
+  static getFileNameOptionForCompilerCommand(compilerCommand: string): string {
     return CompiledTester.fileNameOptionForCommand.get(compilerCommand) ?? "-o";
   }
 
-  compile(debug: boolean): void {
+  static printCompilingMsg(): void {
     console.log("Compiling...\n");
-    const segmentedCommand = this.getSegmentedCommand(this.langExtension, debug);
+  }
 
-    const args = [...segmentedCommand.slice(1)];
-    const compilerCommand = this.getCompilerCommand(this.langExtension, debug);
-
-    if (!this.getExecutableFileName(debug)) {
-      if (Object.keys(NonStandardCompilers).includes(compilerCommand)) {
-        args.push(
-          this.getFileNameOptionForCompilerCommand(compilerCommand) +
-            this.getDefaultExecutableFileName(debug)
-        );
-      } else {
-        args.push(
-          this.getFileNameOptionForCompilerCommand(compilerCommand),
-          this.getDefaultExecutableFileName(debug)
-        );
-      }
-    }
-
-    args.push(this.filePath);
-
+  static executeCompilation(compilerCommand: string, args: string[]): void {
     const compilation = spawnSync(compilerCommand, args);
 
     if (compilation.stderr) {
@@ -149,5 +131,31 @@ export default class CompiledTester extends Tester {
         if (compileStderr.includes("error")) exit(0);
       }
     }
+  }
+
+  compile(debug: boolean): void {
+    CompiledTester.printCompilingMsg();
+    const segmentedCommand = this.getSegmentedCommand(this.langExtension, debug);
+
+    const args = [...segmentedCommand.slice(1)];
+    const compilerCommand = this.getCompilerCommand(this.langExtension, debug);
+
+    if (!this.getExecutableFileName(debug)) {
+      if (Object.keys(NonStandardCompilers).includes(compilerCommand)) {
+        args.push(
+          CompiledTester.getFileNameOptionForCompilerCommand(compilerCommand) +
+            this.getDefaultExecutableFileName(debug)
+        );
+      } else {
+        args.push(
+          CompiledTester.getFileNameOptionForCompilerCommand(compilerCommand),
+          this.getDefaultExecutableFileName(debug)
+        );
+      }
+    }
+
+    args.push(this.filePath);
+
+    CompiledTester.executeCompilation(compilerCommand, args);
   }
 }
