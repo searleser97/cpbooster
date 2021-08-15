@@ -30,9 +30,9 @@ export interface ICommandSubmitArgs extends ICommandGlobalArgs {
   langAlias?: string;
 }
 
-function extractUrlFromFile(filePath: string): string | undefined {
+function extractUrlFromFile(filePath: string, config: Config): string | undefined {
   const text = fs.readFileSync(filePath).toString();
-  const commentString = Util.getCommentString(Path.extname(filePath));
+  const commentString = Util.getCommentString(Path.extname(filePath), config);
   const re = new RegExp(String.raw`^\s*${commentString}\s*problem-url\s*:\s*(.+)$`, "gm");
   const match = re.exec(text);
   if (match) {
@@ -43,9 +43,10 @@ function extractUrlFromFile(filePath: string): string | undefined {
 }
 
 export function submit(args: ICommandSubmitArgs): void {
-  const url = args.url ?? extractUrlFromFile(args.filePath);
+  const config = Config.read(args.configPath);
+  const url = args.url ?? extractUrlFromFile(args.filePath, config);
   if (!url) {
-    const commentString = Util.getCommentString(Path.extname(args.filePath));
+    const commentString = Util.getCommentString(Path.extname(args.filePath), config);
     console.log(
       "Problem URL couldn't be found in file, please provide it as argument or" +
         " add it as a comment in your file in the following format:\n\n" +
@@ -55,6 +56,5 @@ export function submit(args: ICommandSubmitArgs): void {
   }
   console.log("submitting...");
   const oj = OnlineJudgeFactory.getOnlineJudge(url);
-  const config = Config.read(args.configPath);
   oj.submit(args.filePath, url, config, args.langAlias);
 }
