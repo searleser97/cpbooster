@@ -45,8 +45,7 @@ export default class SourceFileCreator {
     timeLimitInMS = 3000,
     problemUrl?: string
   ): void {
-    const extension = Path.extname(filePath);
-    const filename = Util.normalizeName(Path.basename(filePath));
+    const filename = Util.normalizeFileName(Path.basename(filePath));
     filePath = Path.join(Path.dirname(filePath), filename);
     let template = "";
     const commentString = Util.getCommentString(extension);

@@ -45,8 +45,8 @@ export default class CCServer {
       response.end("OK");
 
       const problemData: ProblemData = request.body;
-      problemData.name = Util.normalizeName(problemData.name);
-      problemData.group = Util.normalizeName(problemData.group);
+      problemData.name = Util.normalizeFileName(problemData.name);
+      problemData.group = Util.normalizeFileName(problemData.group);
 
       this.contestName = problemData.group;
       const contestPath = Path.join(config.contestsDirectory, problemData.group);
