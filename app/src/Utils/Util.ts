@@ -18,6 +18,7 @@
 
 import { createInterface } from "readline";
 import { once } from "events";
+import * as os from "os";
 import * as Path from "path";
 import { LangExtensions } from "./LangExtensions";
 import Config from "Config/Config";
@@ -163,5 +164,9 @@ export default class Util {
 
   static getExtensionName(filePath: string): string {
     return Path.extname(filePath).substr(1).toLowerCase();
+  }
+
+  static replaceTildeWithAbsoluteHomePath(contestsDirectory: string): string {
+    return contestsDirectory.replace("~", os.homedir());
   }
 }

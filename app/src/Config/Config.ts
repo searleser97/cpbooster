@@ -21,6 +21,7 @@ import * as Path from "path";
 import * as os from "os";
 import { exit } from "process";
 import { LangConfig } from "./Types/LangConfig";
+import Util from "Utils/Util";
 
 export default class Config {
   static readonly defaultConfigFilePaths = [
@@ -157,7 +158,14 @@ export default class Config {
     for (const configPath of configFilePaths) {
       if (fs.existsSync(configPath)) {
         // for now we are assuming that all the properties are defined in the config file
-        return JSON.parse(fs.readFileSync(configPath, "utf8"));
+        const config: Config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+        config.contestsDirectory = Util.replaceTildeWithAbsoluteHomePath(config.contestsDirectory);
+        for (const langExtension in config.languages) {
+          config.languages[langExtension]!.template = Util.replaceTildeWithAbsoluteHomePath(
+            config.languages[langExtension]!.template
+          );
+        }
+        return config;
       }
     }
 
