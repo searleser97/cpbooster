@@ -7,5 +7,7 @@ export enum LangExtensions {
   go = "go",
   rust = "rs",
   java = "java",
-  csharp = "cs"
+  csharp = "cs",
+  kotlin = "kt",
+  scala = "scala"
 }

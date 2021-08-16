@@ -9,4 +9,5 @@ export type LangConfig = {
   aliases?: LangAliases;
   type?: LangType;
   commentString?: string;
+  runCommand?: string; // used for mixed languages (java, kotlin, ...)
 };

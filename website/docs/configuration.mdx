@@ -63,7 +63,21 @@ for context.
       },
       "type": "interpreted",
       "commentString": "#"
-    }
+    },
+    "java": {
+      "template": "",
+      "command": "javac",
+      "debugCommand": "javac",
+      "runCommand": "java",
+      "aliases": {
+        "codeforces": "36",
+        "atcoder": "4005",
+        "omegaup": "java"
+      },
+      "type": "mixed",
+      "commentString": "//"
+    },
+
   }
 }
 ```
@@ -259,6 +273,15 @@ You can specify the name of the executable file in the same way you would do it
 in <a href={"#languageslangcommand-string"} style={{color: 'white'}}>`languages.<lang>.command`</a>.
 
 Visit the [**Debug**](/docs/debug) section to see usage examples of this feature.
+:::
+
+### `languages.<lang>.runCommand: string`
+
+The command that will be used to run `mixed` type languages like (java, kotlin, scala, ...).
+
+:::note
+This type of languages are compiled with some command (i.e. javac, kotlinc, scalac, ...) but
+they get run with a different one (java, kotlin, scala, ...)
 :::
 
 ### `languages.<lang>.aliases: Object<OnlineJudgeName, string>`

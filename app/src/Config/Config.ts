@@ -75,6 +75,18 @@ export default class Config {
         type: "interpreted",
         commentString: "#"
       },
+      java: {
+        template: "",
+        command: "javac",
+        debugCommand: "javac",
+        runCommand: "java",
+        aliases: {
+          codeforces: "36",
+          atcoder: "4005"
+        },
+        type: "mixed",
+        commentString: "//"
+      },
       js: {
         template: "",
         command: "node",
@@ -130,6 +142,28 @@ export default class Config {
         },
         type: "compiled",
         commentString: "//"
+      },
+      kt: {
+        template: "",
+        command: "kotlinc",
+        debugCommand: "kotlinc",
+        runCommand: "kotlin",
+        aliases: {
+          codeforces: "48",
+          atcoder: "4032"
+        },
+        type: "mixed"
+      },
+      scala: {
+        template: "",
+        command: "scalac",
+        debugCommand: "scalac",
+        runCommand: "scala",
+        aliases: {
+          codeforces: "20",
+          atcoder: "4051"
+        },
+        type: "mixed"
       }
     };
   }

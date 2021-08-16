@@ -23,6 +23,7 @@ import InterpretedTester from "./InterpretedTester";
 import Tester from "./Tester";
 import { LangExtensions } from "../../Utils/LangExtensions";
 import Util from "../../Utils/Util";
+import MixedTester from "Test/TesterFactory/MixedTester";
 
 export default class TesterFactory {
   static compiledExtensions = new Set([
@@ -36,6 +37,12 @@ export default class TesterFactory {
     LangExtensions.python.toString(),
     LangExtensions.javascript.toString(),
     LangExtensions.ruby.toString()
+  ]);
+
+  static mixedExtensions = new Set([
+    LangExtensions.java.toString(),
+    LangExtensions.kotlin.toString(),
+    LangExtensions.scala.toString()
   ]);
 
   static getTester(config: Config, filePath: string): Tester {
@@ -56,6 +63,11 @@ export default class TesterFactory {
       this.interpretedExtensions.has(langExtension)
     ) {
       return new InterpretedTester(config, filePath);
+    } else if (
+      config.languages[langExtension]?.type === "mixed" ||
+      this.mixedExtensions.has(langExtension)
+    ) {
+      return new MixedTester(config, filePath);
     } else {
       console.log("Language not supported");
       exit(0);
