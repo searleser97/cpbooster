@@ -25,7 +25,6 @@ import * as fs from "fs";
 import { exit } from "process";
 import CompiledTester from "./CompiledTester";
 import { LangExtensions } from "Utils/LangExtensions";
-import Util from "Utils/Util";
 
 export default class MixedTester extends Tester {
   constructor(config: Config, filePath: string) {
