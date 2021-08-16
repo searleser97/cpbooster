@@ -98,6 +98,11 @@ export default class Util {
     return normalName;
   }
 
+  static normalizeFilePath(filePath: string): string {
+    const dirPath = Path.dirname(filePath);
+    return Path.join(dirPath, Util.normalizeFileName(Path.basename(filePath)));
+  }
+
   static getCommentString(langExtension: string, config: Config): string {
     const langConfig = config.languages[langExtension];
     if (langConfig?.commentString) {
