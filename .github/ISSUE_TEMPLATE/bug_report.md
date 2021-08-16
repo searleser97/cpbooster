@@ -7,6 +7,7 @@ assignees: ''
 
 ---
 **Please complete the following information:**
+cpbooster version: run `cpb -v` to get this information
 OS: (e.g. Windows, Arch, Ubuntu, MacOS, ...)
 Using Vim? : (yes, no)
 Using Neovim? : (yes, no)
