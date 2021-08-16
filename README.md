@@ -75,7 +75,6 @@
 
 - Add the possibility to test interactive problems
 - Add Stress tests (using brute force solution and tests generator)
-- Add support for Java and other mixed languages like Kotlin and Scala.
 - Add the possibility to test current file using test cases of another file (test --as \<filename>)
 - Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)
 - Fully support windows CMD.
