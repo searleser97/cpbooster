@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
@@ -110,7 +110,18 @@ function Feature({ imageUrl, title, description, to, className }) {
   );
 }
 
+function useTitle(title) {
+  useEffect(() => {
+    const prevTitle = document.title
+    document.title = title
+    return () => {
+      document.title = prevTitle
+    }
+  })
+}
+
 export default function Home() {
+  useTitle("cpbooster");
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
   return (
