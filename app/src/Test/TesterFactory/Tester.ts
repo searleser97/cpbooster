@@ -212,18 +212,24 @@ export default abstract class Tester {
   }
 
   static getInputPath(filePath: string, testId: number): string {
-    const filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
-    return `${filePathNoExtension}.in${testId}`;
+    const langExtension = Path.extname(filePath);
+    const fileNameNoExtension = Path.basename(filePath, langExtension);
+    const dirPath = Path.dirname(filePath);
+    return Path.join(dirPath, Util.normalizeFileName(`${fileNameNoExtension}.in${testId}`));
   }
 
   static getOutputPath(filePath: string, testId: number): string {
-    const filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
-    return `${filePathNoExtension}.out${testId}`;
+    const langExtension = Path.extname(filePath);
+    const fileNameNoExtension = Path.basename(filePath, langExtension);
+    const dirPath = Path.dirname(filePath);
+    return Path.join(dirPath, Util.normalizeFileName(`${fileNameNoExtension}.out${testId}`));
   }
 
   static getAnswerPath(filePath: string, testId: number): string {
-    const filePathNoExtension = filePath.substring(0, filePath.lastIndexOf("."));
-    return `${filePathNoExtension}.ans${testId}`;
+    const langExtension = Path.extname(filePath);
+    const fileNameNoExtension = Path.basename(filePath, langExtension);
+    const dirPath = Path.dirname(filePath);
+    return Path.join(dirPath, Util.normalizeFileName(`${fileNameNoExtension}.ans${testId}`));
   }
 
   static getTestCasesIds(filePath: string): number[] {
