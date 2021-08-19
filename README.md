@@ -73,6 +73,8 @@
 
 ## Future Updates (work not started yet)
 
+- Add Memory Limit Exceeded Veredict (using `gnu-time`, can't use `ps` due to lack of precision.
+See https://stackoverflow.com/a/131346/13079132)
 - Add the possibility to test interactive problems
 - Add Stress tests (using brute force solution and tests generator)
 - Add the possibility to test current file using test cases of another file (test --as \<filename>)
