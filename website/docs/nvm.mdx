@@ -1,0 +1,54 @@
+---
+id: nvm
+title: Install NVM
+---
+
+### About
+
+> nvm is a version manager for node.js, designed to be installed per-user, and invoked per-shell.
+> nvm works on any POSIX-compliant shell (sh, dash, ksh, zsh, bash), in particular on these platforms:
+> unix, macOS, and windows WSL.
+
+### Installation
+
+Run any of the following commands in your terminal:
+
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+```
+
+```shell
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+```
+
+Running either of the above commands downloads a script and runs it. The script clones the nvm repository to
+`~/.nvm`, and attempts to add the source lines from the snippet below to the correct profile file
+(`~/.bash_profile`, `~/.zshrc`, `~/.profile`, or `~/.bashrc`).
+
+For updated instructions visit:https://github.com/nvm-sh/nvm#installing-and-updating
+
+### Verify Installation
+
+To verify that nvm has been installed, do:
+
+```sh
+command -v nvm
+```
+
+which should output `nvm` if the installation was successful.
+Please note that `which nvm` will not work, since `nvm` is a
+sourced shell function, not an executable binary.
+
+### Usage
+
+To download, compile, and install the latest release of node, do this:
+
+```sh
+nvm install node # "node" is an alias for the latest version
+```
+
+And then in any new shell just use the installed version:
+
+```sh
+nvm use node
+```

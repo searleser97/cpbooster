@@ -27,7 +27,7 @@ module.exports = {
     {
       type: "category",
       label: "Extras",
-      items: ["vim", "fromv1"],
+      items: ["vim", "fromv1", "nvm"],
       collapsed: false
     }
   ]
