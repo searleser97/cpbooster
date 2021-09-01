@@ -3,6 +3,181 @@ id: add-language-support
 title: Add Language Support
 ---
 
-:::caution
-Page under construction
+A good place to start looking at is here: https://github.com/searleser97/cpbooster/blob/33f274c030015bb555824d5ba7a4c1b11776257a/app/src/Test/TesterFactory/TesterFactory.ts
+
+where you will find that we have three main clases that represent `compiled`, `interpreted` and `mixed` languages.
+
+### Interpreted
+
+Usually, all interpreted languages have the same syntax to run a file:
+
+```shell
+interpreter filename.[extension]
+```
+
+e.g.
+
+```shell
+$ python filename.py
+$ ruby filename.rb
+$ node filname.js
+...
+```
+
+therefore, `cpbooster` should support absolutely all `interpreted` languages.
+
+The issue comes when we use either `compiled` or `interpreted` languages, specifically
+when it comes to indicate the name for the executable (binary) file.
+
+### Compiled
+
+Compilers like `gcc`, `clang`, `rustc`, `go`, ... use the `-o` argument to indicate
+the name for the executable file.
+
+e.g.
+
+```shell
+gcc filename.cpp -o myexecutable.exe
+go build filename.go -o myexecutable.exe
+rustc filename.rs -o myexecutable.exe
+...
+```
+
+However, there might exist some other compilers that do not follow this convention and they
+probably use a different argument, to solve this we have the following function
+
+```ts
+static getFileNameOptionForCompilerCommand(compilerCommand: string): string {
+  return CompiledTester.fileNameOptionForCommand.get(compilerCommand) ?? "-o";
+}
+```
+
+https://github.com/searleser97/cpbooster/blob/33f274c030015bb555824d5ba7a4c1b11776257a/app/src/Test/TesterFactory/CompiledTester.ts#L111-L113
+
+which uses a `Map` (hash table)
+to retrieve the correct argument name depending on the compiler command (`gcc`, `g++`, `csc`, `go`, ...),
+if the compiler does not exist in the hash table (`Map`) it defaults to the `-o` argument name.
+
+```ts
+private static fileNameOptionForCommand: Map<string, string> = new Map([
+  [NonStandardCompilers.mcs, "-out:"], // csharp compiler
+  [NonStandardCompilers.csc, "/out:"] // csharp compiler
+]);
+```
+
+https://github.com/searleser97/cpbooster/blob/33f274c030015bb555824d5ba7a4c1b11776257a/app/src/Test/TesterFactory/CompiledTester.ts#L37-L40
+
+notice that in the hash table (`Map`) we just have `msc` and `csc` which are `C#` compilers, this is because
+all the tested languages except for `C#` use the `-o` argument therefore there is no need to insert them into the hash table.
+
+Now let's actually talk about `C#` compilers and how they conflict with the standard format. It turns out that these compilers
+not just use a different argument name to sepecify the executable name, but they also force us to write the name of the executable
+together with the argument name (i.e. not separated by a space)
+
+e.g.
+
+```shell
+mcs -out:myexecutable.exe filename.cs
+csc /out:myexecutable.exe filename.cs
+```
+
+to solve this when we compile we have an special condition, which basically checks if the compiler is NOT standard (i.e. `csc` and `mcs`)
+then join/concatenate the argument name with the executable name.
+
+```ts
+if (Object.keys(NonStandardCompilers).includes(compilerCommand)) {
+  args.push(
+    CompiledTester.getFileNameOptionForCompilerCommand(compilerCommand) +
+      this.getDefaultExecutableFileName(debug)
+  );
+} else {
+  args.push(
+    CompiledTester.getFileNameOptionForCompilerCommand(compilerCommand),
+    this.getDefaultExecutableFileName(debug)
+  );
+}
+```
+
+https://github.com/searleser97/cpbooster/blob/33f274c030015bb555824d5ba7a4c1b11776257a/app/src/Test/TesterFactory/CompiledTester.ts#L144-L154
+
+```ts
+export enum NonStandardCompilers {
+  mcs = "mcs",
+  csc = "csc",
+}
+```
+
+https://github.com/searleser97/cpbooster/blob/33f274c030015bb555824d5ba7a4c1b11776257a/app/src/Test/TesterFactory/CompiledTester.ts#L31-L34
+
+### Mixed
+
+`mixed` languages are the ones that are compiled with one command but executed with another one (not counting `./executable.exe` format as command)
+e.g. programs written in `Java` are compiled using the `javac` command and then executed using the `java` command, something similar
+happens with languages like `Kotlin` and `Scala`.
+
+Usually, these languages generate a `.class` file after compilation, this `.class` file usually has the same name as the source file name or
+the same name as the `class` declared inside it. `cpbooster` takes advantage of this behavior and therefore, no extra code is written to name
+the executables (`.class` files), except for `kotlin` which adds `Kt` to the executable name, we have that case covered with a simple `if`
+condition here:
+
+```ts
+getExecutableFileName(): string {
+  return `${this.getExecutableFileNameNoExtension()}${
+    this.langExtension === LangExtensions.kotlin ? "Kt" : ""
+  }.class`;
+}
+```
+
+https://github.com/searleser97/cpbooster/blob/33f274c030015bb555824d5ba7a4c1b11776257a/app/src/Test/TesterFactory/MixedTester.ts#L36
+
+:::note
+Currently, to guarantee the correct behavior of `cpbooster`, the `class` name should match with the source file name, since
+some languages use the `class` name as the executable (`.class`) name instead of the source file name.
+
+Which leads to a possible **contribution** related with the "templates" for languages that require the declaration of a class.
+We can add the concept of `cpbooster-variables` which will be formatted strings that will get replaced with some information,
+like filename or date, etc
+
+e.g.
+
+###### `template.java`
+
+```java
+/**
+ * Date Time: $${DateTime}$$
+ */
+
+import java.util.*;
+
+public class $${FileName}$$   <-- just a suggested syntax not sure if its the best
+{
+
+    public static void main(String[] args)
+    {
+
+    }
+}
+```
+
+then if we create a file `ProblemC.java` with `cpbooster` the file will look like this:
+
+```java
+/**
+ * DateTime: 13-07-2022 13:30      <-- $${DateTime}$$ was replaced with the "current" date time
+ */
+
+import java.util.*;
+
+public class ProblemC     <-- $${FileName}$$ was replaced with ProblemC
+{
+
+    public static void main(String[] args)
+    {
+
+    }
+}
+```
+
+one thing to note here is that we will also need to force the file name to have the first letter capitalized (in uppercase),
+since some `mixed` languages do not allow to create classes that do not have the first letter in uppercase.
 :::
