@@ -188,8 +188,24 @@ The extension name in lowercase of your preferred language. ( i.e. `"cpp"`, `"py
 preferred language.
 
 :::note
-Currently the only supported languages are **C++** and **Python**, If you wish to contribute and add support
-for other languages visit the section "[How to add a language](/docs/add-language-support)".
+`cpbooster` officially supports the following languages:
+
+- `c`
+- `c++`
+- `rust`
+- `go`
+- `python`
+- `javascript`
+- `ruby`
+- `java`
+- `kotlin`
+- `scala`
+
+officially supporting these languages means that they were tested exhaustively, however,
+other languages might be supported as well due to the generality of the algorithm used to parse the commands
+to compile or run. In case `cpbooster` can't work correctly with the language you wish to use,
+visit the section "[How to add a language](/docs/add-language-support)" which will guide you on how to contribute
+to the project.
 :::
 
 ### `languages: Record<LangExtension, LangConfig>`
@@ -213,7 +229,9 @@ Here are some examples of competitive programming templates (if you wish, you ca
 
 ### `languages.<lang>.command: string`
 
-The command that will be used to compile (C++, Java, ...) or run (Python, Ruby) your program for testing purposes.
+The command that will be used to compile
+([`compiled` or `mixed` languages](#languageslangtype-compiled--interpreted--mixed))
+or run ([`interpreted` languages](#languageslangtype-compiled--interpreted--mixed)) your program for testing purposes.
 
 For example: If you use codeforces it is convenient that you use the same command they use for each language
 
@@ -250,7 +268,9 @@ be used instead of the default name (same as source file). See [**Test**](/docs/
 
 ### `languages.<lang>.debugCommand: string`
 
-The command that will be used to compile or run your program for debugging purposes.
+The command that will be used to compile
+([`compiled` or `mixed` languages](#languageslangtype-compiled--interpreted--mixed)) or run
+([`interpreted` languages](#languageslangtype-compiled--interpreted--mixed)) your program for debugging purposes.
 Usually `debugCommand` has more flags than `command`.
 
 Some debug command examples for `cpp` and `py`:
@@ -279,7 +299,8 @@ Visit the [**Debug**](/docs/debug) section to see usage examples of this feature
 
 ### `languages.<lang>.runCommand: string`
 
-The command that will be used to run `mixed` type languages like (java, kotlin, scala, ...).
+The command that will be used to run [`mixed`](#languageslangtype-compiled--interpreted--mixed)
+type languages like (java, kotlin, scala, ...).
 
 :::note
 This type of languages are compiled with some command (i.e. javac, kotlinc, scalac, ...) but
@@ -307,9 +328,10 @@ For example: the alias for `C++` in Codeforces and AtCoder is `"54"` and `"4006"
 
 ### `languages.<lang>.type: "compiled" | "interpreted" | "mixed"`
 
-Specifies whether the language is "compiled", "interpreted" or "mixed".
+Specifies whether the language is `"compiled"`, `"interpreted"` or `"mixed"`.
 `cpbooster` is aware that some languages can be "interpreted" as well as "compiled",
-therefore with this option it gives you the chance to tell it how to work with
+like compiling `python` with [nuitka](https://github.com/Nuitka/Nuitka) or running it traditionally.
+With this option you have the chance to tell `cpbooster` how to work with
 the language you provide.
 
 :::note
