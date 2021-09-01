@@ -187,6 +187,14 @@ The extension name in lowercase of your preferred language. ( i.e. `"cpp"`, `"py
 `cpb clone` uses this value to create corresponding source files with the template of your
 preferred language.
 
+:::important
+This value must match exactly (case-sensitive) with the extension used in the source files.
+:::
+
+### `languages: Record<LangExtension, LangConfig>`
+
+In `languages` you can configure the settings of each programming language.
+
 :::note
 `cpbooster` officially supports the following languages:
 
@@ -208,12 +216,11 @@ visit the section "[How to add a language](/docs/add-language-support)" which wi
 to the project.
 :::
 
-### `languages: Record<LangExtension, LangConfig>`
-
-In `languages` you can configure the settings of each programming language.
-
 :::important
-The key must match with the extension used in the file name.
+The keys (`<lang>`) must match exactly (case-sensitive) with the extension used in the source files.
+i.e. if you use `cpp` extension for your `c++` programs then you must use `cpp` as key
+of the json object, `CPP` won't work, neither `Cpp` nor `cPP`, ... and the same applies
+for the languages
 :::
 
 ### `languages.<lang>.template: string`
@@ -328,15 +335,19 @@ For example: the alias for `C++` in Codeforces and AtCoder is `"54"` and `"4006"
 
 ### `languages.<lang>.type: "compiled" | "interpreted" | "mixed"`
 
-Specifies whether the language is `"compiled"`, `"interpreted"` or `"mixed"`.
-`cpbooster` is aware that some languages can be "interpreted" as well as "compiled",
-like compiling `python` with [nuitka](https://github.com/Nuitka/Nuitka) or running it traditionally.
+Specifies whether the language is `"compiled"` (`C++`, `go`, `rust`, `C#`),
+`"interpreted"` (`python`, `javascript`, `ruby`, ...) or `"mixed"` (`java`, `kotlin`, `scala`, ...).
+`cpbooster` is aware that some languages can be `interpreted` as well as `compiled`,
+like `python` which can be compiled with [nuitka](https://github.com/Nuitka/Nuitka) or `javascript` which
+can be compiled with [nectarjs](https://github.com/NectarJS/nectarjs).
 With this option you have the chance to tell `cpbooster` how to work with
-the language you provide.
+the language you provide. For a definition of `mixed` languages, See [Mixed Languages](add-language-support#mixed)
 
 :::note
 In case this option is not provided, then `cpbooster` will try to infer the type
-depending on the language.
+depending on the language. But consider that `cpbooster` is not aware of all the languages
+it actually support, specifying this option reduces the risk of unexpected errors.
+See [Languages Support](#languages-recordlangextension-langconfig)
 :::
 
 ### `languages.<lang>.commentString: string`
@@ -351,4 +362,5 @@ Comments are used to write information in the source code file such as:
 
 - time-limit
 - problem-url
-  :::
+
+:::
