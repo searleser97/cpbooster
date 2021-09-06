@@ -1,4 +1,4 @@
-export function getTerminalCommand(terminalName: string, contestPath: string): string | null {
+export function getEditorCommand(terminalName: string, contestPath: string): string | null {
   switch (terminalName) {
     case "alacritty":
       return `alacritty --working-directory="${contestPath}" & disown`;

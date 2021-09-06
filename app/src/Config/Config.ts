@@ -32,7 +32,8 @@ export default class Config {
 
   contestsDirectory: string;
   port: number;
-  terminal: string;
+  terminal: string | undefined | null;
+  editor: string;
   closeAfterClone: boolean;
   showStatusPageOnSubmit: boolean;
   useUserDefaultBrowser: boolean;
@@ -45,7 +46,7 @@ export default class Config {
   constructor() {
     this.contestsDirectory = Path.join(os.homedir(), "Contests");
     this.port = 1327;
-    this.terminal = "konsole";
+    this.editor = "konsole";
     this.closeAfterClone = false;
     this.showStatusPageOnSubmit = true;
     this.useUserDefaultBrowser = true;
@@ -193,6 +194,9 @@ export default class Config {
       if (fs.existsSync(configPath)) {
         // for now we are assuming that all the properties are defined in the config file
         const config: Config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+        if (config.terminal && !config.editor) {
+          config.editor = config.terminal;
+        }
         config.contestsDirectory = Util.replaceTildeWithAbsoluteHomePath(config.contestsDirectory);
         for (const langExtension in config.languages) {
           config.languages[langExtension]!.template = Util.replaceTildeWithAbsoluteHomePath(

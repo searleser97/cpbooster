@@ -26,7 +26,7 @@ import { spawn, spawnSync } from "child_process";
 import Util from "../Utils/Util";
 import SourceFileCreator from "../Create/SourceFileCreator";
 import * as os from "os";
-import { getTerminalCommand } from "./TerminalCommandBuilder";
+import { getEditorCommand } from "./EditorCommandBuilder";
 import chalk from "chalk";
 import Tester from "../Test/TesterFactory/Tester";
 
@@ -89,7 +89,7 @@ export default class CCServer {
         console.log("\n\t    DONE!\n");
         console.log(`The path to your contest folder is: "${contestPath}"`);
         console.log("\n\tHappy Coding!\n");
-        const command = getTerminalCommand(this.config.terminal, contestPath);
+        const command = getEditorCommand(this.config.editor, contestPath);
         if (command) {
           const newTerminalExec = spawn(command, { shell: true, detached: true, stdio: "ignore" });
           newTerminalExec.unref();
