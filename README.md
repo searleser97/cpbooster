@@ -73,6 +73,7 @@
 
 ## Future Updates (work not started yet)
 
+- add `--here` option to `cpb clone` to clone testcases in current directory
 - Add Memory Limit Exceeded Veredict (using `gnu-time` as `/usr/bin/time -f '%M' ./program`, can't use `ps` due to lack of precision.
 See https://stackoverflow.com/a/131346/13079132)
 - Add the possibility to test interactive problems
