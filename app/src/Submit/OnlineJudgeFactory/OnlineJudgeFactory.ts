@@ -20,6 +20,7 @@ import { exit } from "process";
 import AtCoder from "./AtCoder";
 import Codeforces from "./Codeforces";
 import OmegaUp from "./OmegaUp";
+import Yandex from "./Yandex";
 import OnlineJudge from "./OnlineJudge";
 
 export default class OnlineJudgeFactory {
@@ -31,6 +32,8 @@ export default class OnlineJudgeFactory {
       return new AtCoder();
     } else if (url.includes("omegaup")) {
       return new OmegaUp();
+    } else if (url.includes("official.contest.yandex")) {
+      return new Yandex(); 
     } else {
       console.log("Online Judge not supported");
       exit(0);
