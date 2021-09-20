@@ -198,10 +198,10 @@ export default class Config {
           config.editor = config.terminal;
         }
         config.contestsDirectory = Util.replaceTildeWithAbsoluteHomePath(config.contestsDirectory);
-        for (const langExtension in config.languages) {
-          config.languages[langExtension]!.template = Util.replaceTildeWithAbsoluteHomePath(
-            config.languages[langExtension]!.template
-          );
+        for (const langConfig of Object.values(config.languages)) {
+          if (langConfig) {
+            langConfig.template = Util.replaceTildeWithAbsoluteHomePath(langConfig.template);
+          }
         }
         return config;
       }
