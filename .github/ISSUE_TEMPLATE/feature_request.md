@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+**Have you read the official website to guarantee that your feature does not exist yet?**
+Official Website: https://searleser97.github.io/cpbooster/
+
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
