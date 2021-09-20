@@ -39,6 +39,7 @@ export default class Config {
   useUserDefaultBrowser: boolean;
   // preferred language extension
   preferredLang: string;
+  hideTestCaseInput: boolean;
 
   // config for language extension
   languages: Record<string, LangConfig | undefined>;
@@ -51,6 +52,7 @@ export default class Config {
     this.showStatusPageOnSubmit = true;
     this.useUserDefaultBrowser = true;
     this.preferredLang = "cpp";
+    this.hideTestCaseInput = false;
     this.languages = {
       cpp: {
         template: "",

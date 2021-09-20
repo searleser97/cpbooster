@@ -97,6 +97,11 @@ export default abstract class Tester {
   printTestResults(veredict: Veredict, feedback: string, testId: number): void {
     if (veredict !== Veredict.CE) {
       console.log(`Test Case ${testId}:`, this.getFormattedVeredict(veredict) + "\n");
+      if (!this.config.hideTestCaseInput) {
+        const input = fs.readFileSync(Tester.getInputPath(this.filePath, testId)).toString();
+        console.log(`${chalk.bgWhite(chalk.black(" Input "))}\n`);
+        console.log(input + "\n");
+      }
     } else {
       console.log(this.getFormattedVeredict(veredict) + "\n");
     }
