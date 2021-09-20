@@ -43,16 +43,29 @@ export default class CompiledTester extends Tester {
     super(config, filePath);
   }
 
-  testOne(testId: number, compile: boolean): Veredict {
+  testOne(testId: number, shouldCompile: boolean): Veredict {
     const binaryFileName = this.getExecutableFileNameOrDefault(false);
     const binaryFilePath = `.${Path.sep}${binaryFileName}`;
-    if (compile) {
-      this.compile(false);
-    } else if (!fs.existsSync(binaryFilePath)) {
-      console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
-      exit(0);
-    }
-    return this.runTest(binaryFilePath, [], testId);
+    const hasValidConditions = (): { status: boolean; feedback: string } => {
+      let result = { status: true, feedback: "" };
+      if (!fs.existsSync(binaryFilePath)) {
+        result = {
+          status: false,
+          feedback: `${chalk.red("Error:")} Executable ${binaryFilePath} not found`
+        };
+      }
+      return result;
+    };
+    const { veredict, feedback } = this.getTestVeredict(
+      binaryFilePath,
+      [],
+      testId,
+      hasValidConditions,
+      shouldCompile,
+      this.compile.bind(this)
+    );
+    this.printTestResults(veredict, feedback, testId);
+    return veredict;
   }
 
   debugOne(testId: number, compile: boolean): void {
@@ -116,24 +129,31 @@ export default class CompiledTester extends Tester {
     console.log("Compiling...\n");
   }
 
-  static executeCompilation(compilerCommand: string, args: string[]): void {
+  static executeCompilation(
+    compilerCommand: string,
+    args: string[]
+  ): { status: boolean; feedback: string } {
+    const result = { status: true, feedback: "" };
     const compilation = spawnSync(compilerCommand, args);
 
     if (compilation.stderr) {
+      // if (compilation.stderr || compilation.status !== 0) {
       let compileStderr = Buffer.from(compilation.stderr).toString("utf8").trim();
       if (compileStderr !== "") {
+        // TODO: replace with regex instead of split and join ignoring case
         compileStderr = compileStderr.split("error").join(chalk.redBright("error"));
         compileStderr = compileStderr.split("warning").join(chalk.blueBright("warning"));
+        // TODO: replace with regex match ignoring case
         if (compileStderr.includes("error")) {
-          Tester.printCompilationErrorMsg();
+          result.status = false;
         }
-        console.log(compileStderr);
-        if (compileStderr.includes("error")) exit(0);
+        result.feedback = compileStderr;
       }
     }
+    return result;
   }
 
-  compile(debug: boolean): void {
+  compile(debug: boolean): { status: boolean; feedback: string } {
     CompiledTester.printCompilingMsg();
     const segmentedCommand = this.getSegmentedCommand(this.langExtension, debug);
 
@@ -156,6 +176,6 @@ export default class CompiledTester extends Tester {
 
     args.push(this.filePath);
 
-    CompiledTester.executeCompilation(compilerCommand, args);
+    return CompiledTester.executeCompilation(compilerCommand, args);
   }
 }

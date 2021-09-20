@@ -52,9 +52,14 @@ export default abstract class Tester {
       console.log("No testcases available for this file:", this.filePath);
       exit(0);
     }
-    let acCnt = this.testOne(testcasesIds[0], compile) === Veredict.AC ? 1 : 0;
+    let veredict = this.testOne(testcasesIds[0], compile);
+    if (veredict === Veredict.CE || veredict === Veredict.ERROR) {
+      exit(0);
+    }
+    let acCnt = veredict === Veredict.AC || veredict === Veredict.AC_WHEN_TRIMMED ? 1 : 0;
     for (let i = 1; i < testcasesIds.length; i++) {
-      acCnt += this.testOne(testcasesIds[i], false) === Veredict.AC ? 1 : 0;
+      veredict = this.testOne(testcasesIds[i], false);
+      acCnt += veredict === Veredict.AC || veredict === Veredict.AC_WHEN_TRIMMED ? 1 : 0;
     }
     Tester.printScore(acCnt, testcasesIds.length);
   }
@@ -71,90 +76,32 @@ export default abstract class Tester {
     return time;
   }
 
-  printTestResults(testId: number): Veredict {
-    const outputFilePath = Tester.getOutputPath(this.filePath, testId);
-    const answerFilePath = Tester.getAnswerPath(this.filePath, testId);
-    if (!fs.existsSync(outputFilePath)) {
-      console.log("output file not found in", outputFilePath);
-      return Veredict.RTE;
+  getFormattedVeredict(veredict: Veredict): string {
+    switch (veredict) {
+      case Veredict.AC:
+      case Veredict.AC_WHEN_TRIMMED:
+        return chalk.bgGreen(chalk.whiteBright(" A C "));
+      case Veredict.WA:
+        return chalk.bgRed(chalk.whiteBright(" W A "));
+      case Veredict.RTE:
+        return chalk.bgBlue(chalk.whiteBright(" R T E "));
+      case Veredict.TLE:
+        return chalk.bgHex("#8d42f5")(chalk.whiteBright(" T L E "));
+      case Veredict.CE:
+        return chalk.bgYellow(chalk.whiteBright(" Compilation Error "));
+      default:
+        return "UNDETERMINED";
     }
-    if (!fs.existsSync(answerFilePath)) {
-      console.log("answer file not found in", answerFilePath);
-      return Veredict.RTE;
-    }
+  }
 
-    const output = fs.readFileSync(outputFilePath).toString();
-    const ans = fs.readFileSync(answerFilePath).toString();
-    const trimmedOutput = output.trim();
-    const trimmedAns = ans.trim();
-    const outputLines = trimmedOutput.split("\n");
-    const ansLines = trimmedAns.split("\n");
-
-    const trimmedOutputLines = outputLines.map((item) => {
-      return item.trim(); // remove '\r' char if exists
-    });
-    const trimmedAnsLines = ansLines.map((item) => {
-      return item.trim(); // remove '\r' char if exists
-    });
-
-    const isTrimmedOutputSame =
-      trimmedOutputLines.length === trimmedAnsLines.length &&
-      Util.sequence(0, trimmedAnsLines.length).every(
-        (index) => trimmedOutputLines[index] === trimmedAnsLines[index]
-      );
-
-    if (isTrimmedOutputSame) {
-      console.log(`Test Case ${testId}:`, chalk.bgGreen(chalk.whiteBright(" A C ")), "\n");
-      if (ans !== output) {
-        console.log(chalk.yellow("Check leading and trailing blank spaces") + "\n");
-      }
-      console.log(chalk.bgGreen(chalk.whiteBright("Your Output")) + "\n");
-      console.log(output);
-      return Veredict.AC;
+  printTestResults(veredict: Veredict, feedback: string, testId: number): void {
+    if (veredict !== Veredict.CE) {
+      console.log(`Test Case ${testId}:`, this.getFormattedVeredict(veredict) + "\n");
     } else {
-      console.log(`Test Case ${testId}:`, chalk.bgRed(chalk.whiteBright(" W A ")), "\n");
-      let maxOutputWidth = 0;
-      for (let i = 0; i < trimmedOutputLines.length; i++) {
-        if (trimmedOutputLines[i].length > maxOutputWidth) {
-          maxOutputWidth = trimmedOutputLines[i].length;
-        }
-      }
-      const columnWidth = Math.min(Math.max(maxOutputWidth, 16), process.stdout.columns - 8);
-      const leftHeader = chalk.bgRed(chalk.whiteBright(Util.padCenter("Your Output", columnWidth)));
-      const rightHeader = chalk.bgGreen(
-        chalk.whiteBright(Util.padCenter("Correct Answer", columnWidth))
-      );
-      console.log(leftHeader + "|" + rightHeader);
-      console.log("".padEnd(columnWidth) + "|" + "".padEnd(columnWidth));
-      for (let i = 0; i < Math.max(trimmedOutputLines.length, trimmedAnsLines.length); i++) {
-        let line = "";
-        if (i < trimmedOutputLines.length) {
-          line += trimmedOutputLines[i].padEnd(columnWidth) + "|";
-        } else {
-          line += "".padEnd(columnWidth) + "|";
-        }
-
-        if (i < trimmedAnsLines.length) {
-          line += trimmedAnsLines[i].padEnd(columnWidth);
-        } else {
-          line += "".padEnd(columnWidth);
-        }
-
-        if (
-          i < trimmedOutputLines.length &&
-          i < trimmedAnsLines.length &&
-          trimmedOutputLines[i] === trimmedAnsLines[i]
-        ) {
-          line += chalk.bgGreen("  ");
-        } else {
-          line += chalk.bgRed("  ");
-        }
-
-        console.log(line);
-      }
-      console.log();
-      return Veredict.WA;
+      console.log(this.getFormattedVeredict(veredict) + "\n");
     }
+
+    console.log(feedback);
   }
 
   protected runDebug(execCommand: string, args: string[], testId: number): void {
@@ -176,34 +123,90 @@ export default abstract class Tester {
     }
   }
 
-  protected runTest(execCommand: string, args: string[], testId: number): Veredict {
-    console.log("\nEvaluating...\n");
-    const execution = spawnSync(execCommand, args, {
-      input: fs.readFileSync(Tester.getInputPath(this.filePath, testId)),
-      timeout: this.extractTimeLimit() + 500
-    });
+  getTestVeredict(
+    execCommand: string,
+    args: string[],
+    testId: number,
+    hasValidConditions: () => { status: boolean; feedback: string },
+    shouldCompile?: boolean,
+    compile?: (isDebug: boolean) => { status: boolean; feedback: string }
+  ): { veredict: Veredict; feedback: string } {
+    let feedback = "";
+    let finalVeredict = Veredict.UNDETERMINED;
 
-    if (execution.error?.message.includes("ETIMEDOUT")) {
-      console.log(
-        `Test Case ${testId}:`,
-        chalk.bgHex("#8d42f5")(chalk.whiteBright(" T L E ")),
-        "\n"
-      );
-      return Veredict.TLE;
+    if (shouldCompile && compile) {
+      const compilationState = compile(false);
+      if (!compilationState.status) {
+        return { veredict: Veredict.CE, feedback: compilationState.feedback };
+      }
     }
 
-    if (execution.status !== 0) {
-      console.log(`Test Case ${testId}:`, chalk.bgBlue(chalk.whiteBright(" R T E ")), "\n");
-      if (execution.stdout.toString()) console.log(execution.stdout.toString());
-      if (execution.stderr.toString()) console.log(execution.stderr.toString());
-      return Veredict.RTE;
-    }
+    const preConditionState = hasValidConditions();
 
-    const outputPath = Tester.getOutputPath(this.filePath, testId);
-    if (execution.stdout) {
-      fs.writeFileSync(outputPath, execution.stdout.toString());
+    if (!preConditionState.status) {
+      feedback += preConditionState.feedback;
+      finalVeredict = Veredict.ERROR;
+    } else {
+      const execution = spawnSync(execCommand, args, {
+        input: fs.readFileSync(Tester.getInputPath(this.filePath, testId)),
+        timeout: this.extractTimeLimit() + 500
+      });
+      // TODO: Extract logic of each condition to small functions
+      if (execution.error?.message.includes("ETIMEDOUT")) {
+        finalVeredict = Veredict.TLE;
+      } else if (execution.status !== 0) {
+        if (execution.stdout.toString()) feedback += execution.stdout.toString() + "\n";
+        if (execution.stderr.toString()) feedback += execution.stderr.toString() + "\n";
+        finalVeredict = Veredict.RTE;
+      } else {
+        const answerFilePath = Tester.getAnswerPath(this.filePath, testId);
+
+        if (fs.existsSync(answerFilePath)) {
+          const output = execution.stdout?.toString() ?? "";
+          const ans = fs.readFileSync(answerFilePath).toString();
+          const trimmedOutput = output.trim();
+          const trimmedAns = ans.trim();
+          const outputLines = trimmedOutput.split("\n");
+          const ansLines = trimmedAns.split("\n");
+
+          const trimmedOutputLines = outputLines.map((item) => {
+            return item.trim(); // remove '\r' char if exists
+          });
+          const trimmedAnsLines = ansLines.map((item) => {
+            return item.trim(); // remove '\r' char if exists
+          });
+
+          const isTrimmedOutputSame =
+            trimmedOutputLines.length === trimmedAnsLines.length &&
+            Util.sequence(0, trimmedAnsLines.length).every(
+              (index) => trimmedOutputLines[index] === trimmedAnsLines[index]
+            );
+
+          if (isTrimmedOutputSame) {
+            if (ans !== output) {
+              feedback += chalk.yellow("Check leading and trailing blank spaces") + "\n\n";
+              finalVeredict = Veredict.AC_WHEN_TRIMMED;
+            } else {
+              finalVeredict = Veredict.AC;
+            }
+            feedback += chalk.bgGreen(chalk.whiteBright(" Your Output ")) + "\n\n";
+            feedback += output;
+          } else {
+            feedback += getOutputDiff(outputLines, ansLines);
+            finalVeredict = Veredict.WA;
+          }
+        } else {
+          feedback += `answer file not found in ${answerFilePath}\n`;
+          finalVeredict = Veredict.RTE;
+        }
+        const outputFilePath = Tester.getOutputPath(this.filePath, testId);
+        fs.writeFileSync(outputFilePath, execution.stdout.toString());
+      }
     }
-    return this.printTestResults(testId);
+    return {
+      veredict: finalVeredict,
+      feedback
+    };
   }
 
   protected runDebugWithUserInput(command: string, args: string[] = []): void {
@@ -291,13 +294,6 @@ export default abstract class Tester {
     console.log(chalk.bgYellow(chalk.whiteBright(" Compilation Error ")), "\n");
   }
 
-  static printUnnecesaryNoCompileFlagMsg(fileExtension: string): void {
-    console.log(
-      `${fileExtension} files will be interpreted not compiled, therefore, the --noCompile flag will be ignored.\n` +
-        `If this was not the expected behavior verify the settings in your config file`
-    );
-  }
-
   protected getSegmentedCommand(langExtension: string, debug: boolean): string[] {
     const langConfig = this.config.languages[langExtension];
 
@@ -323,4 +319,48 @@ export default abstract class Tester {
   protected getCompilerCommand(langExtension: string, debug: boolean): string {
     return this.getSegmentedCommand(langExtension, debug)[0];
   }
+}
+
+function getOutputDiff(trimmedOutputLines: string[], trimmedAnsLines: string[]) {
+  let outputDiff = "";
+  let maxOutputWidth = 0;
+  for (let i = 0; i < trimmedOutputLines.length; i++) {
+    if (trimmedOutputLines[i].length > maxOutputWidth) {
+      maxOutputWidth = trimmedOutputLines[i].length;
+    }
+  }
+  const columnWidth = Math.min(Math.max(maxOutputWidth, 16), process.stdout.columns - 8);
+  const leftHeader = chalk.bgRed(chalk.whiteBright(Util.padCenter("Your Output", columnWidth)));
+  const rightHeader = chalk.bgGreen(
+    chalk.whiteBright(Util.padCenter("Correct Answer", columnWidth))
+  );
+  outputDiff += leftHeader + "|" + rightHeader + "\n";
+  outputDiff += "".padEnd(columnWidth) + "|" + "".padEnd(columnWidth) + "\n";
+  for (let i = 0; i < Math.max(trimmedOutputLines.length, trimmedAnsLines.length); i++) {
+    let line = "";
+    if (i < trimmedOutputLines.length) {
+      line += trimmedOutputLines[i].padEnd(columnWidth) + "|";
+    } else {
+      line += "".padEnd(columnWidth) + "|";
+    }
+
+    if (i < trimmedAnsLines.length) {
+      line += trimmedAnsLines[i].padEnd(columnWidth);
+    } else {
+      line += "".padEnd(columnWidth);
+    }
+
+    if (
+      i < trimmedOutputLines.length &&
+      i < trimmedAnsLines.length &&
+      trimmedOutputLines[i] === trimmedAnsLines[i]
+    ) {
+      line += chalk.bgGreen("  ");
+    } else {
+      line += chalk.bgRed("  ");
+    }
+
+    outputDiff += line + "\n";
+  }
+  return outputDiff + "\n";
 }

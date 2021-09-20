@@ -44,29 +44,42 @@ export default class MixedTester extends Tester {
     );
   }
 
-  testOne(testId: number, compile: boolean): Veredict {
+  testOne(testId: number, shouldCompile: boolean): Veredict {
     const executableFileName = this.getExecutableFileName();
-    if (compile) {
-      this.compile(false);
-    } else if (!fs.existsSync(executableFileName)) {
-      console.log(
-        chalk.red("Error:"),
-        `Executable ${executableFileName} not found, Is your class name same as the file name ?`
-      );
-      exit(0);
-    }
+    const hasValidConditions = (): { status: boolean; feedback: string } => {
+      let result = { status: true, feedback: "" };
+      if (!fs.existsSync(executableFileName)) {
+        result = {
+          status: false,
+          feedback: `${chalk.red(
+            "Error:"
+          )} Executable ${executableFileName} not found, Is your class name same as the file name ?`
+        };
+      }
+      return result;
+    };
     const langConfig = this.config.languages[this.langExtension];
     if (langConfig?.runCommand) {
       const segmentedRunCommand = langConfig.runCommand.split(" ");
       segmentedRunCommand.push(this.getExecutableFileNameNoExtension());
-      return this.runTest(segmentedRunCommand[0], segmentedRunCommand.slice(1), testId);
+
+      const { veredict, feedback } = this.getTestVeredict(
+        segmentedRunCommand[0],
+        segmentedRunCommand.slice(1),
+        testId,
+        hasValidConditions,
+        shouldCompile,
+        this.compile.bind(this) // attaching compile function to `this` context
+      );
+      this.printTestResults(veredict, feedback, testId);
+      return veredict;
     } else {
       console.log(`runCommand not specified for ${this.langExtension} files`);
       exit(0);
     }
   }
 
-  compile(debug: boolean): void {
+  compile(debug: boolean): { status: boolean; feedback: string } {
     CompiledTester.printCompilingMsg();
     const segmentedCommand = this.getSegmentedCommand(this.langExtension, debug);
 
@@ -75,7 +88,7 @@ export default class MixedTester extends Tester {
 
     args.push(this.filePath);
 
-    CompiledTester.executeCompilation(compilerCommand, args);
+    return CompiledTester.executeCompilation(compilerCommand, args);
   }
 
   debugOne(testId: number, compile: boolean): void {

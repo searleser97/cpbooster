@@ -20,5 +20,8 @@ export enum Veredict {
   WA,
   TLE,
   RTE,
-  CE
+  CE,
+  AC_WHEN_TRIMMED,
+  ERROR,
+  UNDETERMINED
 }

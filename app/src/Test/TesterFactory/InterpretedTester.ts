@@ -25,26 +25,24 @@ export default class InterpretedTester extends Tester {
     super(config, filePath);
   }
 
-  testOne(testId: number, compile: boolean): Veredict {
-    if (!compile) {
-      Tester.printUnnecesaryNoCompileFlagMsg(this.langExtension);
-    }
+  testOne(testId: number, _compile: boolean): Veredict {
     const commandAsArray = this.getSegmentedCommand(this.langExtension, false);
-    return this.runTest(commandAsArray[0], [...commandAsArray.slice(1), this.filePath], testId);
+    const { veredict, feedback } = this.getTestVeredict(
+      commandAsArray[0],
+      [...commandAsArray.slice(1), this.filePath],
+      testId,
+      () => ({ status: true, feedback: "" })
+    );
+    this.printTestResults(veredict, feedback, testId);
+    return veredict;
   }
 
-  debugOne(testId: number, compile: boolean): void {
-    if (!compile) {
-      Tester.printUnnecesaryNoCompileFlagMsg(this.langExtension);
-    }
+  debugOne(testId: number, _compile: boolean): void {
     const debugCommandAsArray = this.getSegmentedCommand(this.langExtension, true);
     this.runDebug(debugCommandAsArray[0], [...debugCommandAsArray.slice(1), this.filePath], testId);
   }
 
-  debugWithUserInput(compile: boolean): void {
-    if (!compile) {
-      Tester.printUnnecesaryNoCompileFlagMsg(this.langExtension);
-    }
+  debugWithUserInput(_compile: boolean): void {
     const debugCommandAsArray = this.getSegmentedCommand(this.langExtension, true);
     this.runDebugWithUserInput(debugCommandAsArray[0], [
       ...debugCommandAsArray.slice(1),
