@@ -21,6 +21,7 @@ import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
 import CCServer from "./CCServer";
 
 export interface ICommandCloneArgs extends ICommandGlobalArgs {
+  here?: boolean;
   port?: number;
 }
 
@@ -28,6 +29,9 @@ export function clone(args: ICommandCloneArgs): void {
   const config = Config.read(args.configPath);
   if (args.port) {
     config.port = args.port;
+  }
+  if (args.here) {
+    config.cloneInCurrentDir = true;
   }
   new CCServer(config).run();
 }

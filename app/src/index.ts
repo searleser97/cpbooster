@@ -68,6 +68,11 @@ yargs
           alias: "p",
           type: "number",
           description: "Port where competitive companion plugin will send parsed data from problems"
+        })
+        .option("here", {
+          type: "boolean",
+          description:
+            "Clones the contest or problem in current directory instead of your global contests directory"
         });
     },
     (argv) => clone(argv as unknown as ICommandCloneArgs)

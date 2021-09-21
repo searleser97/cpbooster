@@ -49,7 +49,9 @@ export default class CCServer {
       problemData.group = Util.normalizeFileName(problemData.group);
 
       this.contestName = problemData.group;
-      const contestPath = Path.join(config.contestsDirectory, problemData.group);
+      const contestPath = config.cloneInCurrentDir
+        ? this.contestName
+        : Path.join(config.contestsDirectory, problemData.group);
       if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
       const FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
       const extension = `.${config.preferredLang}`;
@@ -85,7 +87,9 @@ export default class CCServer {
       if (elapsedTime >= tolerance) {
         if (serverRef) serverRef.close();
         clearInterval(interval);
-        const contestPath = Path.join(this.config.contestsDirectory, this.contestName);
+        const contestPath = this.config.cloneInCurrentDir
+          ? this.contestName
+          : Path.join(this.config.contestsDirectory, this.contestName);
         console.log("\n\t    DONE!\n");
         console.log(`The path to your contest folder is: "${contestPath}"`);
         console.log("\n\tHappy Coding!\n");

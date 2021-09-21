@@ -40,7 +40,7 @@ export default class Config {
   // preferred language extension
   preferredLang: string;
   hideTestCaseInput: boolean;
-
+  cloneInCurrentDir: boolean;
   // config for language extension
   languages: Record<string, LangConfig | undefined>;
 
@@ -53,6 +53,7 @@ export default class Config {
     this.useUserDefaultBrowser = true;
     this.preferredLang = "cpp";
     this.hideTestCaseInput = false;
+    this.cloneInCurrentDir = false;
     this.languages = {
       cpp: {
         template: "",
