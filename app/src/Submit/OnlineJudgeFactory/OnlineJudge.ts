@@ -29,7 +29,8 @@ import Util from "../../Utils/Util";
 export enum OnlineJudgeName {
   codeforces = "codeforces",
   atcoder = "atcoder",
-  omegaup = "omegaup"
+  omegaup = "omegaup",
+  yandex = "yandex" 
 }
 
 export default abstract class OnlineJudge {
@@ -118,6 +119,8 @@ export default abstract class OnlineJudge {
         return langAliases?.atcoder;
       case OnlineJudgeName.omegaup:
         return langAliases?.omegaup;
+      case OnlineJudgeName.yandex:
+        return langAliases?.yandex;
       default:
         return undefined;
     }
