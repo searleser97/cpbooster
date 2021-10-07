@@ -71,7 +71,7 @@
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 - [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-## Future Updates (work not started yet)
+## Future Updates (work not started yet, you can contribute by coding any of these features)
 
 - add `--here` option to `cpb clone` to clone testcases in current directory
 - Add Memory Limit Exceeded Veredict (using `gnu-time` as `/usr/bin/time -f '%M' ./program`, can't use `ps` due to lack of precision.
