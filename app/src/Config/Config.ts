@@ -63,6 +63,7 @@ export default class Config {
           codeforces: "54",
           atcoder: "4003",
           omegaup: "cpp17-gcc",
+          szkopul: "-",
           yandex: "gcc7_3"
         },
         type: "compiled",
@@ -75,7 +76,8 @@ export default class Config {
         aliases: {
           codeforces: "31",
           atcoder: "4006",
-          omegaup: "py3"
+          omegaup: "py3",
+          szkopul: "-"
         },
         type: "interpreted",
         commentString: "#"
