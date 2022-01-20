@@ -30,7 +30,8 @@ export enum OnlineJudgeName {
   codeforces = "codeforces",
   atcoder = "atcoder",
   omegaup = "omegaup",
-  yandex = "yandex" 
+  szkopul = "szkopul",
+  yandex = "yandex"
 }
 
 export default abstract class OnlineJudge {
@@ -119,6 +120,8 @@ export default abstract class OnlineJudge {
         return langAliases?.atcoder;
       case OnlineJudgeName.omegaup:
         return langAliases?.omegaup;
+      case OnlineJudgeName.szkopul:
+        return langAliases?.szkopul;
       case OnlineJudgeName.yandex:
         return langAliases?.yandex;
       default:

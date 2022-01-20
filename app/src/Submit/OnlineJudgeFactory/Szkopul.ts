@@ -1,6 +1,6 @@
 /*
     cpbooster "Competitive Programming Booster"
-    Copyright (C) 2020  Sergio G. Sanchez V.
+    Copyright (C) 2022  ???
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,31 +19,31 @@
 import { Page } from "playwright-chromium";
 import OnlineJudge, { OnlineJudgeName } from "./OnlineJudge";
 
-export default class Yandex extends OnlineJudge {
-  readonly onlineJudgeName = OnlineJudgeName.yandex;
-  readonly loginUrl = "https://official.contest.yandex.com/login";
-  readonly blockedResourcesOnSubmit: Set<string> = new Set(["image", "stylesheet", "font"]);
+export default class Szkopul extends OnlineJudge {
+  readonly onlineJudgeName = OnlineJudgeName.szkopul;
+  readonly loginUrl = "https://szkopul.edu.pl/login/";
+  readonly blockedResourcesOnSubmit: Set<string> = new Set([
+    "image",
+    "stylesheet",
+    "font",
+    "script"
+  ]);
 
   async isLoggedIn(page: Page): Promise<boolean> {
-    const querySelector = "form[action*=logout]";
+    const querySelector = '[data-post-url="/logout/"]';
     return (await page.$(querySelector)) !== null;
   }
 
-  async uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean> {
+  async uploadFile(filePath: string, page: Page, _langAlias: string): Promise<boolean> {
     try {
-      await page.selectOption("select", { value: langAlias });
-      await page.click("input[value=file]");
-      const inputFile = await page.$("input[type=file]");
+      const inputFile = await page.$("input#id_file[type=file]");
       if (inputFile) await inputFile.setInputFiles(filePath);
-      await page.click("div.problem__send > button");
-      await page.waitForLoadState("load");
-      if ((await page.$("div[class*=msg_type_warn]")) !== null) {
-        console.log("\nYou have submitted exactly the same code before\n");
-        return false;
-      } else {
-        return true;
-      }
+      else return false;
+      await page.click("button[type=submit]");
+      await page.waitForLoadState("domcontentloaded");
+      return true;
     } catch (e) {
+      console.log(e);
       return false;
     }
   }
