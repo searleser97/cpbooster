@@ -36,7 +36,7 @@ export default class OnlineJudgeFactory {
     } else if (url.includes("szkopul.edu.pl")) {
       return new Szkopul();
     } else if (url.includes("official.contest.yandex")) {
-      return new Yandex(); 
+      return new Yandex();
     } else {
       console.log("Online Judge not supported");
       exit(0);

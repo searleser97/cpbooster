@@ -31,7 +31,7 @@ export enum OnlineJudgeName {
   atcoder = "atcoder",
   omegaup = "omegaup",
   szkopul = "szkopul",
-  yandex = "yandex" 
+  yandex = "yandex"
 }
 
 export default abstract class OnlineJudge {

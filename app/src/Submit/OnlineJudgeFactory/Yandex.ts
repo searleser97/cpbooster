@@ -32,7 +32,7 @@ export default class Yandex extends OnlineJudge {
   async uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean> {
     try {
       await page.selectOption("select", { value: langAlias });
-      await page.click("input[value=file]")
+      await page.click("input[value=file]");
       const inputFile = await page.$("input[type=file]");
       if (inputFile) await inputFile.setInputFiles(filePath);
       await page.click("div.problem__send > button");

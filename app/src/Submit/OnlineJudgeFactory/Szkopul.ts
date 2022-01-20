@@ -19,7 +19,7 @@
 import { Page } from "playwright-chromium";
 import OnlineJudge, { OnlineJudgeName } from "./OnlineJudge";
 
-export default class CS3233 extends OnlineJudge {
+export default class Szkopul extends OnlineJudge {
   readonly onlineJudgeName = OnlineJudgeName.szkopul;
   readonly loginUrl = "https://szkopul.edu.pl/login/";
   readonly blockedResourcesOnSubmit: Set<string> = new Set([
@@ -34,13 +34,14 @@ export default class CS3233 extends OnlineJudge {
     return (await page.$(querySelector)) !== null;
   }
 
-  async uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean> {
+  async uploadFile(filePath: string, page: Page, _langAlias: string): Promise<boolean> {
     try {
       const inputFile = await page.$("input#id_file[type=file]");
-      if(inputFile) await inputFile.setInputFiles(filePath); else return false;
-	  await page.click('button[type=submit]');
+      if (inputFile) await inputFile.setInputFiles(filePath);
+      else return false;
+      await page.click("button[type=submit]");
       await page.waitForLoadState("domcontentloaded");
-	  return true;
+      return true;
     } catch (e) {
       console.log(e);
       return false;
