@@ -100,7 +100,16 @@ export default abstract class Tester {
       if (!this.config.hideTestCaseInput) {
         const input = fs.readFileSync(Tester.getInputPath(this.filePath, testId)).toString();
         console.log(`${chalk.bgWhite(chalk.black(" Input "))}\n`);
-        console.log(input + "\n");
+        if (this.config.maxLinesToShowFromInput === 0) {
+          console.log(input + "\n");
+        } else {
+          const inputLines = input.split("\n");
+          const reducedInputLines = [
+            inputLines.slice(0, this.config.maxLinesToShowFromInput),
+            "..."
+          ].join("\n");
+          console.log(reducedInputLines + "\n");
+        }
       }
     } else {
       console.log(this.getFormattedVeredict(veredict) + "\n");
