@@ -81,7 +81,9 @@ See https://stackoverflow.com/a/131346/13079132)
 - Add the possibility to test current file using test cases of another file (test --as \<filename>)
 - Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)
 - Fully support windows CMD.
-- Add support for `NODE_ENV` in compile/debug command for debugging purposes. 
+- Add support for `NODE_ENV` in compile/debug command for debugging purposes.
+- Refactor `DebugOne` and `DebugWithUserInput` functions.
+- Solve TODOs in code.
 
 
 ## Final Notes
