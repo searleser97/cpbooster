@@ -20,6 +20,7 @@ import Config from "../../Config/Config";
 import { Veredict } from "../../Types/Veredict";
 import Util from "../../Utils/Util";
 import * as fs from "fs";
+import os from "os";
 import { exit } from "process";
 import chalk from "chalk";
 import { spawnSync } from "child_process";
@@ -100,15 +101,18 @@ export default abstract class Tester {
       if (!this.config.hideTestCaseInput) {
         const input = fs.readFileSync(Tester.getInputPath(this.filePath, testId)).toString();
         console.log(`${chalk.bgWhite(chalk.black(" Input "))}\n`);
-        if (this.config.maxLinesToShowFromInput === 0) {
-          console.log(input + "\n");
+        const inputLines = input.split(/\n|\r\n/);
+        if (
+          this.config.maxLinesToShowFromInput === 0 ||
+          inputLines.length <= this.config.maxLinesToShowFromInput
+        ) {
+          console.log(inputLines.join(os.EOL) + os.EOL);
         } else {
-          const inputLines = input.split("\n");
           const reducedInputLines = [
-            inputLines.slice(0, this.config.maxLinesToShowFromInput),
-            "..."
-          ].join("\n");
-          console.log(reducedInputLines + "\n");
+            ...inputLines.slice(0, this.config.maxLinesToShowFromInput),
+            "... (the rest of the input is hidden)"
+          ].join(os.EOL);
+          console.log(reducedInputLines + os.EOL);
         }
       }
     } else {
