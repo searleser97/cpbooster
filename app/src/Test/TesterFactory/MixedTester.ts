@@ -94,7 +94,11 @@ export default class MixedTester extends Tester {
   debugOne(testId: number, compile: boolean): void {
     const executableFileName = this.getExecutableFileName();
     if (compile) {
-      this.compile(true);
+      const { status, feedback } = this.compile(true);
+      if (!status) {
+        this.printTestResults(Veredict.CE, feedback, testId);
+        exit(0);
+      }
     } else if (!fs.existsSync(executableFileName)) {
       console.log(
         chalk.red("Error:"),
@@ -116,7 +120,11 @@ export default class MixedTester extends Tester {
   debugWithUserInput(compile: boolean): void {
     const executableFileName = this.getExecutableFileName();
     if (compile) {
-      this.compile(true);
+      const { status, feedback } = this.compile(true);
+      if (!status) {
+        this.printTestResults(Veredict.CE, feedback, 0);
+        exit(0);
+      }
     } else if (!fs.existsSync(executableFileName)) {
       console.log(
         chalk.red("Error:"),
