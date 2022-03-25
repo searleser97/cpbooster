@@ -53,6 +53,8 @@
 
 1. Flat File Structure. See [Why Flat File Structure](https://searleser97.github.io/cpbooster/docs/clone/#why-flat-file-structure)
 
+1. Supports any programming language.
+
 ## How to Contribute
 
 1. Fork this repository and clone it locally: `git clone https://github.com/{yourUsername}/cpbooster`
