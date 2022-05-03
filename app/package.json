@@ -1,7 +1,7 @@
 {
   "name": "cpbooster",
   "author": "searleser97",
-  "version": "2.6.0",
+  "version": "2.6.3",
   "description": "cpbooster is a cross-platform CLI tool designed to boost competitive programmer's speed during contests by automating various routine tasks",
   "homepage": "https://github.com/searleser97/cpbooster",
   "repository": "github:searleser97/cpbooster",
@@ -26,7 +26,8 @@
     "test": "jest",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "version": "npm run build"
   },
   "files": [
     "*"

@@ -72,7 +72,11 @@ export default class CompiledTester extends Tester {
     const binaryFileName = this.getExecutableFileNameOrDefault(true);
     const binaryFilePath = `.${Path.sep}${binaryFileName}`;
     if (compile) {
-      this.compile(true);
+      const { status, feedback } = this.compile(true);
+      if (!status) {
+        this.printTestResults(Veredict.CE, feedback, testId);
+        exit(0);
+      }
     } else if (!fs.existsSync(binaryFilePath)) {
       console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
       exit(0);
@@ -84,7 +88,11 @@ export default class CompiledTester extends Tester {
     const binaryFileName = this.getExecutableFileNameOrDefault(true);
     const binaryFilePath = `.${Path.sep}${binaryFileName}`;
     if (compile) {
-      this.compile(true);
+      const { status, feedback } = this.compile(true);
+      if (!status) {
+        this.printTestResults(Veredict.CE, feedback, 0);
+        exit(0);
+      }
     } else if (!fs.existsSync(binaryFilePath)) {
       console.log(chalk.red("Error:"), `Executable ${binaryFilePath} not found`);
       exit(0);
