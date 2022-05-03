@@ -1,7 +1,7 @@
 {
   "name": "cpbooster",
   "author": "searleser97",
-  "version": "2.6.3",
+  "version": "2.6.0",
   "description": "cpbooster is a cross-platform CLI tool designed to boost competitive programmer's speed during contests by automating various routine tasks",
   "homepage": "https://github.com/searleser97/cpbooster",
   "repository": "github:searleser97/cpbooster",
