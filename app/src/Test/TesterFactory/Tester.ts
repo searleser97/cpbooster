@@ -247,7 +247,7 @@ export default abstract class Tester {
       const num = parseInt(filename.replace(`${fileNameNoExtension}.in`, ""));
       testcasesIds.push(num);
     });
-    return testcasesIds;
+    return testcasesIds.sort((tid1, tid2) => tid1 - tid2);
   }
 
   /**
