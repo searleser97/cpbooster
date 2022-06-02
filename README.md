@@ -86,6 +86,7 @@ See https://stackoverflow.com/a/131346/13079132)
 - Add support for `NODE_ENV` in compile/debug command for debugging purposes.
 - Refactor `DebugOne` and `DebugWithUserInput` functions.
 - Open editor in created file right after executing `cpb create <filename>.<ext>`
+- Add option per file type/language to not prepend the `// time-limit: xxx` comment on top of a file of specific type/language.
 - Solve TODOs in code.
 
 
