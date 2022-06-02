@@ -85,6 +85,7 @@ See https://stackoverflow.com/a/131346/13079132)
 - Fully support windows CMD.
 - Add support for `NODE_ENV` in compile/debug command for debugging purposes.
 - Refactor `DebugOne` and `DebugWithUserInput` functions.
+- Open editor in created file right after executing `cpb create <filename>.<ext>`
 - Solve TODOs in code.
 
 
