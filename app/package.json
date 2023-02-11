@@ -61,7 +61,7 @@
     "express": "^4.17.1",
     "open": "^8.0.8",
     "playwright-chromium": "^1.11.0",
-    "update-notifier": "^4.1.0",
+    "update-notifier": "^6.0.2",
     "yargs": "^15.4.0"
   }
 }
