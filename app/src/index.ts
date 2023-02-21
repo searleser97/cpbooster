@@ -192,7 +192,7 @@ yargs
     (argv) => login(argv as unknown as ICommandLoginArgs)
   )
   .command(
-    ["submit <filePath>", "s"],
+    ["submit <filePath> [url]", "s"],
     descriptions.submit,
     (new_yargs) => {
       new_yargs
