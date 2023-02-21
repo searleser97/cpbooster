@@ -53,14 +53,14 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.4",
     "ts-node": "^8.10.2",
-    "ttypescript": "^1.5.12",
+    "ttypescript": "^1.5.15",
     "typescript": "^3.9.6"
   },
   "dependencies": {
     "chalk": "^4.1.0",
     "express": "^4.17.1",
     "open": "^8.0.8",
-    "playwright-chromium": "^1.11.0",
+    "playwright-chromium": "^1.30.0",
     "update-notifier": "^4.1.0",
     "yargs": "^15.4.0"
   }

@@ -80,11 +80,13 @@
 See https://stackoverflow.com/a/131346/13079132)
 - Add the possibility to test interactive problems
 - Add Stress tests (using brute force solution and tests generator)
-- Add the possibility to test current file using test cases of another file (test --as \<filename>)
+- Add the possibility to test current file using test cases of another file (test --as \<filename> or `cpb test <sourcefile> --with \<testcases_filename>`)
 - Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)
 - Fully support windows CMD.
 - Add support for `NODE_ENV` in compile/debug command for debugging purposes.
 - Refactor `DebugOne` and `DebugWithUserInput` functions.
+- Open editor in created file right after executing `cpb create <filename>.<ext>`
+- Add option per file type/language to not prepend the `// time-limit: xxx` comment on top of a file of specific type/language.
 - Solve TODOs in code.
 
 
