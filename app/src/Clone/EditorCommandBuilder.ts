@@ -13,7 +13,7 @@ export function getEditorCommand(terminalName: string, contestPath: string): str
     case "terminal":
       return `open -a terminal "${contestPath}"`;
     case "kitty":
-      return `kitty --directory "${contestPath}"`;
+      return `kitty --single-instance --directory "${contestPath}"`;
     case "vscode":
       return `code "${contestPath}"`;
     default:
