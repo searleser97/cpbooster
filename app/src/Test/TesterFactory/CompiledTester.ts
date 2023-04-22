@@ -123,9 +123,7 @@ export default class CompiledTester extends Tester {
     let defaultName = Util.replaceAll(Path.parse(this.filePath).name, " ", "");
     if (debug) defaultName += "debug";
     const isWindows = os.type() === "Windows_NT" || os.release().includes("Microsoft");
-    if (isWindows) {
-      defaultName += ".exe"
-    }
+    if (isWindows) defaultName += ".exe";
     return defaultName;
   }
 
