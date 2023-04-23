@@ -122,8 +122,13 @@ export default class CompiledTester extends Tester {
   getDefaultExecutableFileName(debug: boolean): string {
     let defaultName = Util.replaceAll(Path.parse(this.filePath).name, " ", "");
     if (debug) defaultName += "debug";
-    const isWindows = os.type() === "Windows_NT" || os.release().includes("Microsoft");
-    if (isWindows) defaultName += ".exe";
+    let fileExtension = this.config.executableFileExtension;
+    if (fileExtension) {
+      // replace for cases where user includes unnecessary period
+      // ensures the option still works as expected
+      fileExtension = fileExtension.replace(/[^A-Za-z]/g, '');
+      defaultName += "." + fileExtension;
+    }
     return defaultName;
   }
 
