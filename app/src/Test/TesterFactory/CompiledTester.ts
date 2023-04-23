@@ -124,9 +124,9 @@ export default class CompiledTester extends Tester {
     if (debug) defaultName += "debug";
     let fileExtension = this.config.executableFileExtension;
     if (fileExtension) {
-      // replace for cases where user includes unnecessary period
+      // replace for cases where user includes unnecessary characters
       // ensures the option still works as expected
-      fileExtension = fileExtension.replace(/[^A-Za-z]/g, '');
+      fileExtension = fileExtension.replace(/\s+/g, '').replace(/^\./, '');
       defaultName += "." + fileExtension;
     }
     return defaultName;
