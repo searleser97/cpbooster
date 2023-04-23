@@ -19,6 +19,7 @@
 import Config from "../../Config/Config";
 import * as Path from "path";
 import * as fs from "fs";
+import * as os from "os";
 import chalk from "chalk";
 import Util from "../../Utils/Util";
 import { spawnSync } from "child_process";
@@ -121,7 +122,13 @@ export default class CompiledTester extends Tester {
   getDefaultExecutableFileName(debug: boolean): string {
     let defaultName = Util.replaceAll(Path.parse(this.filePath).name, " ", "");
     if (debug) defaultName += "debug";
-    defaultName += ".exe";
+    let fileExtension = this.config.executableFileExtension;
+    if (fileExtension) {
+      // replace for cases where user includes unnecessary characters
+      // ensures the option still works as expected
+      fileExtension = fileExtension.replace(/\s+/g, '').replace(/^\./, '');
+      defaultName += "." + fileExtension;
+    }
     return defaultName;
   }
 
