@@ -65,7 +65,7 @@ export default class Config {
         debugCommand: "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
         aliases: {
           codeforces: "54",
-          atcoder: "4003",
+          atcoder: "5001",
           omegaup: "cpp17-gcc",
           szkopul: "C++",
           yandex: "gcc7_3"
