@@ -210,7 +210,7 @@ export default abstract class Tester {
             feedback += chalk.bgGreen(chalk.whiteBright(" Your Output ")) + "\n\n";
             feedback += output;
           } else {
-            feedback += getOutputDiff(outputLines, ansLines);
+            feedback += getOutputDiff(trimmedOutputLines, trimmedAnsLines);
             finalVeredict = Veredict.WA;
           }
         } else {
