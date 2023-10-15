@@ -180,8 +180,11 @@ export default abstract class Tester {
         const answerFilePath = Tester.getAnswerPath(this.filePath, testId);
 
         if (fs.existsSync(answerFilePath)) {
-          const output = execution.stdout?.toString() ?? "";
+          let output = execution.stdout?.toString() ?? "";
           const ans = fs.readFileSync(answerFilePath).toString();
+          if(Util.isWindows()){
+            output = output.replace(/\r\n/g, "\n");
+          }
           const trimmedOutput = output.trim();
           const trimmedAns = ans.trim();
           const outputLines = trimmedOutput.split("\n");
@@ -210,7 +213,7 @@ export default abstract class Tester {
             feedback += chalk.bgGreen(chalk.whiteBright(" Your Output ")) + "\n\n";
             feedback += output;
           } else {
-            feedback += getOutputDiff(trimmedOutputLines, trimmedAnsLines);
+            feedback += getOutputDiff(outputLines, ansLines);
             finalVeredict = Veredict.WA;
           }
         } else {
