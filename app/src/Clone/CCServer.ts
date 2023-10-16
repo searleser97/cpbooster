@@ -34,6 +34,7 @@ import Tester from "../Test/TesterFactory/Tester";
 export default class CCServer {
   app = express();
   contestName = "NO_NAME";
+  contestPath = "";
   config: Config;
   isActive = false;
   lastRequestTime = process.hrtime();
@@ -47,13 +48,10 @@ export default class CCServer {
       const problemData: ProblemData = request.body;
       problemData.name = Util.normalizeFileName(problemData.name);
       problemData.group = Util.normalizeFileName(problemData.group);
-
       this.contestName = problemData.group;
-      const contestPath = config.cloneInCurrentDir
-        ? this.contestName
-        : Path.join(config.contestsDirectory, problemData.group);
-      if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
-      const FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
+      this.contestPath = Util.getContestPath(this.contestName, this.config);
+      if (!fs.existsSync(this.contestPath)) fs.mkdirSync(this.contestPath, { recursive: true });
+      const FilesPathNoExtension = `${Path.join(this.contestPath, problemData.name)}`;
       const extension = `.${config.preferredLang}`;
       const filePath = `${FilesPathNoExtension}${extension}`;
       SourceFileCreator.create(filePath, config, problemData.timeLimit, problemData.url);
@@ -87,13 +85,10 @@ export default class CCServer {
       if (elapsedTime >= tolerance) {
         if (serverRef) serverRef.close();
         clearInterval(interval);
-        const contestPath = this.config.cloneInCurrentDir
-          ? this.contestName
-          : Path.join(this.config.contestsDirectory, this.contestName);
         console.log("\n\t    DONE!\n");
-        console.log(`The path to your contest folder is: "${contestPath}"`);
+        console.log(`The path to your contest folder is: "${this.contestPath}"`);
         console.log("\n\tHappy Coding!\n");
-        const command = getEditorCommand(this.config.editor, contestPath);
+        const command = getEditorCommand(this.config.editor, this.contestPath);
         if (command) {
           const newTerminalExec = spawn(command, { shell: true, detached: true, stdio: "ignore" });
           newTerminalExec.unref();

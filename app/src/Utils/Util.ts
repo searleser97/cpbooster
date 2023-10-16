@@ -178,4 +178,43 @@ export default class Util {
   static isWindows(): boolean {
     return os.type() === "Windows_NT" || os.release().includes("Microsoft");
   }
+
+  static splitOnlineJudgeName(contestName: string): Array<string> {
+    const onlineJudgeNames = [
+      "Codeforces",
+      "CodeChef",
+      "AtCoder",
+      "HackerRank",
+      "ProjectEuler",
+      "TopCoder",
+      "CSAcademy",
+      "HackerEarth",
+      "Kattis",
+      "LeetCode",
+      "SPOJ"
+    ];
+    for (const onlineJudgeName of onlineJudgeNames) {
+      if (contestName.startsWith(onlineJudgeName)) {
+        return [onlineJudgeName, contestName.substring(onlineJudgeName.length)];
+      }
+    }
+    console.log("Online Judge not identified, saving in root directory");
+    return ["", contestName];
+  }
+
+  static getContestPath(contestName: string, config: Config): string {
+    if (config.sortBasedOnOnlineJudge) {
+      const [onlineJudgeName, splitContestName] = this.splitOnlineJudgeName(contestName);
+      if (config.cloneInCurrentDir) {
+        return Path.join(onlineJudgeName, splitContestName);
+      } else {
+        return Path.join(config.contestsDirectory, onlineJudgeName, splitContestName);
+      }
+    } else {
+      if (config.cloneInCurrentDir) {
+        return contestName;
+      }
+      return Path.join(config.contestsDirectory, contestName);
+    }
+  }
 }
