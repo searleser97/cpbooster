@@ -203,7 +203,7 @@ export default class Util {
   }
 
   static getContestPath(contestName: string, config: Config): string {
-    if (config.sortBasedOnOnlineJudge) {
+    if (config.groupContestsByJudge) {
       const [onlineJudgeName, splitContestName] = this.splitOnlineJudgeName(contestName);
       if (config.cloneInCurrentDir) {
         return Path.join(onlineJudgeName, splitContestName);
