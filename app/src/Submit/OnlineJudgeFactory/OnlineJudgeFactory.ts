@@ -19,6 +19,7 @@
 import { exit } from "process";
 import AtCoder from "./AtCoder";
 import Codeforces from "./Codeforces";
+import UniversalOJ from "./UniversalOJ";
 import OmegaUp from "./OmegaUp";
 import Szkopul from "./Szkopul";
 import Yandex from "./Yandex";
@@ -31,6 +32,8 @@ export default class OnlineJudgeFactory {
       return new Codeforces();
     } else if (url.includes("atcoder")) {
       return new AtCoder();
+    } else if (url.includes("contest.ucup.ac")) {
+      return new UniversalOJ();
     } else if (url.includes("omegaup")) {
       return new OmegaUp();
     } else if (url.includes("szkopul.edu.pl")) {

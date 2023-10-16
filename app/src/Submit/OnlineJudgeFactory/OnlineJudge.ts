@@ -28,6 +28,7 @@ import Util from "../../Utils/Util";
 
 export enum OnlineJudgeName {
   codeforces = "codeforces",
+  universaloj = "universaloj",
   atcoder = "atcoder",
   omegaup = "omegaup",
   szkopul = "szkopul",
@@ -116,6 +117,8 @@ export default abstract class OnlineJudge {
     switch (this.onlineJudgeName) {
       case OnlineJudgeName.codeforces:
         return langAliases?.codeforces;
+      case OnlineJudgeName.universaloj:
+        return langAliases?.universaloj;
       case OnlineJudgeName.atcoder:
         return langAliases?.atcoder;
       case OnlineJudgeName.omegaup:
