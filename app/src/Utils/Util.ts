@@ -174,4 +174,8 @@ export default class Util {
   static replaceTildeWithAbsoluteHomePath(contestsDirectory: string): string {
     return contestsDirectory.replace("~", os.homedir());
   }
+
+  static isWindows(): boolean {
+    return os.type() === "Windows_NT" || os.release().includes("Microsoft");
+  }
 }
