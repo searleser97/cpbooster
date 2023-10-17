@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { OnlineJudgeName } from "./OnlineJudge";
+import { OnlineJudgeName } from "../../Config/Types/OnlineJudgeName";
 import UniversalOJGeneric from "./UniversalOJGeneric";
 
 export default class UniversalOJ extends UniversalOJGeneric {

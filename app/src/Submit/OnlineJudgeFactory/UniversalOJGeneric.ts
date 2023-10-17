@@ -17,7 +17,8 @@
  */
 
 import { Page } from "playwright-chromium";
-import OnlineJudge, { OnlineJudgeName } from "./OnlineJudge";
+import OnlineJudge from "./OnlineJudge";
+import { OnlineJudgeName } from "../../Config/Types/OnlineJudgeName";
 import * as fs from "fs";
 
 export default abstract class UniversalOJGeneric extends OnlineJudge {
