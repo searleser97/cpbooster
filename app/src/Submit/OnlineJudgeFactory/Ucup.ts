@@ -23,4 +23,3 @@ export default class Ucup extends UniversalOJGeneric {
   readonly onlineJudgeName = OnlineJudgeName.ucup;
   readonly loginUrl = "https://contest.ucup.ac/login";
 }
-

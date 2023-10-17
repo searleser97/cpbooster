@@ -6,4 +6,4 @@ export enum OnlineJudgeName {
   omegaup = "omegaup",
   szkopul = "szkopul",
   yandex = "yandex"
-};
+}

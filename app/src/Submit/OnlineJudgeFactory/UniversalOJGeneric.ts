@@ -18,15 +18,9 @@
 
 import { Page } from "playwright-chromium";
 import OnlineJudge from "./OnlineJudge";
-import { OnlineJudgeName } from "../../Config/Types/OnlineJudgeName";
-import * as fs from "fs";
 
 export default abstract class UniversalOJGeneric extends OnlineJudge {
-  readonly blockedResourcesOnSubmit: Set<string> = new Set([
-    "image",
-    "stylesheet",
-    "font"
-  ]);
+  readonly blockedResourcesOnSubmit: Set<string> = new Set(["image", "stylesheet", "font"]);
 
   async isLoggedIn(page: Page): Promise<boolean> {
     return (await page.locator('a[href*="/logout"]').count()) !== 0;
@@ -35,7 +29,9 @@ export default abstract class UniversalOJGeneric extends OnlineJudge {
   async uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean> {
     try {
       await page.locator('a[href="#tab-submit-answer"]').click();
-      await page.locator('input[type=radio][value=file][name="answer_answer_upload_type"]').setChecked(true);
+      await page
+        .locator('input[type=radio][value=file][name="answer_answer_upload_type"]')
+        .setChecked(true);
       await page.locator("input[type=file][name=answer_answer_file]").setInputFiles(filePath);
       await page.locator("select[name=answer_answer_language]").selectOption(langAlias);
       await page.locator('form button[type=submit][name="submit-answer"]').click();
