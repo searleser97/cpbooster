@@ -29,6 +29,7 @@ import Util from "../../Utils/Util";
 export enum OnlineJudgeName {
   codeforces = "codeforces",
   universaloj = "universaloj",
+  ucup = "ucup",
   atcoder = "atcoder",
   omegaup = "omegaup",
   szkopul = "szkopul",

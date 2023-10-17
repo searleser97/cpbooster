@@ -19,7 +19,8 @@
 import { OnlineJudgeName } from "./OnlineJudge";
 import UniversalOJGeneric from "./UniversalOJGeneric";
 
-export default class UniversalOJ extends UniversalOJGeneric {
-  readonly onlineJudgeName = OnlineJudgeName.universaloj;
-  readonly loginUrl = "https://uoj.ac/login";
+export default class Ucup extends UniversalOJGeneric {
+  readonly onlineJudgeName = OnlineJudgeName.ucup;
+  readonly loginUrl = "https://contest.ucup.ac/login";
 }
+
