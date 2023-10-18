@@ -42,6 +42,7 @@ export default class Config {
   hideTestCaseInput: boolean;
   maxLinesToShowFromInput: number;
   cloneInCurrentDir: boolean;
+  groupContestsByJudge: boolean;
   executableFileExtension: string;
   // config for language extension
   languages: Record<string, LangConfig | undefined>;
@@ -57,6 +58,7 @@ export default class Config {
     this.hideTestCaseInput = false;
     this.maxLinesToShowFromInput = 50;
     this.cloneInCurrentDir = false;
+    this.groupContestsByJudge = false;
     this.executableFileExtension = "exe";
     this.languages = {
       cpp: {
