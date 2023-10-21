@@ -37,8 +37,9 @@ export default abstract class UniversalOJGeneric extends OnlineJudge {
       const submitButton = page.locator('form button[type=submit][name="submit-answer"]');
       await submitButton.click();
       for (let i = 0; i < 5; i++) {
+        await page.waitForLoadState("domcontentloaded");
         try {
-          await page.waitForURL("**/submissions", { timeout: 100 });
+          await page.waitForURL("**/submissions", { timeout: 100, waitUntil: "domcontentloaded" });
           return true;
         } catch {
           // the button click did not work?
