@@ -34,9 +34,20 @@ export default abstract class UniversalOJGeneric extends OnlineJudge {
         .setChecked(true);
       await page.locator("input[type=file][name=answer_answer_file]").setInputFiles(filePath);
       await page.locator("select[name=answer_answer_language]").selectOption(langAlias);
-      await page.locator('form button[type=submit][name="submit-answer"]').click();
-      await page.waitForLoadState("domcontentloaded");
-      return true;
+      const submitButton = page.locator('form button[type=submit][name="submit-answer"]');
+      await submitButton.click();
+      for (let i = 0; i < 5; i++) {
+        try {
+          const result = await page.waitForURL("**/submissions", { timeout: 100 });
+          return true;
+        } catch {
+          // the button click did not work?
+          try {
+            if ((await submitButton.count()) > 0) submitButton.click();
+          } catch {}
+        }
+      }
+      return false;
     } catch (e) {
       console.log(e);
       return false;
