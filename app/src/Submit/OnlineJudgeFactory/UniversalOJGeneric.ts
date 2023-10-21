@@ -38,13 +38,15 @@ export default abstract class UniversalOJGeneric extends OnlineJudge {
       await submitButton.click();
       for (let i = 0; i < 5; i++) {
         try {
-          const result = await page.waitForURL("**/submissions", { timeout: 100 });
+          await page.waitForURL("**/submissions", { timeout: 100 });
           return true;
         } catch {
           // the button click did not work?
           try {
-            if ((await submitButton.count()) > 0) submitButton.click();
-          } catch {}
+            if ((await submitButton.count()) > 0) await submitButton.click();
+          } catch {
+            continue;
+          }
         }
       }
       return false;
