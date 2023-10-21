@@ -20,6 +20,7 @@ import { exit } from "process";
 import AtCoder from "./AtCoder";
 import Codeforces from "./Codeforces";
 import UniversalOJ from "./UniversalOJ";
+import QOJ from "./QOJ";
 import Ucup from "./Ucup";
 import OmegaUp from "./OmegaUp";
 import Szkopul from "./Szkopul";
@@ -35,6 +36,8 @@ export default class OnlineJudgeFactory {
       return new AtCoder();
     } else if (url.includes("uoj.ac")) {
       return new UniversalOJ();
+    } else if (url.includes("qoj.ac")) {
+      return new QOJ();
     } else if (url.includes("contest.ucup.ac")) {
       return new Ucup();
     } else if (url.includes("omegaup")) {

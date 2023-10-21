@@ -66,6 +66,7 @@ export default class Config {
         aliases: {
           codeforces: "54",
           ucup: "C++23",
+          qoj: "C++23",
           universaloj: "C++20",
           atcoder: "5001",
           omegaup: "cpp17-gcc",
@@ -82,6 +83,7 @@ export default class Config {
         aliases: {
           codeforces: "31",
           ucup: "Python3",
+          qoj: "Python3",
           universaloj: "Python3",
           atcoder: "4006",
           omegaup: "py3",
@@ -98,6 +100,7 @@ export default class Config {
         aliases: {
           codeforces: "36",
           ucup: "Java11",
+          qoj: "Java11",
           universaloj: "Java17",
           atcoder: "4005"
         },
@@ -145,6 +148,7 @@ export default class Config {
         aliases: {
           codeforces: "49",
           ucup: "Rust",
+          qoj: "Rust",
           atcoder: "4050"
         },
         type: "compiled",
