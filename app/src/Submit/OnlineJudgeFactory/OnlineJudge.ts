@@ -27,6 +27,27 @@ import { OnlineJudgeName } from "../../Config/Types/OnlineJudgeName";
 import open from "open";
 import Util from "../../Utils/Util";
 
+type StorageState = {
+  cookies: Array<{
+    name: string;
+    value: string;
+    url: string;
+    domain: string;
+    path: string;
+    expires: number;
+    httpOnly: boolean;
+    secure: boolean;
+    sameSite: "Strict" | "Lax" | "None";
+  }>;
+  origins: Array<{
+    origin: string;
+    localStorage: Array<{
+      name: string;
+      value: string;
+    }>;
+  }>;
+};
+
 export default abstract class OnlineJudge {
   // session cookies are stored in this file
   readonly sessionPath = Path.join(GlobalConstants.cpboosterHome, "cpbooster-session.json");
@@ -49,40 +70,36 @@ export default abstract class OnlineJudge {
    */
   abstract uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean>;
 
-  getSession(): Array<{
-    name: string;
-    value: string;
-    url?: string;
-    domain?: string;
-    path?: string;
-    expires?: number;
-    httpOnly?: boolean;
-    secure?: boolean;
-    sameSite?: "Strict" | "Lax" | "None";
-  }> {
+  getSession(): StorageState | undefined {
+    const previousSession = fs.existsSync(this.sessionPath);
+    if (!previousSession) return undefined;
     const sessionString = fs.readFileSync(this.sessionPath).toString();
     const parsedSession = JSON.parse(sessionString);
+    // the session file may have the old format, but any error will be silently ignored by playwright
     return parsedSession;
   }
 
   async restoreSession(browser: ChromiumBrowser): Promise<ChromiumBrowserContext> {
-    const previousSession = fs.existsSync(this.sessionPath);
-    const context = await browser.newContext({
+    const storageState = this.getSession();
+    const options: {
+      userAgent: string;
+      viewport: null;
+      storageState?: StorageState;
+    } = {
       userAgent: "chrome",
       viewport: null
-    });
-    if (previousSession) {
-      context.addCookies(this.getSession());
-    }
+    };
+    if (storageState) options.storageState = storageState;
+    const context = await browser.newContext(options);
     return context;
   }
 
   async saveSession(context: ChromiumBrowserContext): Promise<void> {
-    const cookies = await context.cookies();
+    const storageState = await context.storageState();
     if (!fs.existsSync(GlobalConstants.cpboosterHome)) {
       fs.mkdirSync(GlobalConstants.cpboosterHome, { recursive: true });
     }
-    fs.writeFile(this.sessionPath, JSON.stringify(cookies, null, 2), async (err) => {
+    fs.writeFile(this.sessionPath, JSON.stringify(storageState, null, 2), async (err) => {
       if (err) {
         console.log("Session information could not be written in", this.sessionPath);
       }
@@ -126,7 +143,7 @@ export default abstract class OnlineJudge {
   }
 
   async login(): Promise<void> {
-    const browser = await chromium.launch({ headless: false });
+    const browser = await chromium.launch({ headless: true });
     const context = await this.restoreSession(browser);
 
     context.on("page", (_) => this.closeAllOtherTabs(context));
@@ -153,7 +170,7 @@ export default abstract class OnlineJudge {
   }
 
   async submit(filePath: string, url: string, config: Config, langAlias?: string): Promise<void> {
-    const browser = await chromium.launch({ headless: true });
+    const browser = await chromium.launch({ headless: false });
     const context = await this.restoreSession(browser);
 
     const pages = context.pages();
@@ -170,10 +187,9 @@ export default abstract class OnlineJudge {
     await page.goto(url);
 
     if (!(await this.isLoggedIn(page))) {
+      await browser.close();
       await this.login();
-      await context.clearCookies();
-      await context.addCookies(this.getSession());
-      await page.goto(url);
+      return await this.submit(filePath, url, config, langAlias);
     }
 
     try {
@@ -214,6 +230,7 @@ export default abstract class OnlineJudge {
         }
       }
     } catch (e) {
+      console.log(e);
       console.log("Error: File was not submitted");
       exit(0);
     }
