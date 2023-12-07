@@ -47,17 +47,24 @@ export default class CCServer {
 
       const problemData: ProblemData = request.body;
       problemData.name = Util.normalizeFileName(problemData.name);
-      let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
-      this.platform = platform;
-      // removes platform name from contest name
-      contestName = contestName.replace(new RegExp(this.platform, 'g'), "");
-      contestName = Util.normalizeFileName(contestName);
-      // removes extra dots
-      this.contestName = contestName.replace(/\./g, "");
+      if (this.config.createContestPlatformDirectory) {
+		let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
+		this.platform = platform;
+		// removes platform name from contest name
+		contestName = contestName.replace(new RegExp(this.platform, 'g'), "");
+		contestName = Util.normalizeFileName(contestName);
+		// removes extra dots
+		this.contestName = contestName.replace(/\./g, "");
+      } else {
+		problemData.group = Util.normalizeFileName(problemData.group);
+		this.contestName = problemData.group;
+      }
       
       const contestPath = config.cloneInCurrentDir
         ? this.contestName
-        : Path.join(config.contestsDirectory, this.platform, this.contestName);
+        : this.config.createContestPlatformDirectory
+		  ? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
+		  : Path.join(this.config.contestsDirectory, problemData.group);
       if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
       const FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
       const extension = `.${config.preferredLang}`;
@@ -95,7 +102,10 @@ export default class CCServer {
         clearInterval(interval);
         const contestPath = this.config.cloneInCurrentDir
           ? this.contestName
-          : Path.join(this.config.contestsDirectory, this.platform, this.contestName);
+		  : this.config.createContestPlatformDirectory
+			? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
+			: Path.join(this.config.contestsDirectory, this.contestName);
+
         console.log("\n\t    DONE!\n");
         console.log(`The path to your contest folder is: "${contestPath}"`);
         console.log("\n\tHappy Coding!\n");
