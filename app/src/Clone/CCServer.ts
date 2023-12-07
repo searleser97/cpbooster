@@ -30,19 +30,6 @@ import { getEditorCommand } from "./EditorCommandBuilder";
 import chalk from "chalk";
 import Tester from "../Test/TesterFactory/Tester";
 
-  /*
-function parseContestName(contestName) {
-  const name = contestName.trim();
-  const nameParts = name.split(" ");
-  let parsedName = "";
-  for (const part of nameParts) {
-	parsedName += part[0].toUpperCase() + part.slice(1);
-  }
-  console.log("Contest Name:", parsedName);
-  return contestName;
-}
-
-  */
 /* Competitive Companion Server */
 export default class CCServer {
   app = express();
