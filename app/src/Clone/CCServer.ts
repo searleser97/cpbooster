@@ -60,11 +60,6 @@ export default class CCServer {
         ? this.contestName
         : Path.join(config.contestsDirectory, this.platform, this.contestName);
       if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
-      console.log("-------------");
-      console.log("-------------");
-      console.log(contestPath);
-      console.log("-------------");
-      console.log("-------------");
       const FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
       const extension = `.${config.preferredLang}`;
       const filePath = `${FilesPathNoExtension}${extension}`;
