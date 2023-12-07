@@ -47,7 +47,6 @@ export default class CCServer {
 
       const problemData: ProblemData = request.body;
       problemData.name = Util.normalizeFileName(problemData.name);
-      // this.platform = platform;
       let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
       this.platform = platform;
       // removes platform name from contest name
