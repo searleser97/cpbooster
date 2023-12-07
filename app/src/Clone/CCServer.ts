@@ -30,10 +30,24 @@ import { getEditorCommand } from "./EditorCommandBuilder";
 import chalk from "chalk";
 import Tester from "../Test/TesterFactory/Tester";
 
+  /*
+function parseContestName(contestName) {
+  const name = contestName.trim();
+  const nameParts = name.split(" ");
+  let parsedName = "";
+  for (const part of nameParts) {
+	parsedName += part[0].toUpperCase() + part.slice(1);
+  }
+  console.log("Contest Name:", parsedName);
+  return contestName;
+}
+
+  */
 /* Competitive Companion Server */
 export default class CCServer {
   app = express();
   contestName = "NO_NAME";
+  platform = "NO_PLATFORM";
   config: Config;
   isActive = false;
   lastRequestTime = process.hrtime();
@@ -46,13 +60,24 @@ export default class CCServer {
 
       const problemData: ProblemData = request.body;
       problemData.name = Util.normalizeFileName(problemData.name);
-      problemData.group = Util.normalizeFileName(problemData.group);
-
-      this.contestName = problemData.group;
+      // this.platform = platform;
+      let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
+      this.platform = platform;
+      // removes platform name from contest name
+      contestName = contestName.replace(new RegExp(this.platform, 'g'), "");
+      contestName = Util.normalizeFileName(contestName);
+      // removes extra dots
+      this.contestName = contestName.replace(/\./g, "");
+      
       const contestPath = config.cloneInCurrentDir
         ? this.contestName
-        : Path.join(config.contestsDirectory, problemData.group);
+        : Path.join(config.contestsDirectory, this.platform, this.contestName);
       if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
+      console.log("-------------");
+      console.log("-------------");
+      console.log(contestPath);
+      console.log("-------------");
+      console.log("-------------");
       const FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
       const extension = `.${config.preferredLang}`;
       const filePath = `${FilesPathNoExtension}${extension}`;
@@ -89,7 +114,7 @@ export default class CCServer {
         clearInterval(interval);
         const contestPath = this.config.cloneInCurrentDir
           ? this.contestName
-          : Path.join(this.config.contestsDirectory, this.contestName);
+          : Path.join(this.config.contestsDirectory, this.platform, this.contestName);
         console.log("\n\t    DONE!\n");
         console.log(`The path to your contest folder is: "${contestPath}"`);
         console.log("\n\tHappy Coding!\n");
