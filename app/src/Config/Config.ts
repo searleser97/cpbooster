@@ -37,6 +37,7 @@ export default class Config {
   closeAfterClone: boolean;
   showStatusPageOnSubmit: boolean;
   useUserDefaultBrowser: boolean;
+  createContestPlatformDirectory: boolean;
   // preferred language extension
   preferredLang: string;
   hideTestCaseInput: boolean;
@@ -53,6 +54,7 @@ export default class Config {
     this.closeAfterClone = false;
     this.showStatusPageOnSubmit = true;
     this.useUserDefaultBrowser = true;
+    this.createContestPlatformDirectory = true;
     this.preferredLang = "cpp";
     this.hideTestCaseInput = false;
     this.maxLinesToShowFromInput = 50;
