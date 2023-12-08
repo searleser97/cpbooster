@@ -69,7 +69,7 @@ export default class CCServer {
       const FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
       const extension = `.${config.preferredLang}`;
       const filePath = `${FilesPathNoExtension}${extension}`;
-      SourceFileCreator.create(filePath, config, problemData.timeLimit, problemData.url);
+      SourceFileCreator.create(filePath, config, false, problemData.timeLimit, problemData.url);
       problemData.tests.forEach((testcase, idx) => {
         fs.writeFileSync(Tester.getInputPath(filePath, idx + 1), testcase.input);
         fs.writeFileSync(Tester.getAnswerPath(filePath, idx + 1), testcase.output);
@@ -132,4 +132,4 @@ export default class CCServer {
       }
     }, 100);
   }
-}
+} 

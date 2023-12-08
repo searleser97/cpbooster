@@ -26,7 +26,8 @@ import { spawn, spawnSync } from "child_process";
 import { exit } from "process";
 
 export default class SourceFileCreator {
-  static create(filePath: string, config: Config, timeLimitInMS = 3000, problemUrl?: string): void {
+  // The flag determines whether to open the file right after creating it, or not
+  static create(filePath: string, config: Config, openTerminal: boolean, timeLimitInMS = 3000, problemUrl?: string): void {
     const absoluteFilePath = Path.isAbsolute(filePath) 
       ? filePath 
       : Path.resolve(process.cwd(), filePath);
@@ -56,26 +57,28 @@ export default class SourceFileCreator {
       this.createSingle(absoluteFilePath, config, timeLimitInMS, problemUrl);
     }
 
-    const command = buildLaunchCommand(config.editor, absoluteFilePath);
-    const isWindows = os.type() === "Windows_NT" || os.release().includes("Microsoft");
-    if (command) {
-      const newTerminalExec = spawn(command, { shell: true, detached: true, stdio: "ignore" });
-      newTerminalExec.unref();
-      if (config.closeAfterClone && !isWindows) {
-        const execution = spawnSync("ps", ["-o", "ppid=", "-p", `${process.ppid}`]);
-        const grandParentPid = parseInt(execution.stdout.toString().trim());
-        if (!Number.isNaN(grandParentPid)) {
-          process.kill(grandParentPid, "SIGKILL");
+    if (openTerminal) {
+      const command = buildLaunchCommand(config.editor, absoluteFilePath);
+      const isWindows = os.type() === "Windows_NT" || os.release().includes("Microsoft");
+      if (command) {
+        const newTerminalExec = spawn(command, { shell: true, detached: true, stdio: "ignore" });
+        newTerminalExec.unref();
+        if (config.closeAfterClone && !isWindows) {
+          const execution = spawnSync("ps", ["-o", "ppid=", "-p", `${process.ppid}`]);
+          const grandParentPid = parseInt(execution.stdout.toString().trim());
+          if (!Number.isNaN(grandParentPid)) {
+            process.kill(grandParentPid, "SIGKILL");
+          }
         }
+      } else {
+        console.log(
+          chalk.yellow(
+            "The terminal specified in the configuration " +
+              "file is not fully supported yet, you will have to change your directory manually\n"
+          )
+        );
       }
-    } else {
-      console.log(
-        chalk.yellow(
-          "The terminal specified in the configuration " +
-            "file is not fully supported yet, you will have to change your directory manually\n"
-        )
-      );
-    }
+	}
   }
 
   static createSingle(
