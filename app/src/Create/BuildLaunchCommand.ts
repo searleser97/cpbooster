@@ -52,7 +52,7 @@ export function buildLaunchCommand(terminalName: string, filePath: string): stri
 	  return `kitty --directory "${fileDirectory}"`;
 
 	// Editors
-	case "code":
+	case "vscode":
       return filePath.includes('{')
         ? `code ${expandRange(filePath).map(fp => `"${fp}"`).join(' ')}`
         : `code "${filePath}"`;
