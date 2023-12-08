@@ -1,6 +1,6 @@
 # cpbooster &middot; [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/searleser97/cpbooster/blob/master/LICENSE) [![npm version](https://badge.fury.io/js/cpbooster.svg#)](https://badge.fury.io/js/cpbooster) ![npm](https://img.shields.io/npm/dt/cpbooster)
 
-### Competitive Programming Booster 🡲 https://searleser97.github.io/cpbooster/
+### Link to Website 🡲 https://searleser97.github.io/cpbooster/
 
 ## About
 
@@ -53,6 +53,8 @@
 
 1. Flat File Structure. See [Why Flat File Structure](https://searleser97.github.io/cpbooster/docs/clone/#why-flat-file-structure)
 
+1. Supports any programming language.
+
 ## How to Contribute
 
 1. Fork this repository and clone it locally: `git clone https://github.com/{yourUsername}/cpbooster`
@@ -71,14 +73,22 @@
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 - [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-## Future updates
+## Future Updates (work not started yet, you can contribute by coding any of these features)
 
+- add `--here` option to `cpb clone` to clone testcases in current directory
+- Add Memory Limit Exceeded Veredict (using `gnu-time` as `/usr/bin/time -f '%M' ./program`, can't use `ps` due to lack of precision.
+See https://stackoverflow.com/a/131346/13079132)
 - Add the possibility to test interactive problems
-- Add the possibility to test current file using test cases of another file (test --as \<filename>)
-- Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)
-- Add support for Java
-- Fully support windows CMD.
 - Add Stress tests (using brute force solution and tests generator)
+- Add the possibility to test current file using test cases of another file (test --as \<filename> or `cpb test <sourcefile> --with \<testcases_filename>`)
+- Add the possibility to debug current file using test cases of another file (test --as \<filename> -d)
+- Fully support windows CMD.
+- Add support for `NODE_ENV` in compile/debug command for debugging purposes.
+- Refactor `DebugOne` and `DebugWithUserInput` functions.
+- Open editor in created file right after executing `cpb create <filename>.<ext>`
+- Add option per file type/language to not prepend the `// time-limit: xxx` comment on top of a file of specific type/language.
+- Solve TODOs in code.
+
 
 ## Final Notes
 
