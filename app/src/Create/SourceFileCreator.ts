@@ -16,18 +16,36 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import * as fs from "fs";
-import Config from "../Config/Config";
 import * as Path from "path";
+import * as os from "os";
+import Config from "../Config/Config";
 import Util from "../Utils/Util";
+import { buildLaunchCommand } from './BuildLaunchCommand';
+import chalk from "chalk";
+import { spawn, spawnSync } from "child_process";
+import { exit } from "process";
 
 export default class SourceFileCreator {
   static create(filePath: string, config: Config, timeLimitInMS = 3000, problemUrl?: string): void {
+    const absoluteFilePath = Path.isAbsolute(filePath) 
+      ? filePath 
+      : Path.resolve(process.cwd(), filePath);
+    const fileDirectory = Path.dirname(absoluteFilePath);
+    if (!fs.existsSync(fileDirectory)) {
+    	console.error(
+    	  chalk.red(
+			`The specified directory does not exist: ${fileDirectory}`
+		  )
+		);
+    	exit(1);
+	}
+
     const filename = Path.basename(filePath);
     const match = /\{[a-zA-Z](\.{2,}|-)[a-zA-Z]\}\.[a-zA-Z0-9]+/g.exec(filename);
     if (match) {
       const idx = match[0].indexOf("}");
       this.createMultiple(
-        filePath,
+        absoluteFilePath,
         config,
         match[0][1],
         match[0][idx - 1],
@@ -35,7 +53,28 @@ export default class SourceFileCreator {
         problemUrl
       );
     } else {
-      this.createSingle(filePath, config, timeLimitInMS, problemUrl);
+      this.createSingle(absoluteFilePath, config, timeLimitInMS, problemUrl);
+    }
+
+    const command = buildLaunchCommand(config.editor, absoluteFilePath);
+    const isWindows = os.type() === "Windows_NT" || os.release().includes("Microsoft");
+    if (command) {
+      const newTerminalExec = spawn(command, { shell: true, detached: true, stdio: "ignore" });
+      newTerminalExec.unref();
+      if (config.closeAfterClone && !isWindows) {
+        const execution = spawnSync("ps", ["-o", "ppid=", "-p", `${process.ppid}`]);
+        const grandParentPid = parseInt(execution.stdout.toString().trim());
+        if (!Number.isNaN(grandParentPid)) {
+          process.kill(grandParentPid, "SIGKILL");
+        }
+      }
+    } else {
+      console.log(
+        chalk.yellow(
+          "The terminal specified in the configuration " +
+            "file is not fully supported yet, you will have to change your directory manually\n"
+        )
+      );
     }
   }
 
