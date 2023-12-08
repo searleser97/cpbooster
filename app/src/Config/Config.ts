@@ -67,6 +67,9 @@ export default class Config {
         debugCommand: "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
         aliases: {
           codeforces: "54",
+          ucup: "C++23",
+          qoj: "C++23",
+          universaloj: "C++20",
           atcoder: "5001",
           omegaup: "cpp17-gcc",
           szkopul: "C++",
@@ -81,6 +84,9 @@ export default class Config {
         debugCommand: "python3 -O",
         aliases: {
           codeforces: "31",
+          ucup: "Python3",
+          qoj: "Python3",
+          universaloj: "Python3",
           atcoder: "4006",
           omegaup: "py3",
           szkopul: "Python"
@@ -95,6 +101,9 @@ export default class Config {
         runCommand: "java",
         aliases: {
           codeforces: "36",
+          ucup: "Java11",
+          qoj: "Java11",
+          universaloj: "Java17",
           atcoder: "4005"
         },
         type: "mixed",
@@ -140,6 +149,8 @@ export default class Config {
         debugCommand: "rustc",
         aliases: {
           codeforces: "49",
+          ucup: "Rust",
+          qoj: "Rust",
           atcoder: "4050"
         },
         type: "compiled",

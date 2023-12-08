@@ -23,16 +23,9 @@ import { exit } from "process";
 import GlobalConstants from "../../GlobalConstants";
 import Config from "../../Config/Config";
 import { LangAliases } from "../../Config/Types/LangAliases";
+import { OnlineJudgeName } from "../../Config/Types/OnlineJudgeName";
 import open from "open";
 import Util from "../../Utils/Util";
-
-export enum OnlineJudgeName {
-  codeforces = "codeforces",
-  atcoder = "atcoder",
-  omegaup = "omegaup",
-  szkopul = "szkopul",
-  yandex = "yandex"
-}
 
 export default abstract class OnlineJudge {
   // session cookies are stored in this file
@@ -110,23 +103,7 @@ export default abstract class OnlineJudge {
   getLangAlias(filePath: string, config: Config): string | undefined {
     const lang = Util.getExtensionName(filePath);
     const langAliases = this.getLangAliasesObject(lang, config);
-    /* TODO: make <key, value> object with Online Judge Name as key
-             and langAliases as value. Then, we can iterate over it
-             instead of writing one line per Online Judge */
-    switch (this.onlineJudgeName) {
-      case OnlineJudgeName.codeforces:
-        return langAliases?.codeforces;
-      case OnlineJudgeName.atcoder:
-        return langAliases?.atcoder;
-      case OnlineJudgeName.omegaup:
-        return langAliases?.omegaup;
-      case OnlineJudgeName.szkopul:
-        return langAliases?.szkopul;
-      case OnlineJudgeName.yandex:
-        return langAliases?.yandex;
-      default:
-        return undefined;
-    }
+    return langAliases?.[this.onlineJudgeName as OnlineJudgeName];
   }
 
   async openBrowserInUrl(url: string, useUserDefaultBrowser: boolean): Promise<void> {
