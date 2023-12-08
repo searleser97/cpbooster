@@ -6,27 +6,27 @@ function expandRange(filePath: string): string[] {
     const extension = Path.extname(fullFilename);
     const filenameWithoutExtension = Path.basename(fullFilename, extension);
 
-    const rangePattern = /\{([a-zA-Z])\.\.([a-zA-Z])\}/;
+    const rangePattern = /\{([a-zA-Z])(-|\.{2,})([a-zA-Z])\}/;
     const rangeMatch = filenameWithoutExtension.match(rangePattern);
 
     if (!rangeMatch) return [filePath];
 
-    const [ , startChar, endChar ] = rangeMatch;
+    const [ , startChar, , endChar ] = rangeMatch;
     let expandedPaths = [];
     let startCode = startChar.toLowerCase().charCodeAt(0);
     let endCode = endChar.toLowerCase().charCodeAt(0);
 
     if (endCode < startCode) {
-      [startCode, endCode] = [endCode, startCode];
+        [startCode, endCode] = [endCode, startCode];
     }
 
     for (let i = startCode; i <= endCode; i++) {
         expandedPaths.push(
-        	Path.join(directory, 
-				filenameWithoutExtension.replace(
-					rangePattern, String.fromCharCode(i)) + extension
-			)
-		);
+            Path.join(directory, 
+                filenameWithoutExtension.replace(
+                    rangePattern, String.fromCharCode(i)) + extension
+            )
+        );
     }
 
     return expandedPaths;
