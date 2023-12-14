@@ -47,9 +47,9 @@ export default class CCServer {
     this.app.use(express.json());
     this.app.post("/", (request, response) => {
 	  const problemData: ProblemData = request.body;
-      const batchSize = problemData.batch?.size || 1;
+    const batchSize = problemData.batch?.size || 1;
 
-      if (this.totalProblemsCount === 0) {
+    if (this.totalProblemsCount === 0) {
       	this.totalProblemsCount = batchSize;
 	  }
 
@@ -64,16 +64,22 @@ export default class CCServer {
       	console.log();
       	this.processAllProblems();
       	this.resetCounts();
-	  }
-	});
+	    } else {
+        console.log(
+          chalk.red(
+            "Could not parse all problems. Aborting...\n"
+          )
+        );
+      }
+	  });
   }
 
   processAllProblems(): void {
   	this.pendingProblems.forEach((problemData) => {
-	  problemData.name = Util.normalizeFileName(problemData.name);
+      problemData.name = Util.normalizeFileName(problemData.name);
 
-	  if (this.config.createContestPlatformDirectory) {
-		let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
+      if (this.config.createContestPlatformDirectory) {
+        let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
         this.platform = platform;
         // removes platform name from contest name
         contestName = contestName.replace(new RegExp(this.platform, 'g'), "");
@@ -85,10 +91,10 @@ export default class CCServer {
         this.contestName = problemData.group;
       }
 
-	  const contestPath = this.config.cloneInCurrentDir
+      const contestPath = this.config.cloneInCurrentDir
         ? this.contestName
         : this.config.createContestPlatformDirectory
-		  ? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
+          ? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
           : Path.join(this.config.contestsDirectory, problemData.group);
 
       if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
@@ -134,9 +140,9 @@ export default class CCServer {
         clearInterval(interval);
         const contestPath = this.config.cloneInCurrentDir
           ? this.contestName
-		  : this.config.createContestPlatformDirectory
-			? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
-			: Path.join(this.config.contestsDirectory, this.contestName);
+          : this.config.createContestPlatformDirectory
+            ? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
+            : Path.join(this.config.contestsDirectory, this.contestName);
 
         console.log("\n\t    DONE!\n");
         console.log(`The path to your contest folder is: "${contestPath}"`);
