@@ -38,38 +38,64 @@ export default class CCServer {
   config: Config;
   isActive = false;
   lastRequestTime = process.hrtime();
+  pendingProblems: ProblemData[] = [];
+  totalProblemsCount = 0;
+  receivedProblemsCount = 0;
+
   constructor(config: Config) {
     this.config = config;
     this.app.use(express.json());
     this.app.post("/", (request, response) => {
+	  const problemData: ProblemData = request.body;
+      const batchSize = problemData.batch?.size || 1;
+
+      if (this.totalProblemsCount === 0) {
+      	this.totalProblemsCount = batchSize;
+	  }
+
+	  console.log(`Received problem ${this.receivedProblemsCount + 1} of ${this.totalProblemsCount}`);
+	  this.pendingProblems.push(problemData);
+	  this.receivedProblemsCount++;
+
       response.writeHead(200, { "Content-Type": "text/html" });
       response.end("OK");
 
-      const problemData: ProblemData = request.body;
-      problemData.name = Util.normalizeFileName(problemData.name);
-      if (this.config.createContestPlatformDirectory) {
+      if (this.receivedProblemsCount === this.totalProblemsCount) {
+      	console.log();
+      	this.processAllProblems();
+      	this.resetCounts();
+	  }
+	});
+  }
+
+  processAllProblems(): void {
+  	this.pendingProblems.forEach((problemData) => {
+	  problemData.name = Util.normalizeFileName(problemData.name);
+
+	  if (this.config.createContestPlatformDirectory) {
 		let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
-		this.platform = platform;
-		// removes platform name from contest name
-		contestName = contestName.replace(new RegExp(this.platform, 'g'), "");
-		contestName = Util.normalizeFileName(contestName);
-		// removes extra dots
-		this.contestName = contestName.replace(/\./g, "");
+        this.platform = platform;
+        // removes platform name from contest name
+        contestName = contestName.replace(new RegExp(this.platform, 'g'), "");
+        contestName = Util.normalizeFileName(contestName);
+        // removes extra dots
+        this.contestName = contestName.replace(/\./g, "");
       } else {
-		problemData.group = Util.normalizeFileName(problemData.group);
-		this.contestName = problemData.group;
+        problemData.group = Util.normalizeFileName(problemData.group);
+        this.contestName = problemData.group;
       }
-      
-      const contestPath = config.cloneInCurrentDir
+
+	  const contestPath = this.config.cloneInCurrentDir
         ? this.contestName
         : this.config.createContestPlatformDirectory
 		  ? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
-		  : Path.join(this.config.contestsDirectory, problemData.group);
+          : Path.join(this.config.contestsDirectory, problemData.group);
+
       if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
       const FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
-      const extension = `.${config.preferredLang}`;
+      const extension = `.${this.config.preferredLang}`;
       const filePath = `${FilesPathNoExtension}${extension}`;
-      SourceFileCreator.create(filePath, config, false, problemData.timeLimit, problemData.url);
+      SourceFileCreator.create(filePath, this.config, false, problemData.timeLimit, problemData.url);
       problemData.tests.forEach((testcase, idx) => {
         fs.writeFileSync(Tester.getInputPath(filePath, idx + 1), testcase.input);
         fs.writeFileSync(Tester.getAnswerPath(filePath, idx + 1), testcase.output);
@@ -80,6 +106,12 @@ export default class CCServer {
       if (!this.isActive) this.isActive = true;
       this.lastRequestTime = process.hrtime();
     });
+  }
+
+  resetCounts(): void {
+  	this.pendingProblems = [];
+  	this.totalProblemsCount = 0;
+  	this.receivedProblemsCount = 0;
   }
 
   run(): void {
