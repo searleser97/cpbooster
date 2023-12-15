@@ -32,10 +32,10 @@ export default class TLX extends OnlineJudge {
 
   async uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean> {
     const inputFileOrError = await page.locator(
-      "div.programming-problem-worksheet form input[type=file][name='sourceFiles.source'], "
-      + "[data-key=reason-not-allowed-to-submit]"
+      "div.programming-problem-worksheet form input[type=file][name='sourceFiles.source'], " +
+        "[data-key=reason-not-allowed-to-submit]"
     );
-    if (await inputFileOrError.getAttribute("data-key") === "reason-not-allowed-to-submit") {
+    if ((await inputFileOrError.getAttribute("data-key")) === "reason-not-allowed-to-submit") {
       console.log(await inputFileOrError.innerText());
       return false;
     }

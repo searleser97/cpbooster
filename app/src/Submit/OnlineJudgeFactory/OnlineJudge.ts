@@ -78,7 +78,9 @@ export default abstract class OnlineJudge {
     const sessionString = fs.readFileSync(this.sessionPath).toString();
     const parsedSession = JSON.parse(sessionString);
     if (!parsedSession || parsedSession.version !== sessionFileVersion) {
-      console.log(`Version of session file ${this.sessionPath} is deprecated. Please login again to all sites.`)
+      console.log(
+        `Version of session file ${this.sessionPath} is deprecated. Please login again to all sites.`
+      );
       fs.unlinkSync(this.sessionPath);
       return undefined;
     }
@@ -105,14 +107,22 @@ export default abstract class OnlineJudge {
     if (!fs.existsSync(GlobalConstants.cpboosterHome)) {
       fs.mkdirSync(GlobalConstants.cpboosterHome, { recursive: true });
     }
-    fs.writeFile(this.sessionPath, JSON.stringify({
-      version: sessionFileVersion,
-      data: storageState
-    }, null, 2), async (err) => {
-      if (err) {
-        console.log("Session information could not be written in", this.sessionPath);
+    fs.writeFile(
+      this.sessionPath,
+      JSON.stringify(
+        {
+          version: sessionFileVersion,
+          data: storageState
+        },
+        null,
+        2
+      ),
+      async (err) => {
+        if (err) {
+          console.log("Session information could not be written in", this.sessionPath);
+        }
       }
-    });
+    );
   }
 
   async closeAllOtherTabs(context: ChromiumBrowserContext): Promise<void> {
