@@ -46,16 +46,16 @@ export default class CCServer {
     this.config = config;
     this.app.use(express.json());
     this.app.post("/", (request, response) => {
-  	  const problemData: ProblemData = request.body;
+      const problemData: ProblemData = request.body;
       const batchSize = problemData.batch?.size || 1;
 
       if (this.totalProblemsCount === 0) {
         this.totalProblemsCount = batchSize;
-  	  }
+      }
 
-  	  console.log(`Received problem ${this.receivedProblemsCount + 1} of ${this.totalProblemsCount}`);
-  	  this.pendingProblems.push(problemData);
-  	  this.receivedProblemsCount++;
+      console.log(`Received problem ${this.receivedProblemsCount + 1} of ${this.totalProblemsCount}`);
+      this.pendingProblems.push(problemData);
+      this.receivedProblemsCount++;
 
       response.writeHead(200, { "Content-Type": "text/html" });
       response.end("OK");
@@ -75,7 +75,7 @@ export default class CCServer {
   }
 
   processAllProblems(): void {
-  	this.pendingProblems.forEach((problemData) => {
+    this.pendingProblems.forEach((problemData) => {
       problemData.name = Util.normalizeFileName(problemData.name);
 
       if (this.config.createContestPlatformDirectory) {
@@ -115,9 +115,9 @@ export default class CCServer {
   }
 
   resetCounts(): void {
-  	this.pendingProblems = [];
-  	this.totalProblemsCount = 0;
-  	this.receivedProblemsCount = 0;
+    this.pendingProblems = [];
+    this.totalProblemsCount = 0;
+    this.receivedProblemsCount = 0;
   }
 
   run(): void {
@@ -162,7 +162,7 @@ export default class CCServer {
           console.log(
             chalk.yellow(
               "The terminal specified in the configuration " +
-                "file is not fully supported yet, you will have to change your directory manually\n"
+              "file is not fully supported yet, you will have to change your directory manually\n"
             )
           );
         }
