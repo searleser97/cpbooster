@@ -79,6 +79,7 @@ export default abstract class OnlineJudge {
     const parsedSession = JSON.parse(sessionString);
     if (!parsedSession || parsedSession.version !== sessionFileVersion) {
       console.log(`Version of session file ${this.sessionPath} is deprecated. Please login again to all sites.`)
+      fs.unlinkSync(this.sessionPath);
       return undefined;
     }
     return parsedSession.data;
