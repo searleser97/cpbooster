@@ -48,6 +48,8 @@ type StorageState = {
   }>;
 };
 
+const sessionFileVersion = "v2";
+
 export default abstract class OnlineJudge {
   // session cookies are stored in this file
   readonly sessionPath = Path.join(GlobalConstants.cpboosterHome, "cpbooster-session.json");
@@ -75,8 +77,11 @@ export default abstract class OnlineJudge {
     if (!previousSession) return undefined;
     const sessionString = fs.readFileSync(this.sessionPath).toString();
     const parsedSession = JSON.parse(sessionString);
-    // the session file may have the old format, but any error will be silently ignored by playwright
-    return parsedSession;
+    if (!parsedSession || parsedSession.version !== sessionFileVersion) {
+      console.log(`Version of session file ${this.sessionPath} is deprecated. Please login again to all sites.`)
+      return undefined;
+    }
+    return parsedSession.data;
   }
 
   async restoreSession(browser: ChromiumBrowser): Promise<ChromiumBrowserContext> {
@@ -99,7 +104,10 @@ export default abstract class OnlineJudge {
     if (!fs.existsSync(GlobalConstants.cpboosterHome)) {
       fs.mkdirSync(GlobalConstants.cpboosterHome, { recursive: true });
     }
-    fs.writeFile(this.sessionPath, JSON.stringify(storageState, null, 2), async (err) => {
+    fs.writeFile(this.sessionPath, JSON.stringify({
+      version: sessionFileVersion,
+      data: storageState
+    }, null, 2), async (err) => {
       if (err) {
         console.log("Session information could not be written in", this.sessionPath);
       }
@@ -143,7 +151,7 @@ export default abstract class OnlineJudge {
   }
 
   async login(): Promise<void> {
-    const browser = await chromium.launch({ headless: true });
+    const browser = await chromium.launch({ headless: false });
     const context = await this.restoreSession(browser);
 
     context.on("page", (_) => this.closeAllOtherTabs(context));
@@ -170,7 +178,7 @@ export default abstract class OnlineJudge {
   }
 
   async submit(filePath: string, url: string, config: Config, langAlias?: string): Promise<void> {
-    const browser = await chromium.launch({ headless: false });
+    const browser = await chromium.launch({ headless: true });
     const context = await this.restoreSession(browser);
 
     const pages = context.pages();
