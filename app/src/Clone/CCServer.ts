@@ -46,32 +46,32 @@ export default class CCServer {
     this.config = config;
     this.app.use(express.json());
     this.app.post("/", (request, response) => {
-	  const problemData: ProblemData = request.body;
-    const batchSize = problemData.batch?.size || 1;
+  	  const problemData: ProblemData = request.body;
+      const batchSize = problemData.batch?.size || 1;
 
-    if (this.totalProblemsCount === 0) {
-      	this.totalProblemsCount = batchSize;
-	  }
+      if (this.totalProblemsCount === 0) {
+        this.totalProblemsCount = batchSize;
+  	  }
 
-	  console.log(`Received problem ${this.receivedProblemsCount + 1} of ${this.totalProblemsCount}`);
-	  this.pendingProblems.push(problemData);
-	  this.receivedProblemsCount++;
+  	  console.log(`Received problem ${this.receivedProblemsCount + 1} of ${this.totalProblemsCount}`);
+  	  this.pendingProblems.push(problemData);
+  	  this.receivedProblemsCount++;
 
       response.writeHead(200, { "Content-Type": "text/html" });
       response.end("OK");
 
       if (this.receivedProblemsCount === this.totalProblemsCount) {
-      	console.log();
-      	this.processAllProblems();
-      	this.resetCounts();
-	    } else {
+        console.log();
+        this.processAllProblems();
+        this.resetCounts();
+      } else {
         console.log(
           chalk.red(
             "Could not parse all problems. Aborting...\n"
           )
         );
       }
-	  });
+    });
   }
 
   processAllProblems(): void {
