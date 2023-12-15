@@ -29,4 +29,8 @@ export default interface ProblemData {
   input: unknown;
   output: unknown;
   languages: unknown;
+  batch?: {
+  	id: string;
+  	size: number;
+  }
 }
