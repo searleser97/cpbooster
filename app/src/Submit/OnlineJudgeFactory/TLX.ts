@@ -46,7 +46,7 @@ export default class TLX extends OnlineJudge {
       .click();
     const languageSelector = page
       .locator(
-        "div.programming-problem-worksheet div.bp4-popover div.bp4-popover-content a[data-key]"
+        "div.programming-problem-worksheet div.bp5-popover div.bp5-popover-content a[data-key]"
       )
       .filter({ hasText: langAlias });
     await languageSelector.waitFor({ state: "visible" });
