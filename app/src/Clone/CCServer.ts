@@ -25,7 +25,6 @@ import { exit } from "process";
 import { spawn, spawnSync } from "child_process";
 import Util from "../Utils/Util";
 import SourceFileCreator from "../Create/SourceFileCreator";
-import * as os from "os";
 import { getEditorCommand } from "./EditorCommandBuilder";
 import chalk from "chalk";
 import Tester from "../Test/TesterFactory/Tester";
@@ -80,8 +79,7 @@ export default class CCServer {
     const interval = setInterval(() => {
       if (!this.isActive) return;
       const elapsedTime = process.hrtime(this.lastRequestTime)[0];
-      const isWindows = os.type() === "Windows_NT" || os.release().includes("Microsoft");
-      const tolerance = isWindows ? 10 : 1;
+      const tolerance = Util.isWindows() ? 4 : 1;
       if (elapsedTime >= tolerance) {
         if (serverRef) serverRef.close();
         clearInterval(interval);
@@ -92,7 +90,7 @@ export default class CCServer {
         if (command) {
           const newTerminalExec = spawn(command, { shell: true, detached: true, stdio: "ignore" });
           newTerminalExec.unref();
-          if (this.config.closeAfterClone && !isWindows) {
+          if (this.config.closeAfterClone && !Util.isWindows()) {
             const execution = spawnSync("ps", ["-o", "ppid=", "-p", `${process.ppid}`]);
             const grandParentPid = parseInt(execution.stdout.toString().trim());
             if (!Number.isNaN(grandParentPid)) {
