@@ -25,7 +25,6 @@ import { exit } from "process";
 import { spawn, spawnSync } from "child_process";
 import Util from "../Utils/Util";
 import SourceFileCreator from "../Create/SourceFileCreator";
-import * as os from "os";
 import { getEditorCommand } from "./EditorCommandBuilder";
 import chalk from "chalk";
 import Tester from "../Test/TesterFactory/Tester";
@@ -34,6 +33,7 @@ import Tester from "../Test/TesterFactory/Tester";
 export default class CCServer {
   app = express();
   contestName = "NO_NAME";
+  contestPath = "";
   platform = "NO_PLATFORM";
   config: Config;
   isActive = false;
@@ -47,17 +47,22 @@ export default class CCServer {
 
       const problemData: ProblemData = request.body;
       problemData.name = Util.normalizeFileName(problemData.name);
+      problemData.group = Util.normalizeFileName(problemData.group);
+      this.contestName = problemData.group;
+      this.contestPath = Util.getContestPath(this.contestName, this.config);
+      if (!fs.existsSync(this.contestPath)) fs.mkdirSync(this.contestPath, { recursive: true });
+      const FilesPathNoExtension = `${Path.join(this.contestPath, problemData.name)}`;
       if (this.config.createContestPlatformDirectory) {
-		let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
-		this.platform = platform;
-		// removes platform name from contest name
-		contestName = contestName.replace(new RegExp(this.platform, 'g'), "");
-		contestName = Util.normalizeFileName(contestName);
-		// removes extra dots
-		this.contestName = contestName.replace(/\./g, "");
+        let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
+        this.platform = platform;
+        // removes platform name from contest name
+        contestName = contestName.replace(new RegExp(this.platform, 'g'), "");
+        contestName = Util.normalizeFileName(contestName);
+        // removes extra dots
+        this.contestName = contestName.replace(/\./g, "");
       } else {
-		problemData.group = Util.normalizeFileName(problemData.group);
-		this.contestName = problemData.group;
+        problemData.group = Util.normalizeFileName(problemData.group);
+        this.contestName = problemData.group;
       }
       
       const contestPath = config.cloneInCurrentDir
@@ -95,8 +100,7 @@ export default class CCServer {
     const interval = setInterval(() => {
       if (!this.isActive) return;
       const elapsedTime = process.hrtime(this.lastRequestTime)[0];
-      const isWindows = os.type() === "Windows_NT" || os.release().includes("Microsoft");
-      const tolerance = isWindows ? 10 : 1;
+      const tolerance = Util.isWindows() ? 4 : 1;
       if (elapsedTime >= tolerance) {
         if (serverRef) serverRef.close();
         clearInterval(interval);
@@ -105,15 +109,14 @@ export default class CCServer {
 		  : this.config.createContestPlatformDirectory
 			? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
 			: Path.join(this.config.contestsDirectory, this.contestName);
-
         console.log("\n\t    DONE!\n");
-        console.log(`The path to your contest folder is: "${contestPath}"`);
+        console.log(`The path to your contest folder is: "${this.contestPath}"`);
         console.log("\n\tHappy Coding!\n");
-        const command = getEditorCommand(this.config.editor, contestPath);
+        const command = getEditorCommand(this.config.editor, this.contestPath);
         if (command) {
           const newTerminalExec = spawn(command, { shell: true, detached: true, stdio: "ignore" });
           newTerminalExec.unref();
-          if (this.config.closeAfterClone && !isWindows) {
+          if (this.config.closeAfterClone && !Util.isWindows()) {
             const execution = spawnSync("ps", ["-o", "ppid=", "-p", `${process.ppid}`]);
             const grandParentPid = parseInt(execution.stdout.toString().trim());
             if (!Number.isNaN(grandParentPid)) {
