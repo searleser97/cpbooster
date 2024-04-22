@@ -17,7 +17,8 @@
  */
 
 import { Page } from "playwright-chromium";
-import OnlineJudge, { OnlineJudgeName } from "./OnlineJudge";
+import OnlineJudge from "./OnlineJudge";
+import { OnlineJudgeName } from "../../Config/Types/OnlineJudgeName";
 
 export default class AtCoder extends OnlineJudge {
   readonly onlineJudgeName = OnlineJudgeName.atcoder;
