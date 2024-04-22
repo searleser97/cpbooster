@@ -70,6 +70,7 @@ export default class Config {
           ucup: "C++23",
           qoj: "C++23",
           universaloj: "C++20",
+          tlx: "C++20",
           atcoder: "5001",
           omegaup: "cpp17-gcc",
           szkopul: "C++",
@@ -87,6 +88,7 @@ export default class Config {
           ucup: "Python3",
           qoj: "Python3",
           universaloj: "Python3",
+          tlx: "PyPy 3",
           atcoder: "4006",
           omegaup: "py3",
           szkopul: "Python"
@@ -104,6 +106,7 @@ export default class Config {
           ucup: "Java11",
           qoj: "Java11",
           universaloj: "Java17",
+          tlx: "Java 11",
           atcoder: "4005"
         },
         type: "mixed",
@@ -151,6 +154,7 @@ export default class Config {
           codeforces: "49",
           ucup: "Rust",
           qoj: "Rust",
+          tlx: "Rust 2021",
           atcoder: "4050"
         },
         type: "compiled",
@@ -162,6 +166,7 @@ export default class Config {
         debugCommand: "go build",
         aliases: {
           codeforces: "32",
+          tlx: "Go",
           atcoder: "4026"
         },
         type: "compiled",
