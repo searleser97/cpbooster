@@ -3,28 +3,24 @@ name: docs
 on:
   push:
     branches:
-      - docs
       - master
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.1
-        with:
-          persist-credentials: false
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
 
-      - name: Install and Build
+      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
         run: |
           yarn
-          yarn  build
+          yarn build
         working-directory: website/
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: website/build
-          CLEAN: true
+          folder: website/build # The folder the action should deploy.
