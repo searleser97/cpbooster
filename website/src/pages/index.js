@@ -150,7 +150,7 @@ export default function Home() {
                 />
               </span>
               <div style={{ height: "18px" }} />
-              <Link className={clsx(styles.getStartedButton)} to={useBaseUrl("docs/About")}>
+              <Link className={clsx(styles.getStartedButton)} to={useBaseUrl("docs/about")}>
                 Get Started
               </Link>
             </div>
