@@ -174,4 +174,69 @@ export default class Util {
   static replaceTildeWithAbsoluteHomePath(contestsDirectory: string): string {
     return contestsDirectory.replace("~", os.homedir());
   }
+
+  static isWindows(): boolean {
+    return os.type() === "Windows_NT" || os.release().includes("Microsoft");
+  }
+
+  static getCodeforcesFormatedContestName(contestName: string): string {
+    let formatedContestName = contestName;
+    const prefix = "Codeforces";
+    while(formatedContestName.startsWith(prefix)) {
+      formatedContestName = formatedContestName.substring(prefix.length);
+    }
+    let match = formatedContestName.match(/(EducationalCodeforcesRound)(\d+)(Ratedfor)(Div\.\d)/);
+    if(match){
+      formatedContestName = `EducationalRound_${match[2]}_${match[4]}`
+    }
+    else{
+      let match = formatedContestName.match(/(\w*Round)(\d+)(Div\.\d)?/);
+      if(match){
+        formatedContestName = `${match[1]}_${match[2]}${match[3]?'_'+match[3]:''}`
+      }
+    }
+    return formatedContestName;
+  }
+
+  static splitOnlineJudgeName(contestName: string): Array<string> {
+    const onlineJudgeNames = [
+      "Codeforces",
+      "CodeChef",
+      "AtCoder",
+      "HackerRank",
+      "ProjectEuler",
+      "TopCoder",
+      "CSAcademy",
+      "HackerEarth",
+      "Kattis",
+      "LeetCode",
+      "SPOJ"
+    ];
+    for (const onlineJudgeName of onlineJudgeNames) {
+      if (contestName.startsWith(onlineJudgeName)) {
+        if(onlineJudgeName === "Codeforces") {
+          return [onlineJudgeName, this.getCodeforcesFormatedContestName(contestName)];
+        }
+        return [onlineJudgeName, contestName.substring(onlineJudgeName.length)];
+      }
+    }
+    console.log("Online Judge not identified, saving in root directory");
+    return ["", contestName];
+  }
+
+  static getContestPath(contestName: string, config: Config): string {
+    if (config.groupContestsByJudge) {
+      const [onlineJudgeName, splitContestName] = this.splitOnlineJudgeName(contestName);
+      if (config.cloneInCurrentDir) {
+        return Path.join(onlineJudgeName, splitContestName);
+      } else {
+        return Path.join(config.contestsDirectory, onlineJudgeName, splitContestName);
+      }
+    } else {
+      if (config.cloneInCurrentDir) {
+        return contestName;
+      }
+      return Path.join(config.contestsDirectory, contestName);
+    }
+  }
 }

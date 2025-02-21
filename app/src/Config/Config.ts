@@ -37,11 +37,14 @@ export default class Config {
   closeAfterClone: boolean;
   showStatusPageOnSubmit: boolean;
   useUserDefaultBrowser: boolean;
+  createContestPlatformDirectory: boolean;
   // preferred language extension
   preferredLang: string;
   hideTestCaseInput: boolean;
   maxLinesToShowFromInput: number;
   cloneInCurrentDir: boolean;
+  groupContestsByJudge: boolean;
+  executableFileExtension: string;
   // config for language extension
   languages: Record<string, LangConfig | undefined>;
 
@@ -52,10 +55,13 @@ export default class Config {
     this.closeAfterClone = false;
     this.showStatusPageOnSubmit = true;
     this.useUserDefaultBrowser = true;
+    this.createContestPlatformDirectory = true;
     this.preferredLang = "cpp";
     this.hideTestCaseInput = false;
     this.maxLinesToShowFromInput = 50;
     this.cloneInCurrentDir = false;
+    this.groupContestsByJudge = false;
+    this.executableFileExtension = "exe";
     this.languages = {
       cpp: {
         template: "",
@@ -63,7 +69,11 @@ export default class Config {
         debugCommand: "g++ -std=gnu++17 -DDEBUG -Wshadow -Wall",
         aliases: {
           codeforces: "54",
-          atcoder: "4003",
+          ucup: "C++23",
+          qoj: "C++23",
+          universaloj: "C++20",
+          tlx: "C++20",
+          atcoder: "5001",
           omegaup: "cpp17-gcc",
           szkopul: "C++",
           yandex: "gcc7_3"
@@ -77,6 +87,10 @@ export default class Config {
         debugCommand: "python3 -O",
         aliases: {
           codeforces: "31",
+          ucup: "Python3",
+          qoj: "Python3",
+          universaloj: "Python3",
+          tlx: "PyPy 3",
           atcoder: "4006",
           omegaup: "py3",
           szkopul: "Python"
@@ -91,6 +105,10 @@ export default class Config {
         runCommand: "java",
         aliases: {
           codeforces: "36",
+          ucup: "Java11",
+          qoj: "Java11",
+          universaloj: "Java17",
+          tlx: "Java 11",
           atcoder: "4005"
         },
         type: "mixed",
@@ -136,6 +154,9 @@ export default class Config {
         debugCommand: "rustc",
         aliases: {
           codeforces: "49",
+          ucup: "Rust",
+          qoj: "Rust",
+          tlx: "Rust 2021",
           atcoder: "4050"
         },
         type: "compiled",
@@ -147,6 +168,7 @@ export default class Config {
         debugCommand: "go build",
         aliases: {
           codeforces: "32",
+          tlx: "Go",
           atcoder: "4026"
         },
         type: "compiled",

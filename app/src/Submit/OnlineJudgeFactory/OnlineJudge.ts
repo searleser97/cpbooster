@@ -23,16 +23,32 @@ import { exit } from "process";
 import GlobalConstants from "../../GlobalConstants";
 import Config from "../../Config/Config";
 import { LangAliases } from "../../Config/Types/LangAliases";
+import { OnlineJudgeName } from "../../Config/Types/OnlineJudgeName";
 import open from "open";
 import Util from "../../Utils/Util";
 
-export enum OnlineJudgeName {
-  codeforces = "codeforces",
-  atcoder = "atcoder",
-  omegaup = "omegaup",
-  szkopul = "szkopul",
-  yandex = "yandex"
-}
+type StorageState = {
+  cookies: Array<{
+    name: string;
+    value: string;
+    url: string;
+    domain: string;
+    path: string;
+    expires: number;
+    httpOnly: boolean;
+    secure: boolean;
+    sameSite: "Strict" | "Lax" | "None";
+  }>;
+  origins: Array<{
+    origin: string;
+    localStorage: Array<{
+      name: string;
+      value: string;
+    }>;
+  }>;
+};
+
+const sessionFileVersion = "v2";
 
 export default abstract class OnlineJudge {
   // session cookies are stored in this file
@@ -56,44 +72,57 @@ export default abstract class OnlineJudge {
    */
   abstract uploadFile(filePath: string, page: Page, langAlias: string): Promise<boolean>;
 
-  getSession(): Array<{
-    name: string;
-    value: string;
-    url?: string;
-    domain?: string;
-    path?: string;
-    expires?: number;
-    httpOnly?: boolean;
-    secure?: boolean;
-    sameSite?: "Strict" | "Lax" | "None";
-  }> {
+  getSession(): StorageState | undefined {
+    const previousSession = fs.existsSync(this.sessionPath);
+    if (!previousSession) return undefined;
     const sessionString = fs.readFileSync(this.sessionPath).toString();
     const parsedSession = JSON.parse(sessionString);
-    return parsedSession;
+    if (!parsedSession || parsedSession.version !== sessionFileVersion) {
+      console.log(
+        `Version of session file ${this.sessionPath} is deprecated. Please login again to all sites.`
+      );
+      fs.unlinkSync(this.sessionPath);
+      return undefined;
+    }
+    return parsedSession.data;
   }
 
   async restoreSession(browser: ChromiumBrowser): Promise<ChromiumBrowserContext> {
-    const previousSession = fs.existsSync(this.sessionPath);
-    const context = await browser.newContext({
+    const storageState = this.getSession();
+    const options: {
+      userAgent: string;
+      viewport: null;
+      storageState?: StorageState;
+    } = {
       userAgent: "chrome",
       viewport: null
-    });
-    if (previousSession) {
-      context.addCookies(this.getSession());
-    }
+    };
+    if (storageState) options.storageState = storageState;
+    const context = await browser.newContext(options);
     return context;
   }
 
   async saveSession(context: ChromiumBrowserContext): Promise<void> {
-    const cookies = await context.cookies();
+    const storageState = await context.storageState();
     if (!fs.existsSync(GlobalConstants.cpboosterHome)) {
       fs.mkdirSync(GlobalConstants.cpboosterHome, { recursive: true });
     }
-    fs.writeFile(this.sessionPath, JSON.stringify(cookies, null, 2), async (err) => {
-      if (err) {
-        console.log("Session information could not be written in", this.sessionPath);
+    fs.writeFile(
+      this.sessionPath,
+      JSON.stringify(
+        {
+          version: sessionFileVersion,
+          data: storageState
+        },
+        null,
+        2
+      ),
+      async (err) => {
+        if (err) {
+          console.log("Session information could not be written in", this.sessionPath);
+        }
       }
-    });
+    );
   }
 
   async closeAllOtherTabs(context: ChromiumBrowserContext): Promise<void> {
@@ -110,23 +139,7 @@ export default abstract class OnlineJudge {
   getLangAlias(filePath: string, config: Config): string | undefined {
     const lang = Util.getExtensionName(filePath);
     const langAliases = this.getLangAliasesObject(lang, config);
-    /* TODO: make <key, value> object with Online Judge Name as key
-             and langAliases as value. Then, we can iterate over it
-             instead of writing one line per Online Judge */
-    switch (this.onlineJudgeName) {
-      case OnlineJudgeName.codeforces:
-        return langAliases?.codeforces;
-      case OnlineJudgeName.atcoder:
-        return langAliases?.atcoder;
-      case OnlineJudgeName.omegaup:
-        return langAliases?.omegaup;
-      case OnlineJudgeName.szkopul:
-        return langAliases?.szkopul;
-      case OnlineJudgeName.yandex:
-        return langAliases?.yandex;
-      default:
-        return undefined;
-    }
+    return langAliases?.[this.onlineJudgeName as OnlineJudgeName];
   }
 
   async openBrowserInUrl(url: string, useUserDefaultBrowser: boolean): Promise<void> {
@@ -176,6 +189,18 @@ export default abstract class OnlineJudge {
   }
 
   async submit(filePath: string, url: string, config: Config, langAlias?: string): Promise<void> {
+    if (!langAlias) {
+      langAlias = this.getLangAlias(filePath, config);
+      if (!langAlias) {
+        console.log(
+          `${this.onlineJudgeName} alias for "${Util.getExtensionName(
+            filePath
+          )}" was not found in config file.`
+        );
+        exit(0);
+      }
+    }
+
     const browser = await chromium.launch({ headless: true });
     const context = await this.restoreSession(browser);
 
@@ -193,29 +218,13 @@ export default abstract class OnlineJudge {
     await page.goto(url);
 
     if (!(await this.isLoggedIn(page))) {
+      await browser.close();
       await this.login();
-      await context.clearCookies();
-      await context.addCookies(this.getSession());
-      await page.goto(url);
+      return await this.submit(filePath, url, config, langAlias);
     }
 
     try {
-      let result: boolean;
-      if (langAlias) {
-        result = await this.uploadFile(filePath, page, langAlias);
-      } else {
-        const langAliasFromConfig = this.getLangAlias(filePath, config);
-        if (langAliasFromConfig) {
-          result = await this.uploadFile(filePath, page, langAliasFromConfig);
-        } else {
-          console.log(
-            `${this.onlineJudgeName} alias for "${Util.getExtensionName(
-              filePath
-            )}" was not found in config file.`
-          );
-          exit(0);
-        }
-      }
+      const result = await this.uploadFile(filePath, page, langAlias);
       if (result) {
         console.log("File submitted succesfully");
       } else {
@@ -237,6 +246,7 @@ export default abstract class OnlineJudge {
         }
       }
     } catch (e) {
+      console.log(e);
       console.log("Error: File was not submitted");
       exit(0);
     }

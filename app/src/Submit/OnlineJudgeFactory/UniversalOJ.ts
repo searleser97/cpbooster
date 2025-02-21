@@ -1,6 +1,6 @@
 /*
     cpbooster "Competitive Programming Booster"
-    Copyright (C) 2020  Sergio G. Sanchez V.
+    Copyright (C) 2023  user202729
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,14 +16,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import Config from "../Config/Config";
-import ICommandGlobalArgs from "../Types/ICommandGlobalArgs";
-import SourceFileCreator from "./SourceFileCreator";
+import { OnlineJudgeName } from "../../Config/Types/OnlineJudgeName";
+import UniversalOJGeneric from "./UniversalOJGeneric";
 
-export interface ICommandCreateArgs extends ICommandGlobalArgs {
-  filePath: string;
-}
-
-export function create(args: ICommandCreateArgs): void {
-  SourceFileCreator.create(args.filePath, Config.read(args.configPath), true);
+export default class UniversalOJ extends UniversalOJGeneric {
+  readonly onlineJudgeName = OnlineJudgeName.universaloj;
+  readonly loginUrl = "https://uoj.ac/login";
 }
