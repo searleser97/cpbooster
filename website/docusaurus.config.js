@@ -62,6 +62,13 @@ module.exports = {
         src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5705416960449352",
         crossorigin: "anonymous"
       }
+    },
+    {
+      tagName: "meta",
+      attributes: {
+        name: "google-adsense-account",
+        content: "ca-pub-5705416960449352"
+      }
     }
   ]
 };
