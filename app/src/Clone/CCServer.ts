@@ -51,7 +51,6 @@ export default class CCServer {
       this.contestName = problemData.group;
       this.contestPath = Util.getContestPath(this.contestName, this.config);
       if (!fs.existsSync(this.contestPath)) fs.mkdirSync(this.contestPath, { recursive: true });
-      const FilesPathNoExtension = `${Path.join(this.contestPath, problemData.name)}`;
       if (this.config.createContestPlatformDirectory) {
         let [platform, contestName] = problemData.group.split("-").map((str) => str.trim());
         this.platform = platform;
@@ -64,12 +63,12 @@ export default class CCServer {
         problemData.group = Util.normalizeFileName(problemData.group);
         this.contestName = problemData.group;
       }
-      
+
       const contestPath = config.cloneInCurrentDir
         ? this.contestName
         : this.config.createContestPlatformDirectory
-		  ? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
-		  : Path.join(this.config.contestsDirectory, problemData.group);
+          ? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
+          : Path.join(this.config.contestsDirectory, problemData.group);
       if (!fs.existsSync(contestPath)) fs.mkdirSync(contestPath, { recursive: true });
       const FilesPathNoExtension = `${Path.join(contestPath, problemData.name)}`;
       const extension = `.${config.preferredLang}`;
@@ -106,9 +105,9 @@ export default class CCServer {
         clearInterval(interval);
         const contestPath = this.config.cloneInCurrentDir
           ? this.contestName
-		  : this.config.createContestPlatformDirectory
-			? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
-			: Path.join(this.config.contestsDirectory, this.contestName);
+          : this.config.createContestPlatformDirectory
+            ? Path.join(this.config.contestsDirectory, this.platform, this.contestName)
+            : Path.join(this.config.contestsDirectory, this.contestName);
         console.log("\n\t    DONE!\n");
         console.log(`The path to your contest folder is: "${this.contestPath}"`);
         console.log("\n\tHappy Coding!\n");
@@ -127,7 +126,7 @@ export default class CCServer {
           console.log(
             chalk.yellow(
               "The terminal specified in the configuration " +
-                "file is not fully supported yet, you will have to change your directory manually\n"
+              "file is not fully supported yet, you will have to change your directory manually\n"
             )
           );
         }
